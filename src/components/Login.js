@@ -58,6 +58,8 @@ export default Login;
 
 //THis Component is made to login by the user (it is login form)
 class LoginForm extends Component{
+   
+
 
     signin = ()=>{
      const email = document.querySelector('#email').value;
@@ -88,7 +90,8 @@ class LoginForm extends Component{
  <div id='div1'> 
       Khata Book
       </div>
-<br/><br/><br/>
+      <span style={{fontSize:'12px'}}>{navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span>
+<br/><br/>
 
 <h2 className='headings' style={{textAlign:'center',fontSize:'30px'}}>Login Here</h2>
 
