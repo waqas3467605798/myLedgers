@@ -89,7 +89,7 @@ saveParty = ()=> {
     return (
     
     
-    <div>
+    <div className='container'>
     {/* Add Item Name */}
     <br/><br/><br/>
     {/* <h2 className='headings'>Add Item Name</h2> */}

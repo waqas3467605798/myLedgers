@@ -16,7 +16,7 @@ class GetData extends Component{
   constructor(){
       super();
       this.state = {
-        objects:[],
+        // objects:[],
         partyObjects:[]
         
       }
@@ -32,16 +32,18 @@ return (
   <br/> <br/>
 
 
-<div>
-<Link to='/GetData/Stock' style={{textDecoration:'none', marginRight:'50px'}}> Stocks </Link>
-<Link to='/GetData/Ledger' style={{textDecoration:'none', marginRight:'50px'}}> Ledger </Link>
+<div className='container'>
+
+<Link to='/GetData/' style={{textDecoration:'none', marginRight:'50px'}}> Ledger </Link>
+<Link to='/GetData/Trial' style={{textDecoration:'none', marginRight:'50px'}}> Trial Balance </Link>
 </div>
 
 <br/>
 
 <div>      
-<Route path='/GetData/Stock' component={Stock}/>
-<Route path='/GetData/Ledger' component={partyLedgers}/>
+<Route exact path='/GetData/' component={PartyLedgers}/>
+<Route path='/GetData/Trial' component={Trial}/>
+
 </div>
 
 
@@ -62,136 +64,24 @@ export default GetData;
 
 
 
-//the Stock component
-class Stock extends Component{
+
+
+// The Trail Component
+class Trial extends Component{
   constructor(){
-      super();
-      this.state = {
-        objects:[],
-        partyObjects:[],
-        status:false,
-        itemLedger: [],
-        purchases:[],
-        qtyTotal:[],
-        renderPurchaseData:false,
-        noData:null,
-        sum:[],
-        sumQty:[]
-        
-      }
-  }
+    super();
+    this.state = {
 
-
-
-  componentDidMount(){
-
-    
-    firebase.database().ref('itemList').on('child_added' , (data)=> { 
-      this.state.objects.push(data.val())
-      
-      // this.state.sum.push(data.val().purchaseData)
-    }  )
-    
-    
-    firebase.database().ref('partyList').on('child_added' , (data)=> { 
-      this.state.partyObjects.push(data.val())
-    }  )
-
-
-
-
-  }
-  
-
-
-  
-  getData = ()=>{
-    this.setState({status:true})        //As status true, the render function will run again - because of change in state
-    this.setState({sum:[], sumQty:[]})  //As the render method will run again, so the array of sum and sumQty in state should be zero
-  }
-
-
-    itemLedger = ()=> {
-var objIndex = document.getElementById('selected_save3').selectedIndex
-var reqObj = this.state.objects[objIndex]
-
-
-
-if('purchaseData' in reqObj){
-  var purchasesData = reqObj.purchaseData;
-  this.setState({purchases: purchasesData, renderPurchaseData:true, noData:null})
- 
-
- }
- else{
-   
-   var noDataFound = 'No data found'
-   this.setState({noData: noDataFound, renderPurchaseData:false})
-   console.log(noDataFound)
-   
- }
-
-
-this.setState({sum:[], sumQty:[]}) //As the render method will run again, so the array of sum and sumQty in state should be zero
     }
+  }
 
 
-
-render(){
-
-return (
-
-
-<div>
-
-<button className="waves-effect waves-light btn" onClick={this.getData} style={{width:'30%'}}>Select item</button> <br/>
-<div className='selectWidth'> <select className='browser-default' id='selected_save3'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.itemName}</option>}  )}   </select> </div> <br/>
-<button className="waves-effect waves-light btn" onClick={this.itemLedger} style={{width:'30%'}}>Get Data</button> <br/>
-
-
-{/* in case of purchase data found */}
-<div className={this.state.renderPurchaseData === true ? '' : 'display'}>
-
-<table><thead><tr><th>Date</th><th>Qty</th><th>Rate</th><th>Total Cost</th><th>Party Name</th></tr></thead><tbody>{this.state.purchases.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.qty}</td><td>{item.costPrice}</td><td>{item.totalBill}</td><td>{item.partyName}</td></tr>})}</tbody></table>
-
-{/* sum of Quantity of item */}
-
-{this.state.purchases.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sumQty.push(itm.qty)}</span>}  )}
-<b style={{color:'red'}}>Balance Quantity (Stock) = </b>
-<b style={{color:'red'}}>  {this.state.sumQty.reduce( (total,num)=>{return total+num}, 0 )  }  </b>
-
-
-<br/>
-
-{/* Sum of stock value in Rs. */}
-{this.state.purchases.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.totalBill)}</span>}  )}
-<b style={{color:'red'}}>Stock value in Rs. = </b>
-<b style={{color:'red'}}>  {this.state.sum.reduce( (total,num)=>{return total+num}, 0 )  }  </b>
-
-
-
-
-
-</div>
-
-
-{/* in case of no data found of purchases */}
-<div className={this.state.noData === null ? 'display' : ''}>
-     <h4>
-        {this.state.noData}
-     </h4>
-     {/* <br/><hr/><button className="waves-effect waves-dark btn red" onClick={this.segmentDelete}>Delete this segment</button>
-     <p className="red-text">It will delete the Segment as well as all its stored messages/data</p> */}
-</div>
-
-
-
-
-
-
-</div>
-);
-}
+    render(){
+      return(
+        <div>Trial balance</div>
+      );
+    }
+  
 }
 
 
@@ -202,10 +92,8 @@ return (
 
 
 
-
-
-//Another Component of Party Ledgers
-class partyLedgers extends Component{
+{/* //Another Component of Party Ledgers */}
+class PartyLedgers extends Component{
   constructor(){
       super();
       this.state = {
@@ -223,12 +111,6 @@ class partyLedgers extends Component{
 
   componentDidMount(){
 
-    
-    firebase.database().ref('itemList').on('child_added' , (data)=> { 
-      this.state.objects.push(data.val())
-    }  )
-    
-    
     firebase.database().ref('partyList').on('child_added' , (data)=> { 
       this.state.partyObjects.push(data.val())
     }  )
@@ -277,9 +159,9 @@ render(){
 return (
 
 
-<div>
+<div className='container'>
 
-<button className="waves-effect waves-light btn" onClick={this.getData} style={{width:'30%'}}>Select Party</button> <br/>
+<button className="waves-effect waves-light btn" onClick={this.getData} style={{width:'30%'}}>Account Title</button> <br/>
 <div className='selectWidth'> <select className='browser-default' id='selected_save4'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
 <button className="waves-effect waves-light btn" onClick={this.partyLedger} style={{width:'30%'}}>Get Data</button> <br/>
 
@@ -287,7 +169,7 @@ return (
 {/* in case of purchase data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
 
-<table><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{`${item.itemName} Qty: ${item.qty} @ ${item.perUnitCost}  ${item.narration}`}</td><td>{item.debit}</td></tr>})}</tbody></table>
+<table className="striped grey"><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td>{item.debit}</td></tr>})}</tbody></table>
 
 {/* sum of Quantity of item */}
 
@@ -300,7 +182,7 @@ return (
 </div>
 
 
-{/* in case of no data found of purchases */}
+{/* in case of no data found */}
 <div className={this.state.noData === null ? 'display' : ''}>
      <h4>
         {this.state.noData}
