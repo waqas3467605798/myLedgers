@@ -1,0 +1,44 @@
+/* Header Component  */
+#div1{
+text-align: center;
+background-color: lawngreen;
+font-size: 36px;
+
+}
+
+#div2{
+    background-color:lemonchiffon;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+.links{
+    display: inline-block;
+    margin-right: 100px;
+    
+}
+
+
+/* Content Component */
+.display{
+    display: none;
+}
+
+.selectWidth{
+    width: 30%;
+}
+
+
+.headings{
+    /* text-align: center; */
+    /* border: 1px dotted black; */
+    border-radius: 12px;
+    font-size: 20px;
+    /* width: 40%; */
+    /* margin-left: auto;
+    margin-right: auto; */
+    /* background-color: darkgray; */
+    color:blue;
+
+}
