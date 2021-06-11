@@ -55,6 +55,7 @@ this.setState({
 saveParty = ()=> {
   let partyObj = {};
   partyObj.partyName = this.state.partyName;
+  partyObj.sum = [0]
   // partyObj.partyContact = this.state.partyContact;
   // partyObj.ownerName = this.state.ownerName;
   // obj.costPrice = Number(this.state.costPrice);

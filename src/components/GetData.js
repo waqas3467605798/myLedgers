@@ -71,18 +71,56 @@ class Trial extends Component{
   constructor(){
     super();
     this.state = {
-
+      partyObjects:[],
+      arrayForSum:[],
+      status:false
     }
   }
 
 
+
+
+
+  componentDidMount(){
+
+    firebase.database().ref('partyList').on('child_added' , (data)=> { 
+      this.state.partyObjects.push(data.val())
+    }  )
+
+    
+  }
+
+
+
+  getData = ()=>{
+    this.setState({status:true})        //As status true, the render function will run again - because of change in state
+    // this.setState({sum:[]}) 
+  }
+
+
+
+
+
+
     render(){
       return(
-        <div>Trial balance</div>
+        <div className='container'>
+        
+        <button className="waves-effect waves-light btn" onClick={this.getData} style={{width:'30%'}}>Get Trial Balance</button> <br/>
+        
+        <div className={this.state.status === true ? '' : 'display'}>
+        
+        <table className="striped grey"><thead><tr><th>Account Title</th><th>Balance</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind}><td>{name.partyName}</td><td>{name.sum.reduce( (total,num)=>{return total+num}, 0 )}</td></tr>}  )}</tbody></table>
+        </div>
+        </div>
+
       );
     }
   
 }
+
+
+
 
 
 
@@ -115,7 +153,7 @@ class PartyLedgers extends Component{
       this.state.partyObjects.push(data.val())
     }  )
 
-
+    
 
   }
   
@@ -126,6 +164,9 @@ getData = ()=>{
     this.setState({status:true})        //As status true, the render function will run again - because of change in state
     this.setState({sum:[]})  //As the render method will run again, so the array of sum and sumQty in state should be zero
   }
+
+
+
 
 
     partyLedger = ()=> {

@@ -66,6 +66,10 @@ partyLedgerObj.narration = nrr
 
 
 
+// reqPartyObj.sum = []
+// reqPartyObj.sum.push()
+
+
 
 
 
@@ -82,10 +86,21 @@ if('ledger' in reqPartyObj){
   reqPartyObj.ledger = []
   reqPartyObj.ledger.push(partyLedgerObj)
   firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
-  
 }
 
 
+
+
+// For creating of array for sum in party object
+if('sum' in reqPartyObj){
+  reqPartyObj.sum.push(Number(this.state.debit))
+  firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
+  
+}else{
+  reqPartyObj.sum = []
+  reqPartyObj.sum.push(Number(this.state.debit))
+  firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
+}
 
 
 
