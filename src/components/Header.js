@@ -24,7 +24,7 @@ import {Link} from 'react-router-dom'
     <div>
     
       <div id='div1'> 
-     {/* Reminder Book */}
+      Single Entry Accounting System
       </div>
 
 

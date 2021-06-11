@@ -22,6 +22,16 @@ import {BrowserRouter, Route} from 'react-router-dom'
       <Route path='/Content' component={Content}/>
       <Route path='/GetData' component={GetData}/>
       
+
+<br/><br/>
+<div className='bottomLine'> 
+Prepared By: Waqas Saleem <br/>
+Single Entry Accounting System for small business<br/>
+Contact: 0346-7605798 Email: waqas_mba86@yahoo.com
+</div>
+
+
+
     </div>
     </BrowserRouter>
   );
