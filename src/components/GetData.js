@@ -106,11 +106,11 @@ class Trial extends Component{
       return(
         <div className='container'>
         
-        <button className="waves-effect waves-light btn" onClick={this.getData} style={{width:'30%'}}>Get Trial Balance</button> <br/>
+        <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Get Trial Balance</button> <br/>
         
         <div className={this.state.status === true ? '' : 'display'}>
         
-        <table className="striped grey"><thead><tr><th>Account Title</th><th>Balance</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind}><td>{name.partyName}</td><td>{name.sum.reduce( (total,num)=>{return total+num}, 0 )}</td></tr>}  )}</tbody></table>
+        <table className="striped grey"><thead><tr><th>Account Title</th><th>Balance</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td>{name.partyName}</td><td>{name.sum.reduce( (total,num)=>{return total+num},0)}</td></tr>}  )}</tbody></table>
         </div>
         </div>
 
@@ -170,16 +170,19 @@ getData = ()=>{
 
 
     partyLedger = ()=> {
+
+if(document.getElementById('selected_save4').value){
+
+
+
+
 var objIndex = document.getElementById('selected_save4').selectedIndex
 var reqObj = this.state.partyObjects[objIndex]
-
-
 
 if('ledger' in reqObj){
   var ledgerData = reqObj.ledger;
   this.setState({ledger: ledgerData, renderLedgerData:true, noData:null})
  
-
  }
  else{
    
@@ -189,9 +192,19 @@ if('ledger' in reqObj){
    
  }
 
-
 this.setState({sum:[]}) //As the render method will run again, so the array of sum and sumQty in state should be zero
-    }
+    
+
+
+}else{alert('Please select the Account First')}
+
+
+}
+
+
+
+
+  
 
 
 
@@ -202,9 +215,9 @@ return (
 
 <div className='container'>
 
-<button className="waves-effect waves-light btn" onClick={this.getData} style={{width:'30%'}}>Account Title</button> <br/>
+<button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Account Title</button> <br/>
 <div className='selectWidth'> <select className='browser-default' id='selected_save4'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
-<button className="waves-effect waves-light btn" onClick={this.partyLedger} style={{width:'30%'}}>Get Data</button> <br/>
+<button className="waves-effect waves-dark btn" onClick={this.partyLedger} style={{width:'30%'}}>Get Data</button> <br/>
 
 
 {/* in case of purchase data found */}
