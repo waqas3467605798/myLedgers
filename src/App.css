@@ -58,3 +58,29 @@ padding:15px;
 border-top-right-radius: 35px;
 border-top-left-radius: 35px;
 }
+
+
+.trialPositiveAmt{
+    color:green;
+    
+}
+
+.trialNegativeAmt{
+    color:red;
+}
+
+.ldgrPostveAmt{
+    color:green;
+}
+
+.ldgrNegtveAmt{
+    color:red;
+}
+
+.closingBalPostiv{
+color:green;
+}
+
+.closingBalNegatve{
+color:red;
+}

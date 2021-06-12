@@ -17,7 +17,6 @@ import {BrowserRouter, Route} from 'react-router-dom'
     <BrowserRouter>
     <div>
       <Header/>
-
       <Route exact path='/' component={DataEntry}/>
       <Route path='/Content' component={Content}/>
       <Route path='/GetData' component={GetData}/>
