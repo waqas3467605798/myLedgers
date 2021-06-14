@@ -139,12 +139,13 @@ class PartyLedgers extends Component{
   constructor(){
       super();
       this.state = {
-        objects:[],
+        // objects:[],
         partyObjects:[],
         sum:[],
         ledger:[],
         renderLedgerData:false,
-        status:false
+        status:false,
+        ledgerDeleteUpdate:false
         
       }
   }
@@ -207,6 +208,30 @@ this.setState({sum:[]}) //As the render method will run again, so the array of s
 
 
 
+deleteLedgerEntry = (i)=>{
+
+  var delKey = prompt("write 'Y' and Press OK")
+
+  if(delKey === 'Y'){
+  var accountTitleName = document.getElementById('selected_save4').value
+  var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitleName}  )
+  reqObj.ledger.splice(i,1)
+  reqObj.sum.splice(i+1,1)
+
+  firebase.database().ref('partyList').child(reqObj.key).set(reqObj)
+
+this.setState({ledgerDeleteUpdate:true, sum:[]})
+  console.log(reqObj.sum)
+
+  }
+  else{alert('You have entered Wrong key')}
+
+
+
+}
+
+
+
   
 
 
@@ -226,7 +251,7 @@ return (
 {/* in case of purchase data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
 
-<table className="striped"><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit}</td></tr>})}</tbody></table>
+<table className="striped"><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit}</td><td><button onClick={()=>this.deleteLedgerEntry(index)}>Del</button></td></tr>})}</tbody></table>
 
 {/* sum of Quantity of item */}
 
