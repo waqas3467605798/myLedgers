@@ -31,7 +31,8 @@ import {Link} from 'react-router-dom'
       <div id='div2'>
      <Link to='/Content' style={{textDecoration:'none', marginRight:'50px'}}> Create Account</Link>
      <Link to='/' style={{textDecoration:'none', marginRight:'50px'}}> Data Entry </Link>
-     <Link to='/GetData' style={{textDecoration:'none', marginRight:'50px'}} > Reports </Link>
+     <Link to='/Ledger' style={{textDecoration:'none', marginRight:'50px'}} > Ledger </Link>
+     <Link to='/Trial' style={{textDecoration:'none', marginRight:'50px'}} > Trial Balance </Link>
      
      
      

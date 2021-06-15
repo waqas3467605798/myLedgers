@@ -12,55 +12,55 @@ import firebase from './Fire'
 
 
 
-class GetData extends Component{
-  constructor(){
-      super();
-      this.state = {
-        // objects:[],
-        partyObjects:[]
+// class GetData extends Component{
+//   constructor(){
+//       super();
+//       this.state = {
+//         // objects:[],
+//         partyObjects:[]
         
-      }
-  }
+//       }
+//   }
 
 
 
 
 
 
-render(){
+// render(){
 
-return (
-
-
-<div>
-  <br/> <br/>
+// return (
 
 
-<div className='container'>
-
-<Link to='/GetData/' style={{textDecoration:'none', marginRight:'50px'}}> Ledger </Link>
-<Link to='/GetData/Trial' style={{textDecoration:'none', marginRight:'50px'}}> Trial Balance </Link>
-</div>
-
-<br/>
-
-<div>      
-<Route exact path='/GetData/' component={PartyLedgers} />
-<Route path='/GetData/Trial' component={Trial}/>
-
-</div>
+// <div>
+//   <br/> <br/>
 
 
+// <div className='container'>
+
+// <Link to='/GetData/' style={{textDecoration:'none', marginRight:'50px'}}> Ledger </Link>
+// <Link to='/GetData/Trial' style={{textDecoration:'none', marginRight:'50px'}}> Trial Balance </Link>
+// </div>
+
+// <br/>
+
+// <div>      
+// <Route exact path='/GetData/' component={PartyLedgers} />
+// <Route path='/GetData/Trial' component={Trial}/>
+
+// </div>
 
 
-</div>
-
-);
-}
-}
 
 
-export default GetData;
+// </div>
+
+// );
+// }
+// }
+
+
+// export default GetData;
 
 
 
@@ -71,57 +71,57 @@ export default GetData;
 
 
 // The Trail Component
-class Trial extends Component{
-  constructor(){
-    super();
-    this.state = {
-      partyObjects:[],
-      arrayForSum:[],
-      status:false
-    }
-  }
+// class Trial extends Component{
+//   constructor(){
+//     super();
+//     this.state = {
+//       partyObjects:[],
+//       arrayForSum:[],
+//       status:false
+//     }
+//   }
 
 
 
 
 
-  componentDidMount(){
+//   componentDidMount(){
 
-    firebase.database().ref('partyList').on('child_added' , (data)=> { 
-      this.state.partyObjects.push(data.val())
-    }  )
+//     firebase.database().ref('partyList').on('child_added' , (data)=> { 
+//       this.state.partyObjects.push(data.val())
+//     }  )
 
     
-  }
+//   }
 
 
 
-  getData = ()=>{
-    this.setState({status:true})        //As status true, the render function will run again - because of change in state
-    // this.setState({sum:[]}) 
-  }
+//   getData = ()=>{
+//     this.setState({status:true})        //As status true, the render function will run again - because of change in state
+//     // this.setState({sum:[]}) 
+//   }
 
 
 
 
 
 
-    render(){
-      return(
-        <div className='container'>
+//     render(){
+//       return(
+//         <div className='container'>
         
-        <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Get Trial Balance</button> <br/>
+//         <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Get Trial Balance</button> <br/>
         
-        <div className={this.state.status === true ? '' : 'display'}>
+//         <div className={this.state.status === true ? '' : 'display'}>
         
-        <table className="striped"><thead><tr><th>Account Title</th><th>Balance</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td>{name.partyName}</td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}>{name.sum.reduce( (total,num)=>{return total+num},0)}</td></tr>}  )}</tbody></table>
-        </div>
-        </div>
+//         <table className="striped"><thead><tr><th>Account Title</th><th>Balance</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td>{name.partyName}</td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}>{name.sum.reduce( (total,num)=>{return total+num},0)}</td></tr>}  )}</tbody></table>
+//         </div>
+//         </div>
 
-      );
-    }
+//       );
+//     }
   
-}
+// }
 
 
 
@@ -135,7 +135,7 @@ class Trial extends Component{
 
 
 {/* //Another Component of Party Ledgers */}
-class PartyLedgers extends Component{
+class Ledger extends Component{
   constructor(){
       super();
       this.state = {
@@ -242,7 +242,7 @@ return (
 
 
 <div className='container'>
-
+<br/><br/><br/>
 <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Account Title</button> <br/>
 <div className='selectWidth'> <select className='browser-default' id='selected_save4'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
 <button className="waves-effect waves-dark btn" onClick={this.partyLedger} style={{width:'30%'}}>Get Data</button> <br/>
@@ -282,3 +282,4 @@ return (
 }
 }
 
+export default Ledger

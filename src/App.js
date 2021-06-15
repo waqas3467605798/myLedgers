@@ -2,7 +2,8 @@ import react, {Component} from 'react'
 import Content from './components/Content'
 import Header from './components/Header'
 import DataEntry from './components/DataEntry'
-import GetData from './components/GetData'
+import Ledger from './components/Ledger'
+import Trial from './components/Trial'
 import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom'
 
@@ -19,7 +20,8 @@ import {BrowserRouter, Route} from 'react-router-dom'
       <Header/>
       <Route exact path='/' component={DataEntry}/>
       <Route path='/Content' component={Content}/>
-      <Route path='/GetData' component={GetData}/>
+      <Route path='/Ledger' component={Ledger}/>
+      <Route path='/Trial' component={Trial}/>
       
 
 <br/><br/>
