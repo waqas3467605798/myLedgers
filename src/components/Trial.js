@@ -50,7 +50,9 @@ class Trial extends Component{
     render(){
       return(
         <div className='container'>
-        <br/><br/><br/>
+
+        <br/>
+        <h5>Trial Balance</h5>
         <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Get Trial Balance</button> <br/>
         
         <div className={this.state.status === true ? '' : 'display'}>
