@@ -20,7 +20,9 @@ class Ledger extends Component{
         status:false,
         ledgerDeleteUpdate:false,
         deleteRefresh: false,
-        editRefresh:false
+        editRefresh:false,
+        noData:null,
+        accountDeleteRefresh:false
         
       }
   }
@@ -136,6 +138,32 @@ editRfsh = ()=>{
 
 
 
+accountDelete = ()=>{
+  var delKey = prompt("write 'Y' and Press OK")
+  if(delKey === 'Y'){
+
+
+
+  var accountTitle = document.getElementById('selected_save4').value
+  var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitle}  )
+  var key = reqObj.key
+  firebase.database().ref('partyList').child(key).remove()
+
+  this.setState({accountDeleteRefresh:true, partyObjects:[]})
+
+
+
+}else{alert('you have entered wrong key')}
+
+}
+
+
+
+
+accountDelRfrsh = ()=>{
+this.setState({accountDeleteRefresh:false, sum:[]})
+}
+
 
 
 render(){
@@ -147,10 +175,11 @@ return (
 
 <div className={this.state.deleteRefresh === false ? '' : 'display'}>
 <div className={this.state.editRefresh === false ? '' : 'display'}>
+<div className={this.state.accountDeleteRefresh === false ? '' : 'display'}>
 
 
 <br/>
-<h5>General Ledger</h5>
+<h5>Account Statement</h5>
 <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Account Title</button> <br/>
 <div className='selectWidth'> <select className='browser-default' id='selected_save4'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
 <button className="waves-effect waves-dark btn" onClick={this.partyLedger} style={{width:'30%'}}>Get Data</button> <br/>
@@ -158,14 +187,17 @@ return (
 
 {/* in case of purchase data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
-
-<table className="striped"><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit}</td><td><button onClick={()=>this.deleteLedgerEntry(index)}>Del</button><button onClick={()=> this.editEntry(index)}> Edit </button></td></tr>})}</tbody></table>
+<table><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit}</td><td><a href='#' class="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' class="material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>})}</tbody></table>
 
 {/* sum of Quantity of item */}
-
 {this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )}
 <b style={{fontSize:'18px'}}>Closing Balance = </b>
 <b className={this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? 'closingBalPostiv' : 'closingBalNegatve'}>  {this.state.sum.reduce( (total,num)=>{return total+num},0)  }      {this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? ' Receivable' : ' Payable'} </b>
+
+
+<br/><hr/><br/><br/><button className="waves-effect waves-dark btn red" onClick={this.accountDelete}>Delete Account Ledger</button>
+  <p className="red-text">It will delete the whole Ledger as well as all its stored Entries</p>
+
 
 </div>
 
@@ -175,9 +207,14 @@ return (
         {this.state.noData}
      </h4>
      
+<br/><hr/><br/><br/><button className="waves-effect waves-dark btn red" onClick={this.accountDelete}>Delete Account Ledger</button>
+  <p className="red-text">It will delete the whole Ledger as well as all its stored Entries</p>
+
 </div>
 </div>
 </div>
+</div>
+
 
 
 
@@ -191,11 +228,22 @@ return (
 
 
 
+
 <div className={this.state.editRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
   <br/><br/><br/><br/>
   <h4 style={{color:'red'}}>Entry Edited successfully</h4>
   <Link to='/Ledger' onClick={this.editRfsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
 </div>
+
+
+
+
+<div className={this.state.accountDeleteRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
+  <br/><br/><br/><br/>
+  <h4 style={{color:'red'}}>Account Ledger Deleted successfully</h4>
+  <Link to='/Trial' onClick={this.accountDelRfrsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
+</div>
+
 
 
 

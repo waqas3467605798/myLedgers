@@ -52,12 +52,12 @@ class Trial extends Component{
         <div className='container'>
 
         <br/>
-        <h5>Trial Balance</h5>
+        <h5>Summary</h5>
         <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Get Trial Balance</button> <br/>
         
         <div className={this.state.status === true ? '' : 'display'}>
         
-        <table className="striped"><thead><tr><th>Account Title</th><th>Balance</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td>{name.partyName}</td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}>{name.sum.reduce( (total,num)=>{return total+num},0)}</td></tr>}  )}</tbody></table>
+        <table><thead><tr><th>Account Title</th><th>Balance</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td>{name.partyName}</td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0)}</b></td></tr>}  )}</tbody></table>
         </div>
         </div>
 

@@ -79,8 +79,15 @@ border-top-left-radius: 35px;
 
 .closingBalPostiv{
 color:green;
+
 }
 
 .closingBalNegatve{
 color:red;
+
+}
+
+
+tr:hover{
+    background-color:lightgrey;
 }

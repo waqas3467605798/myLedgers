@@ -24,15 +24,15 @@ import {Link} from 'react-router-dom'
     <div>
     
       <div id='div1'> 
-      Single Entry Accounting System
+      Accounts Payable/Receivable Management System
       </div>
 
 
       <div id='div2'>
      <Link to='/Content' style={{textDecoration:'none', marginRight:'50px'}}> Create Account</Link>
      <Link to='/' style={{textDecoration:'none', marginRight:'50px'}}> Data Entry </Link>
-     <Link to='/Ledger' style={{textDecoration:'none', marginRight:'50px'}} > Ledger </Link>
-     <Link to='/Trial' style={{textDecoration:'none', marginRight:'50px'}} > Trial Balance </Link>
+     <Link to='/Ledger' style={{textDecoration:'none', marginRight:'50px'}} > Account Statement </Link>
+     <Link to='/Trial' style={{textDecoration:'none', marginRight:'50px'}} > Summary </Link>
      
      
      
