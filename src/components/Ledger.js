@@ -22,7 +22,8 @@ class Ledger extends Component{
         deleteRefresh: false,
         editRefresh:false,
         noData:null,
-        accountDeleteRefresh:false
+        accountDeleteRefresh:false,
+        ledgerFor30Days:0
         
       }
   }
@@ -49,13 +50,11 @@ getData = ()=>{
 
 
 
-
+// This function will run to get all transactions in the ledger
     partyLedger = ()=> {
+      this.setState({ledgerFor30Days:0}) // because we want to see all transaction in the ledger
 
 if(document.getElementById('selected_save4').value){
-
-
-
 
 var objIndex = document.getElementById('selected_save4').selectedIndex
 var reqObj = this.state.partyObjects[objIndex]
@@ -75,12 +74,47 @@ if('ledger' in reqObj){
 
 this.setState({sum:[]}) //As the render method will run again, so the array of sum and sumQty in state should be zero
     
-
-
 }else{alert('Please select the Account First')}
 
-
 }
+
+
+
+
+// This function will run to get last 30 transactions only
+partyLedgerTwo = ()=> {
+
+this.setState({ledgerFor30Days:-30})  // because we want to see only last 30-transaction in the ledger
+  if(document.getElementById('selected_save4').value){
+  
+  var objIndex = document.getElementById('selected_save4').selectedIndex
+  var reqObj = this.state.partyObjects[objIndex]
+  
+  if('ledger' in reqObj){
+    var ledgerData = reqObj.ledger;
+    this.setState({ledger: ledgerData, renderLedgerData:true, noData:null})
+   
+   }
+   else{
+     
+     var noDataFound = 'No data found'
+     this.setState({noData: noDataFound, renderLedgerData:false})
+     console.log(noDataFound)
+     
+   }
+  
+  this.setState({sum:[]}) //As the render method will run again, so the array of sum and sumQty in state should be zero
+      
+  }else{alert('Please select the Account First')}
+  
+  }
+
+
+
+
+
+
+
 
 
 
@@ -182,12 +216,19 @@ return (
 <h5>Account Statement</h5>
 <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Account Title</button> <br/>
 <div className='selectWidth'> <select className='browser-default' id='selected_save4'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
-<button className="waves-effect waves-dark btn" onClick={this.partyLedger} style={{width:'30%'}}>Get Data</button> <br/>
+
+
+{/* this below button is for to get last 30-transactions */}
+<button className="waves-effect waves-dark btn" onClick={this.partyLedgerTwo} style={{width:'30%'}}>Last 30 entries</button>
+{/* this below button is for to get all transactions in the ledger */}
+<button className="waves-effect waves-dark btn" onClick={this.partyLedger} style={{width:'30%'}}>All</button> 
+
+
 
 
 {/* in case of purchase data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
-<table><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit}</td><td><a href='#' class="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' class="material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>})}</tbody></table>
+<table><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit}</td><td><a href='#' className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' className="material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
 
 {/* sum of Quantity of item */}
 {this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )}
