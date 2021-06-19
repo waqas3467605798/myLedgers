@@ -23,6 +23,7 @@ class Ledger extends Component{
         editRefresh:false,
         noData:null,
         accountDeleteRefresh:false,
+        cancelDelete:false,
         ledgerFor30Days:0
         
       }
@@ -134,10 +135,13 @@ deleteLedgerEntry = (i)=>{
 this.setState({ledgerDeleteUpdate:true, sum:[], deleteRefresh:true})
   console.log(reqObj.sum)
 
-  }
-  else{alert('You have entered Wrong key')}
-
+  }else{this.setState({cancelDelete:true})
+      alert('You have entered Wrong key') 
+    }
+  
 }
+
+
 
 
 deleteRfsh = ()=>{
@@ -200,16 +204,23 @@ this.setState({accountDeleteRefresh:false, sum:[]})
 
 
 
+
+cancelDelRfrsh = ()=>{
+  this.setState({cancelDelete:false, sum:[]})
+}
+
+
 render(){
 
 return (
 
 
-<div className='container'>
+<div>
 
 <div className={this.state.deleteRefresh === false ? '' : 'display'}>
 <div className={this.state.editRefresh === false ? '' : 'display'}>
 <div className={this.state.accountDeleteRefresh === false ? '' : 'display'}>
+<div className={this.state.cancelDelete === false ? '' : 'display'}>
 
 
 <br/>
@@ -219,19 +230,19 @@ return (
 
 
 {/* this below button is for to get last 30-transactions */}
-<button className="waves-effect waves-dark btn" onClick={this.partyLedgerTwo} style={{width:'30%'}}>Last 30 entries</button>
+<button className="browser-default btnControl" onClick={this.partyLedgerTwo} style={{width:'30%'}}>30-Trans.</button>
 {/* this below button is for to get all transactions in the ledger */}
-<button className="waves-effect waves-dark btn" onClick={this.partyLedger} style={{width:'30%'}}>All</button> 
-
+<button className="browser-default btnControl" onClick={this.partyLedger} style={{width:'30%'}}>All</button> 
+{/* className="waves-effect waves-dark btn" */}
 
 
 
 {/* in case of purchase data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
-<table><thead><tr><th>Date</th><th>Remarks</th><th>Amount</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit}</td><td><a href='#' className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' className="material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
+<table><thead><tr><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td><a href='#' className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' className="material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
 
 {/* sum of Quantity of item */}
-{this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )}
+{this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )} <br/>
 <b style={{fontSize:'18px'}}>Closing Balance = </b>
 <b className={this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? 'closingBalPostiv' : 'closingBalNegatve'}>  {this.state.sum.reduce( (total,num)=>{return total+num},0)  }      {this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? ' Receivable' : ' Payable'} </b>
 
@@ -251,6 +262,7 @@ return (
 <br/><hr/><br/><br/><button className="waves-effect waves-dark btn red" onClick={this.accountDelete}>Delete Account Ledger</button>
   <p className="red-text">It will delete the whole Ledger as well as all its stored Entries</p>
 
+</div>
 </div>
 </div>
 </div>
@@ -283,6 +295,15 @@ return (
   <br/><br/><br/><br/>
   <h4 style={{color:'red'}}>Account Ledger Deleted successfully</h4>
   <Link to='/Trial' onClick={this.accountDelRfrsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
+</div>
+
+
+
+
+<div className={this.state.cancelDelete === false ? 'display' : ''} style={{textAlign:'center'}}>
+  <br/><br/><br/><br/>
+  <h4 style={{color:'green'}}>Not Deleted</h4>
+  <Link to='/Ledger' onClick={this.cancelDelRfrsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
 </div>
 
 
