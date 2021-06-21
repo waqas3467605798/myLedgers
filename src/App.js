@@ -27,7 +27,7 @@ import {BrowserRouter, Route} from 'react-router-dom'
 <br/><br/>
 <div className='bottomLine'> 
 Prepared By: Waqas Saleem <br/>
-Single Entry Accounting System for small business<br/>
+Accounts Payable/Receivable Management System<br/>
 Contact: 0346-7605798 Email: waqas_mba86@yahoo.com
 </div>
 
