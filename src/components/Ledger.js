@@ -24,7 +24,9 @@ class Ledger extends Component{
         noData:null,
         accountDeleteRefresh:false,
         cancelDelete:false,
-        ledgerFor30Days:0
+        ledgerFor30Days:0,
+        ledgerBalance:[]
+        
         
       }
   }
@@ -37,7 +39,6 @@ class Ledger extends Component{
       this.state.partyObjects.push(data.val())
     }  )
 
-    
   }
   
 
@@ -77,6 +78,9 @@ this.setState({sum:[]}) //As the render method will run again, so the array of s
     
 }else{alert('Please select the Account First')}
 
+
+
+console.log(this.state.sum)
 }
 
 
@@ -84,6 +88,12 @@ this.setState({sum:[]}) //As the render method will run again, so the array of s
 
 // This function will run to get last 30 transactions only
 partyLedgerTwo = ()=> {
+
+  // var objIndex = document.getElementById('selected_save4').selectedIndex
+  // var reqObj = this.state.partyObjects[objIndex]
+  // this.setState({ledgerBalance:reqObj.sum})   // for test only
+
+
 
 this.setState({ledgerFor30Days:-30})  // because we want to see only last 30-transaction in the ledger
   if(document.getElementById('selected_save4').value){
@@ -93,6 +103,7 @@ this.setState({ledgerFor30Days:-30})  // because we want to see only last 30-tra
   
   if('ledger' in reqObj){
     var ledgerData = reqObj.ledger;
+    // var ledgerBalance = reqObj.sum // for test only
     this.setState({ledger: ledgerData, renderLedgerData:true, noData:null})
    
    }
@@ -100,13 +111,16 @@ this.setState({ledgerFor30Days:-30})  // because we want to see only last 30-tra
      
      var noDataFound = 'No data found'
      this.setState({noData: noDataFound, renderLedgerData:false})
-     console.log(noDataFound)
+    //  console.log(noDataFound)
      
    }
   
-  this.setState({sum:[]}) //As the render method will run again, so the array of sum and sumQty in state should be zero
+  this.setState({sum:[]}) //As the render method will run again, so the array of sum in state should be zero
       
   }else{alert('Please select the Account First')}
+  
+
+
   
   }
 
@@ -237,11 +251,11 @@ return (
 
 
 
-{/* in case of purchase data found */}
+{/* in case of data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
 <table><thead><tr><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td><a href='#' className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' className="material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
 
-{/* sum of Quantity of item */}
+{/* sum of amounts in ledger */}
 {this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )} <br/>
 <b style={{fontSize:'18px'}}>Closing Balance = </b>
 <b className={this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? 'closingBalPostiv' : 'closingBalNegatve'}>  {this.state.sum.reduce( (total,num)=>{return total+num},0)  }      {this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? ' Receivable' : ' Payable'} </b>
@@ -316,3 +330,11 @@ return (
 }
 
 export default Ledger
+
+
+
+
+
+
+
+{/* <td>{(this.state.ledgerBalance.map((val,i)=>{return <b key={i}>{val}</b>})).slice(0).reduce( (total,num)=>{return total+num},0)}</td> */}

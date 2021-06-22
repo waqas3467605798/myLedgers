@@ -49,6 +49,7 @@ saveParty = ()=> {
   partyObj.address = this.state.address;
   partyObj.sum = [0]
   
+  
   var key = firebase.database().ref('partyList').push().key
   partyObj.key = key
   firebase.database().ref('partyList').child(key).set(partyObj)
@@ -100,8 +101,7 @@ this.setState({editRefresh:false})
   
     <br/><br/><br/>
    
-{/* Add Party */}
-<br/><br/><br/>
+{/* Create Account */}
     <h2 className='headings'>Create Account</h2>
     <input type='text'  value={this.state.partyName} name='partyName' onChange={this.changeHandler} placeholder='Account Title' />  <br/>
     <input type='text' value={this.state.address} name='address' onChange={this.changeHandler} placeholder='Address, Contact, ..etc' /> <br/>
@@ -113,7 +113,7 @@ this.setState({editRefresh:false})
     <button className="waves-effect waves-dark btn" onClick={this.getList}>Get List</button>
 
 <div className={this.state.getListStatus === false ? 'display' : ''}>
-    <table><thead><tr><th>Account Title</th><th>Address/Contact..etc</th></tr></thead><tbody>{this.state.partyObjects.map(  (item,index)=>{return <tr key={index}><td>{item.partyName}</td><td>{item.address}</td><td><a href='#' className="material-icons" onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
+    <table><thead><tr><th>Account Title</th><th>Address/Contact..etc</th></tr></thead><tbody>{this.state.partyObjects.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.partyName}</td><td>{item.address}</td><td><a href='#' className="material-icons" onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
 </div>
 </div>
 
