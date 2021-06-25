@@ -90,6 +90,7 @@ color:red;
 
 tr:hover{
     background-color:lightgrey;
+    
 }
 
 .btnControl{
@@ -102,3 +103,4 @@ tr:hover{
 .material-icons{
     color:grey
 }
+

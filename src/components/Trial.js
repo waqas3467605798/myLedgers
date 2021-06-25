@@ -1,7 +1,6 @@
 import react, {Component} from 'react'
 import '../App.css';
 import {Link, Route,BrowserRouter} from 'react-router-dom'
-
 import firebase from './Fire'
 
 

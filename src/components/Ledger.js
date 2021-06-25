@@ -25,7 +25,9 @@ class Ledger extends Component{
         accountDeleteRefresh:false,
         cancelDelete:false,
         ledgerFor30Days:0,
-        ledgerBalance:[]
+        ledgerBalance:[],
+        debitTotal:0,
+        creditTotal:0
         
         
       }
@@ -61,6 +63,14 @@ if(document.getElementById('selected_save4').value){
 var objIndex = document.getElementById('selected_save4').selectedIndex
 var reqObj = this.state.partyObjects[objIndex]
 
+
+//to get total sum of debit side and credit side
+this.setState({debitTotal:reqObj.sum.filter((nm,indx)=>{return nm>0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
+this.setState({creditTotal:reqObj.sum.filter((nm,indx)=>{return nm<0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
+//sum of debit and credit side is ended
+
+
+
 if('ledger' in reqObj){
   var ledgerData = reqObj.ledger;
   var ledgerBalance = reqObj.sum
@@ -93,6 +103,12 @@ this.setState({ledgerFor30Days:-30})  // because we want to see only last 30-tra
   var objIndex = document.getElementById('selected_save4').selectedIndex
   var reqObj = this.state.partyObjects[objIndex]
   
+
+  //to get total sum of debit side and credit side
+  this.setState({debitTotal:reqObj.sum.filter((nm,indx)=>{return nm>0}).reduce( (total,num)=>{return total+num},0)})   //for test base only
+  this.setState({creditTotal:reqObj.sum.filter((nm,indx)=>{return nm<0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
+//sum of debit and credit side is ended
+
   if('ledger' in reqObj){
     var ledgerData = reqObj.ledger;
     var ledgerBalance = reqObj.sum 
@@ -144,7 +160,8 @@ this.setState({ledgerDeleteUpdate:true, sum:[], deleteRefresh:true})
   }else{this.setState({cancelDelete:true})
       alert('You have entered Wrong key') 
     }
-  
+
+
 }
 
 
@@ -152,6 +169,7 @@ this.setState({ledgerDeleteUpdate:true, sum:[], deleteRefresh:true})
 
 deleteRfsh = ()=>{
   this.setState({deleteRefresh:false, sum:[]})
+  
 }
 
 
@@ -206,6 +224,8 @@ accountDelete = ()=>{
 
 accountDelRfrsh = ()=>{
 this.setState({accountDeleteRefresh:false, sum:[]})
+
+
 }
 
 
@@ -242,15 +262,17 @@ return (
 {/* className="waves-effect waves-dark btn" */}
 
 
+{/* {this.setState({debitTotal:this.state.partyObjects.sum.map( (nm,indx)=>{return <span key={indx}>{nm>0}</span>} ).reduce( (total,num)=>{return total+num},0)})} */}
+
 
 {/* in case of data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
-<table><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' className="material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
+<table><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }       <tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i class="tiny material-icons">arrow_upward</i></b></td></tr> </tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
 
 {/* sum of amounts in ledger */}
-{this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )} <br/>
+{/* {this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )} <br/>
 <b style={{fontSize:'18px'}}>Closing Balance = </b>
-<b className={this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? 'closingBalPostiv' : 'closingBalNegatve'}>  {this.state.sum.reduce( (total,num)=>{return total+num},0)  }      {this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? ' Receivable' : ' Payable'} </b>
+<b className={this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? 'closingBalPostiv' : 'closingBalNegatve'}>  {this.state.sum.reduce( (total,num)=>{return total+num},0)  }      {this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? ' Receivable' : ' Payable'} </b> */}
 
 
 <br/><hr/><br/><br/><button className="waves-effect waves-dark btn red" onClick={this.accountDelete}>Delete Account Ledger</button>
