@@ -31,6 +31,8 @@ border-bottom-left-radius: 35px;
 
 .selectWidth{
     width: 30%;
+    min-width: 200px;
+    margin: auto;
 }
 
 
@@ -90,6 +92,7 @@ color:red;
 
 tr:hover{
     background-color:lightgrey;
+    
     
 }
 

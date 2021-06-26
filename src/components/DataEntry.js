@@ -36,9 +36,11 @@ import M from "materialize-css";
 
 
 changeHandler = (e) => {
+
 this.setState({ 
   [e.target.name]: e.target.value
 })
+
 
 }
 
@@ -55,10 +57,9 @@ this.setState({status:true})        //As status true, the render function will r
 
 saveValue = ()=>{
 
+if(this.state.date === '' || this.state.narration === '' || this.state.debit === ''){alert('you must fill all the fields')}else{
+
 if(document.getElementById('selected_save2').value){
-
-
-// if(this.state.debit === NaN){alert('Field of Amount must be a number')}else{
 
 
 var partyObjIndex = document.getElementById('selected_save2').selectedIndex
@@ -99,13 +100,17 @@ if('sum' in reqPartyObj){
 
 
 
-alert('Your message successfully saved..!')
+alert('Entry successfully saved..!')
 this.setState({debit:'',date:'',narration:''})
 
 
 }else{alert('Please select the Account First')}
 
 
+
+
+
+}
 }
 
 
@@ -119,16 +124,16 @@ this.setState({debit:'',date:'',narration:''})
     return (
     
     
-    <div className='container'>
+    <div className='container' style={{textAlign:'center'}}>
     
     <h2 className='headings'>Make an Entry</h2>
 
-    <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Select Account</button> <br/>
+    <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%',minWidth:'200px'}}>Select Account</button> <br/>
     <div className='selectWidth'> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
     
-    <input type='text' value={this.state.date} name='date' onChange={this.changeHandler} placeholder='Date (01-Jan-2021)'/> <br/>
-    <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration'/> <br/>
-    <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit'/> <br/>
+    <input type='text' value={this.state.date} name='date' onChange={this.changeHandler} placeholder='Date (01-Jan-2021)' /> <br/>
+    <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
+    <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
     <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
 
 
