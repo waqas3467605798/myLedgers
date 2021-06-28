@@ -1,7 +1,6 @@
 import react, {Component} from 'react'
 import '../App.css';
 import {Link, Route,BrowserRouter} from 'react-router-dom'
-
 import firebase from './Fire'
 
 
@@ -32,7 +31,6 @@ class Ledger extends Component{
         
       }
   }
-
 
 
   componentDidMount(){
@@ -127,16 +125,7 @@ this.setState({ledgerFor30Days:-30})  // because we want to see only last 30-tra
       
   }else{alert('Please select the Account First')}
   
-
-
-  
   }
-
-
-
-
-
-
 
 
 
@@ -147,16 +136,25 @@ deleteLedgerEntry = (i)=>{
   var delKey = prompt("write 'Y' and Press OK")
 
   if(delKey === 'Y'){
+  var reqObjIndex = document.getElementById('selected_save4').selectedIndex // for test delete
   var accountTitleName = document.getElementById('selected_save4').value
   var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitleName}  )
   reqObj.ledger.splice(i,1)
   reqObj.sum.splice(i+1,1)
 
+
+  //for delete in firebase
   firebase.database().ref('partyList').child(reqObj.key).set(reqObj)
+  //code ended
 
-this.setState({ledgerDeleteUpdate:true, sum:[], deleteRefresh:true})
-  console.log(reqObj.sum)
 
+  //for delete updation in state
+  this.state.partyObjects.splice(reqObjIndex,1,reqObj) //for test delete
+  //Code ended
+
+
+  // this.setState({ledgerDeleteUpdate:true, sum:[], deleteRefresh:true})
+    alert('Entry Deleted successfully')
   }else{this.setState({cancelDelete:true})
       alert('You have entered Wrong key') 
     }
@@ -167,10 +165,10 @@ this.setState({ledgerDeleteUpdate:true, sum:[], deleteRefresh:true})
 
 
 
-deleteRfsh = ()=>{
-  this.setState({deleteRefresh:false, sum:[]})
+// deleteRfsh = ()=>{
+//   this.setState({deleteRefresh:false, sum:[]})
   
-}
+// }
 
 
 
@@ -189,14 +187,24 @@ editEntry = (i)=>{
   reqObj.ledger.splice(i,1,editedObj)
   reqObj.sum.splice(i+1,1,Number(editAmount))
 
+
+//For edited in firebase database
   firebase.database().ref('partyList').child(reqObj.key).set(reqObj)
+//code ended
 
-  this.setState({editRefresh:true,sum:[]})
+
+//for edit updation in state
+this.state.partyObjects.splice(objIndx,1,reqObj) //for test delete
+//Code ended
+
+alert('Entry Edited Successfully')
+  // this.setState({editRefresh:true,sum:[]})
 }
 
-editRfsh = ()=>{
-  this.setState({editRefresh:false, sum:[]})
-}
+
+// editRfsh = ()=>{
+//   this.setState({editRefresh:false, sum:[]})
+// }
 
 
 
@@ -205,15 +213,20 @@ accountDelete = ()=>{
   if(delKey === 'Y'){
 
 
-
+  var reqObjIndex = document.getElementById('selected_save4').selectedIndex
   var accountTitle = document.getElementById('selected_save4').value
   var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitle}  )
   var key = reqObj.key
+
+  //for delete in Firebase database
   firebase.database().ref('partyList').child(key).remove()
+  //code ended
 
+//for delete updation in state
+this.state.partyObjects.splice(reqObjIndex,1) //for test delete
+//Code ended
   this.setState({accountDeleteRefresh:true, partyObjects:[]})
-
-
+alert('Account deleted successfully, now plz refresh the page')
 
 }else{alert('you have entered wrong key')}
 
@@ -224,16 +237,38 @@ accountDelete = ()=>{
 
 accountDelRfrsh = ()=>{
 this.setState({accountDeleteRefresh:false, sum:[]})
-
-
 }
-
-
 
 
 cancelDelRfrsh = ()=>{
   this.setState({cancelDelete:false, sum:[]})
 }
+
+
+
+
+
+
+// for promise function practice
+// prom =()=>{
+//   var myPromise = new Promise(  (resolve,reject)=>{
+
+// var x = 'abc'
+// if (x == 'ab') {
+//     resolve("resovled");
+//   } else {
+//     reject("Error");
+//   }
+
+//   }  )
+
+
+// myPromise.then(  (abc)=>{alert(abc)}   ,   (error)=>{alert(error)}   )
+
+// }
+
+
+
 
 
 render(){
@@ -243,8 +278,8 @@ return (
 
 <div id='up'>
 
-<div className={this.state.deleteRefresh === false ? '' : 'display'}>
-<div className={this.state.editRefresh === false ? '' : 'display'}>
+{/* <div className={this.state.deleteRefresh === false ? '' : 'display'}> */}
+{/* <div className={this.state.editRefresh === false ? '' : 'display'}> */}
 <div className={this.state.accountDeleteRefresh === false ? '' : 'display'}>
 <div className={this.state.cancelDelete === false ? '' : 'display'}>
 
@@ -267,7 +302,7 @@ return (
 
 {/* in case of data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
-<table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td>  <a href='#down' style={{color:'blue'}} class="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td style={{maxWidth:'135px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }       <tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i class="tiny material-icons">arrow_upward</i></b></td><td>  <a href='#up' style={{color:'blue'}} class="tiny material-icons">arrow_upward</a></td></tr> </tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
+<table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td style={{maxWidth:'135px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
 
 {/* sum of amounts in ledger */}
 {/* {this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )} <br/>
@@ -293,28 +328,28 @@ return (
 </div>
 </div>
 </div>
-</div>
-</div>
+{/* </div> */}
+ {/* </div> */}
 
 
 
 
 
-<div className={this.state.deleteRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
+{/* <div className={this.state.deleteRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
   <br/><br/><br/><br/>
   <h4 style={{color:'red'}}>Entry Deleted successfully</h4>
   <Link to='/Ledger' onClick={this.deleteRfsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
-</div>
+</div> */}
 
 
 
 
 
-<div className={this.state.editRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
+{/* <div className={this.state.editRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
   <br/><br/><br/><br/>
   <h4 style={{color:'red'}}>Entry Edited successfully</h4>
   <Link to='/Ledger' onClick={this.editRfsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
-</div>
+</div> */}
 
 
 
@@ -337,6 +372,11 @@ return (
 
 <span id='down'></span>
 
+
+
+
+
+{/* <button onClick={this.prom}> Promise</button> */}
 
 </div>
 );
