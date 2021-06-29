@@ -12,7 +12,8 @@ import {Link, Route,BrowserRouter} from 'react-router-dom'
             partyName:'',
             partyObjects:[],
             getListStatus:false,
-            editRefresh:false
+            editRefresh:false,
+            user:null
           }
       }
 
@@ -25,8 +26,32 @@ import {Link, Route,BrowserRouter} from 'react-router-dom'
           this.state.partyObjects.push(data.val())
         }  )
     
-        
+        this.authListener();
       }
+
+
+
+
+
+
+      authListener = ()=>{
+        firebase.auth().onAuthStateChanged( (user)=>{
+            if(user){
+                this.setState({user:user.uid})
+                // console.log(user.uid)
+        
+        
+            } else {
+                this.setState({user:null})
+            }
+        })
+        }
+
+
+
+
+
+
 
 
 
@@ -128,7 +153,7 @@ this.setState({editRefresh:false})
 
 
 
-
+{this.state.user}
     </div>
   );
 }

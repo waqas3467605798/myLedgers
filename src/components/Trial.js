@@ -23,7 +23,8 @@ class Trial extends Component{
       ledgerBalance:[],
       sum:[],
       accountTitle:'',
-      ledgerFor30Days:-50
+      ledgerFor30Days:-50,
+      user:null
     }
   }
 
@@ -37,8 +38,26 @@ class Trial extends Component{
       this.state.partyObjects.push(data.val())
     }  )
 
-    
+    this.authListener()
   }
+
+
+
+
+  authListener = ()=>{
+    firebase.auth().onAuthStateChanged( (user)=>{
+        if(user){
+            this.setState({user:user.uid})
+            // console.log(user.email)
+    
+    
+        } else {
+            this.setState({user:null})
+        }
+    })
+    }
+
+
 
 
 
@@ -122,7 +141,7 @@ backToTrial = ()=>{
         </div>
         
         
-        
+        {this.state.user}
         </div>
 
       );

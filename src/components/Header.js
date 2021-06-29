@@ -33,6 +33,7 @@ import {Link} from 'react-router-dom'
      <Link to='/' style={{textDecoration:'none', marginRight:'22px'}}> Data Entry </Link>
      <Link to='/Ledger' style={{textDecoration:'none', marginRight:'22px'}} > Account Statement </Link>
      <Link to='/Trial' style={{textDecoration:'none', marginRight:'22px'}} > Summary </Link>
+     <Link to='/Logout' style={{textDecoration:'none', marginRight:'22px'}} > Logout </Link>
      
      
      

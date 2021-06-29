@@ -4,6 +4,7 @@ import Header from './components/Header'
 import DataEntry from './components/DataEntry'
 import Ledger from './components/Ledger'
 import Trial from './components/Trial'
+import Logout from './components/Logout'
 import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom'
 
@@ -18,10 +19,11 @@ import {BrowserRouter, Route} from 'react-router-dom'
     <BrowserRouter>
     <div>
       <Header/>
-      <Route exact path='/' component={DataEntry}/>
+      <Route exact path='/' component={DataEntry} />
       <Route path='/Content' component={Content}/>
       <Route path='/Ledger' component={Ledger}/>
       <Route path='/Trial' component={Trial}/>
+      <Route path='/Logout' component={Logout}/>
       
 
 <br/><br/>

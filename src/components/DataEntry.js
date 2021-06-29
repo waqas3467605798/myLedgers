@@ -15,7 +15,8 @@ import M from "materialize-css";
             partyObjects:[],
             status:false,         //this only for some changes in state, so that render function can run again
             renderMstStatus:false,
-            noData:null
+            noData:null,
+            user:null
             
           }
       }
@@ -29,9 +30,30 @@ import M from "materialize-css";
         }  )
 
 
-
+this.authListener();
       }
       
+
+
+
+      authListener = ()=>{
+        firebase.auth().onAuthStateChanged( (user)=>{
+            if(user){
+                this.setState({user:user.uid})
+                // console.log(user.email)
+        
+        
+            } else {
+                this.setState({user:null})
+            }
+        })
+        }
+
+
+
+
+
+
 
 
 
@@ -56,11 +78,13 @@ this.setState({status:true})        //As status true, the render function will r
 
 
 saveValue = ()=>{
+ 
+
+
 
 if(this.state.date === '' || this.state.narration === '' || this.state.debit === ''){alert('you must fill all the fields')}else{
 
 if(document.getElementById('selected_save2').value){
-
 
 var partyObjIndex = document.getElementById('selected_save2').selectedIndex
 var reqPartyObj = this.state.partyObjects[partyObjIndex]
@@ -91,26 +115,21 @@ if('sum' in reqPartyObj){
   
 }else{
   reqPartyObj.sum = []
-  
   reqPartyObj.sum.push(Number(this.state.debit))
-  
   firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
 }
-
-
 
 
 alert('Entry successfully saved..!')
 this.setState({debit:'',date:'',narration:''})
 
-
 }else{alert('Please select the Account First')}
 
-
-
-
-
 }
+
+
+
+
 }
 
 
@@ -139,7 +158,7 @@ this.setState({debit:'',date:'',narration:''})
 
 
 
-
+{this.state.user}
 
   </div>
   );

@@ -26,7 +26,8 @@ class Ledger extends Component{
         ledgerFor30Days:0,
         ledgerBalance:[],
         debitTotal:0,
-        creditTotal:0
+        creditTotal:0,
+        user:null
         
         
       }
@@ -39,11 +40,39 @@ class Ledger extends Component{
       this.state.partyObjects.push(data.val())
     }  )
 
+
+    this.authListener()
   }
   
 
 
   
+
+
+  authListener = ()=>{
+    firebase.auth().onAuthStateChanged( (user)=>{
+        if(user){
+            this.setState({user:user.uid})
+            // console.log(user.email)
+    
+    
+        } else {
+            this.setState({user:null})
+        }
+    })
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 getData = ()=>{
     this.setState({status:true})        //As status true, the render function will run again - because of change in state
     this.setState({sum:[]})  //As the render method will run again, so the array of sum and sumQty in state should be zero
@@ -259,6 +288,8 @@ cancelDelRfrsh = ()=>{
 //   } else {
 //     reject("Error");
 //   }
+// resolve('ok');
+// reject('not ok')
 
 //   }  )
 
@@ -375,7 +406,7 @@ return (
 
 
 
-
+{this.state.user}
 {/* <button onClick={this.prom}> Promise</button> */}
 
 </div>
