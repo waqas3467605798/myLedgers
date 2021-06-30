@@ -7,10 +7,6 @@ import firebase from './Fire'
   
 
 
-
-
-
-
 class Trial extends Component{
   constructor(){
     super();
@@ -34,34 +30,24 @@ class Trial extends Component{
 
   componentDidMount(){
 
-    firebase.database().ref('partyList').on('child_added' , (data)=> { 
+    firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
       this.state.partyObjects.push(data.val())
     }  )
 
-    this.authListener()
+
   }
 
 
 
 
-  authListener = ()=>{
-    firebase.auth().onAuthStateChanged( (user)=>{
-        if(user){
-            this.setState({user:user.uid})
-            // console.log(user.email)
+  componentWillMount(){
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
     
-    
-        } else {
-            this.setState({user:null})
-        }
-    })
-    }
+    this.setState({user:userId,userEmail:userEmail})
+  }
 
 
-
-
-
- 
 
 
   displayLedger = (i)=> {
@@ -85,7 +71,7 @@ else{
 
 this.setState({sum:[]}) //As the render method will run again, so the array of sum and sumQty in state should be zero
   
-// }else{alert('Please select the Account First')}
+
 
 }
 
@@ -112,6 +98,8 @@ backToTrial = ()=>{
     render(){
       return(
         <div className='container'>
+          <br/>
+  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
           {/* the below div is in case of trial display */}
           <br/><br/>
           <div className={this.state.ledgerDisplay === false ? '' : 'display'}> 
@@ -141,7 +129,7 @@ backToTrial = ()=>{
         </div>
         
         
-        {this.state.user}
+        
         </div>
 
       );

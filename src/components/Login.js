@@ -89,7 +89,10 @@ class LoginForm extends Component{
       Accounts Payable/Receivable Management System
       </div>
 <br/><br/><br/>
-             <div className="row">
+
+<h2 className='headings' style={{textAlign:'center',fontSize:'30px'}}>Login Here</h2>
+
+             <div className="row container">
              <div className="col s12">
               
               

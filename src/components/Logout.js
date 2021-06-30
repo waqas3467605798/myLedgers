@@ -5,6 +5,24 @@ import firebase from './Fire'
 
 
   class Logout extends Component{
+    constructor(){
+      super();
+      this.state ={
+              user:null,
+              userEmail:null
+      }
+
+  }
+
+
+
+  componentWillMount(){
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
+    
+    this.setState({user:userId,userEmail:userEmail})
+  }
+
 
 
 
@@ -15,7 +33,9 @@ import firebase from './Fire'
     render(){
         return(
             <div className="center">
-                    <br/><br/><br/><br/>
+              <br/>
+                <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
+                <br/><br/><br/><br/>
                 <button className="waves-effect waves-dark btn red" onClick={this.Logout}>Logout</button>
             </div>
         )

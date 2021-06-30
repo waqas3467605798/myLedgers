@@ -16,7 +16,8 @@ import M from "materialize-css";
             status:false,         //this only for some changes in state, so that render function can run again
             renderMstStatus:false,
             noData:null,
-            user:null
+            user:null,
+            netDisconnect:true
             
           }
       }
@@ -25,29 +26,34 @@ import M from "materialize-css";
 
       componentDidMount(){
 
-          firebase.database().ref('partyList').on('child_added' , (data)=> { 
+          firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
           this.state.partyObjects.push(data.val())
         }  )
 
 
-this.authListener();
+
       }
       
 
+      componentWillMount(){
+        var userId = firebase.auth().currentUser.uid;
+        var userEmail = firebase.auth().currentUser.email
+        
+        this.setState({user:userId,userEmail:userEmail})
+      }
 
-
-      authListener = ()=>{
-        firebase.auth().onAuthStateChanged( (user)=>{
-            if(user){
-                this.setState({user:user.uid})
-                // console.log(user.email)
+      // setUser = ()=>{
+      //   firebase.auth().onAuthStateChanged( (user)=>{
+      //       if(user){
+      //           this.setState({user:user.uid})
+      //           // console.log(user.email)
         
         
-            } else {
-                this.setState({user:null})
-            }
-        })
-        }
+      //       } else {
+      //           this.setState({user:null})
+      //       }
+      //   })
+      //   }
 
 
 
@@ -78,9 +84,7 @@ this.setState({status:true})        //As status true, the render function will r
 
 
 saveValue = ()=>{
- 
-
-
+ if(navigator.onLine){    //it is only to check either your connected to the internet or not 
 
 if(this.state.date === '' || this.state.narration === '' || this.state.debit === ''){alert('you must fill all the fields')}else{
 
@@ -98,12 +102,12 @@ partyLedgerObj.narration = nrr
 //This code is for creation of Party Ledger in partyList
 if('ledger' in reqPartyObj){
   reqPartyObj.ledger.push(partyLedgerObj)
-  firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
+  firebase.database().ref('partyList'+this.state.user).child(reqPartyObj.key).set(reqPartyObj)
   
 }else{
   reqPartyObj.ledger = []
   reqPartyObj.ledger.push(partyLedgerObj)
-  firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
+  firebase.database().ref('partyList'+this.state.user).child(reqPartyObj.key).set(reqPartyObj)
 }
 
 
@@ -111,12 +115,12 @@ if('ledger' in reqPartyObj){
 if('sum' in reqPartyObj){
   reqPartyObj.sum.push(Number(this.state.debit))
   
-  firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
+  firebase.database().ref('partyList'+this.state.user).child(reqPartyObj.key).set(reqPartyObj)
   
 }else{
   reqPartyObj.sum = []
   reqPartyObj.sum.push(Number(this.state.debit))
-  firebase.database().ref('partyList').child(reqPartyObj.key).set(reqPartyObj)
+  firebase.database().ref('partyList'+this.state.user).child(reqPartyObj.key).set(reqPartyObj)
 }
 
 
@@ -128,7 +132,7 @@ this.setState({debit:'',date:'',narration:''})
 }
 
 
-
+ }else{this.setState({netDisconnect:false})}
 
 }
 
@@ -142,11 +146,13 @@ this.setState({debit:'',date:'',narration:''})
     // var {objects} = this.state
     return (
     
-    
     <div className='container' style={{textAlign:'center'}}>
-    
-    <h2 className='headings'>Make an Entry</h2>
+    <br/>
+  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
+{/* <div className={this.state.netDisconnect === true ? '' : 'display'} */}
+<div className={this.state.netDisconnect === true ? '' : 'display'}>
 
+    <h2 className='headings'>Data Entry</h2>
     <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%',minWidth:'200px'}}>Select Account</button> <br/>
     <div className='selectWidth'> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
     
@@ -157,8 +163,16 @@ this.setState({debit:'',date:'',narration:''})
 
 
 
+    </div>
 
-{this.state.user}
+
+    <div className={this.state.netDisconnect === true ? 'display' : ''}>
+      <br/><br/><br/>
+      <h4 className='container red-text'>Something Went Wrong, <br/> Plz check you internet connectione</h4>
+     
+      </div>
+
+
 
   </div>
   );

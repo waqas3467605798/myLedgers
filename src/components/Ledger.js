@@ -36,41 +36,26 @@ class Ledger extends Component{
 
   componentDidMount(){
 
-    firebase.database().ref('partyList').on('child_added' , (data)=> { 
+    firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
       this.state.partyObjects.push(data.val())
     }  )
 
 
-    this.authListener()
   }
   
 
 
   
 
-
-  authListener = ()=>{
-    firebase.auth().onAuthStateChanged( (user)=>{
-        if(user){
-            this.setState({user:user.uid})
-            // console.log(user.email)
+  componentWillMount(){
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
     
-    
-        } else {
-            this.setState({user:null})
-        }
-    })
-    }
+    this.setState({user:userId,userEmail:userEmail})
+  }
 
 
-
-
-
-
-
-
-
-
+  
 
 
 getData = ()=>{
@@ -173,7 +158,7 @@ deleteLedgerEntry = (i)=>{
 
 
   //for delete in firebase
-  firebase.database().ref('partyList').child(reqObj.key).set(reqObj)
+  firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
   //code ended
 
 
@@ -218,7 +203,7 @@ editEntry = (i)=>{
 
 
 //For edited in firebase database
-  firebase.database().ref('partyList').child(reqObj.key).set(reqObj)
+  firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
 //code ended
 
 
@@ -248,7 +233,7 @@ accountDelete = ()=>{
   var key = reqObj.key
 
   //for delete in Firebase database
-  firebase.database().ref('partyList').child(key).remove()
+  firebase.database().ref('partyList'+this.state.user).child(key).remove()
   //code ended
 
 //for delete updation in state
@@ -308,7 +293,8 @@ return (
 
 
 <div id='up'>
-
+<br/>
+  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
 {/* <div className={this.state.deleteRefresh === false ? '' : 'display'}> */}
 {/* <div className={this.state.editRefresh === false ? '' : 'display'}> */}
 <div className={this.state.accountDeleteRefresh === false ? '' : 'display'}>
@@ -406,8 +392,8 @@ return (
 
 
 
-{this.state.user}
-{/* <button onClick={this.prom}> Promise</button> */}
+
+
 
 </div>
 );

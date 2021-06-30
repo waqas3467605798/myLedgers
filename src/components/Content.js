@@ -7,14 +7,15 @@ import {Link, Route,BrowserRouter} from 'react-router-dom'
       constructor(){
           super();
           this.state = {
-            // itemName:'',
             address:'',
             partyName:'',
             partyObjects:[],
             getListStatus:false,
             editRefresh:false,
-            user:null
+            user:null,
+            userEmail:null
           }
+          
       }
 
 
@@ -22,40 +23,23 @@ import {Link, Route,BrowserRouter} from 'react-router-dom'
 
       componentDidMount(){
 
-        firebase.database().ref('partyList').on('child_added' , (data)=> { 
+firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
           this.state.partyObjects.push(data.val())
         }  )
-    
-        this.authListener();
+
       }
 
 
 
+//to set the login user in the state
+componentWillMount(){
+  var userId = firebase.auth().currentUser.uid;
+  var userEmail = firebase.auth().currentUser.email
 
+  this.setState({user:userId,userEmail:userEmail})
+}
 
-
-      authListener = ()=>{
-        firebase.auth().onAuthStateChanged( (user)=>{
-            if(user){
-                this.setState({user:user.uid})
-                // console.log(user.uid)
-        
-        
-            } else {
-                this.setState({user:null})
-            }
-        })
-        }
-
-
-
-
-
-
-
-
-
-
+     
 
 changeHandler = (e) => {
 this.setState({ 
@@ -75,13 +59,13 @@ saveParty = ()=> {
   partyObj.sum = [0]
   
   
-  var key = firebase.database().ref('partyList').push().key
+  var key = firebase.database().ref('partyList'+this.state.user).push().key
   partyObj.key = key
-  firebase.database().ref('partyList').child(key).set(partyObj)
+  firebase.database().ref('partyList'+this.state.user).child(key).set(partyObj)
   alert('saved successfully')
  this.setState({partyName:'', address:''}) 
 
- console.log(partyObj)
+ console.log(this.state.partyObjects)
 
 }
 
@@ -104,7 +88,7 @@ editAccount =(i)=>{
   reqObj.address = editAddress
 
 
-  firebase.database().ref('partyList').child(reqObj.key).set(reqObj)
+  firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
   this.setState({editRefresh:true})
 }
 
@@ -117,13 +101,16 @@ this.setState({editRefresh:false})
 
 
   render(){
-    
+  
     return (
     
     
     <div className='container'>
     <div className={this.state.editRefresh === false ? '' : 'display'}>
-  
+      
+      <br/>
+  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
+   
     <br/><br/><br/>
    
 {/* Create Account */}
@@ -152,8 +139,6 @@ this.setState({editRefresh:false})
 
 
 
-
-{this.state.user}
     </div>
   );
 }
