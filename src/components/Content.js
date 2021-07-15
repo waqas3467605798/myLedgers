@@ -109,7 +109,7 @@ this.setState({editRefresh:false})
     <div className={this.state.editRefresh === false ? '' : 'display'}>
       
       <br/>
-  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
+  <div style={{color:'green'}}><b> {this.state.userEmail}</b></div>
    
     <br/><br/><br/>
    

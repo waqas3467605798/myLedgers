@@ -148,7 +148,7 @@ this.setState({debit:'',date:'',narration:''})
     
     <div className='container' style={{textAlign:'center'}}>
     <br/>
-  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
+  <div style={{color:'green'}}><b> {this.state.userEmail}</b></div>
 {/* <div className={this.state.netDisconnect === true ? '' : 'display'} */}
 <div className={this.state.netDisconnect === true ? '' : 'display'}>
 
@@ -156,7 +156,7 @@ this.setState({debit:'',date:'',narration:''})
     <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%',minWidth:'200px'}}>Select Account</button> <br/>
     <div className='selectWidth'> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
     
-    <input type='text' value={this.state.date} name='date' onChange={this.changeHandler} placeholder='Date (01-Jan-2021)' /> <br/>
+    <input type='date' value={this.state.date} name='date' onChange={this.changeHandler} placeholder='Date (01-Jan-2021)' /> <br/>
     <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
     <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
     <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>

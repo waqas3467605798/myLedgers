@@ -294,7 +294,7 @@ return (
 
 <div id='up'>
 <br/>
-  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
+  <div className='container' style={{color:'green'}}><b> {this.state.userEmail}</b></div>
 {/* <div className={this.state.deleteRefresh === false ? '' : 'display'}> */}
 {/* <div className={this.state.editRefresh === false ? '' : 'display'}> */}
 <div className={this.state.accountDeleteRefresh === false ? '' : 'display'}>
@@ -307,10 +307,12 @@ return (
 <div className='selectWidth'> <select className='browser-default' id='selected_save4'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
 
 
-{/* this below button is for to get last 30-transactions */}
-<button className="browser-default btnControl" onClick={this.partyLedgerTwo} style={{width:'30%'}}>30-Trans.</button>
+
 {/* this below button is for to get all transactions in the ledger */}
 <button className="browser-default btnControl" onClick={this.partyLedger} style={{width:'30%'}}>All</button> 
+{/* this below button is for to get last 30-transactions */}
+<button className="browser-default btnControl" onClick={this.partyLedgerTwo} style={{width:'30%'}}>Last-30</button>
+
 {/* className="waves-effect waves-dark btn" */}
 </div>
 

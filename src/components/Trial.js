@@ -99,7 +99,7 @@ backToTrial = ()=>{
       return(
         <div className='container'>
           <br/>
-  <div style={{color:'green',textAlign:'center'}}><b> {this.state.userEmail}</b></div>
+  <div style={{color:'green'}}><b> {this.state.userEmail}</b></div>
           {/* the below div is in case of trial display */}
           <br/><br/>
           <div className={this.state.ledgerDisplay === false ? '' : 'display'}> 
