@@ -5,6 +5,7 @@ import DataEntry from './components/DataEntry'
 import Ledger from './components/Ledger'
 import Trial from './components/Trial'
 import Logout from './components/Logout'
+import RecordBook from './components/RecordBook'
 import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom'
 
@@ -23,6 +24,7 @@ import {BrowserRouter, Route} from 'react-router-dom'
       <Route path='/Content' component={Content}/>
       <Route path='/Ledger' component={Ledger}/>
       <Route path='/Trial' component={Trial}/>
+      <Route path='/RecordBook' component={RecordBook}/>
       <Route path='/Logout' component={Logout}/>
       
 
