@@ -86,7 +86,7 @@ class LoginForm extends Component{
              <div>
  
  <div id='div1'> 
-      Accounts Payable/Receivable Management System
+      Khata Book
       </div>
 <br/><br/><br/>
 

@@ -34,7 +34,7 @@ import firebase from './Fire'
         return(
             <div className="center">
               <br/>
-                <div style={{color:'green'}}><b> {this.state.userEmail}</b></div>
+                {/* <div style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}
                 <br/><br/>
                 <button className="waves-effect waves-dark btn red" onClick={this.Logout}>Logout</button>
             </div>

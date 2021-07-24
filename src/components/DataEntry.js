@@ -148,7 +148,7 @@ this.setState({debit:'',date:'',narration:''})
     
     <div className='container' style={{textAlign:'center'}}>
     <br/>
-  <div style={{color:'green'}}><b> {this.state.userEmail}</b></div>
+  {/* <div style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}
 {/* <div className={this.state.netDisconnect === true ? '' : 'display'} */}
 <div className={this.state.netDisconnect === true ? '' : 'display'}>
 

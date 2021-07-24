@@ -11,7 +11,7 @@ import {Link, Route,BrowserRouter} from 'react-router-dom'
             partyName:'',
             partyObjects:[],
             getListStatus:false,
-            editRefresh:false,
+            // togleList:false,
             user:null,
             userEmail:null
           }
@@ -53,6 +53,9 @@ this.setState({
 
 
 saveParty = ()=> {
+  if(this.state.partyName === '' || this.state.address === ''){alert('you must fill all the fields')}else{
+
+
   let partyObj = {};
   partyObj.partyName = this.state.partyName;
   partyObj.address = this.state.address;
@@ -65,8 +68,11 @@ saveParty = ()=> {
   alert('saved successfully')
  this.setState({partyName:'', address:''}) 
 
- console.log(this.state.partyObjects)
+//  console.log(this.state.partyObjects)
 
+
+
+  }
 }
 
 
@@ -89,14 +95,19 @@ editAccount =(i)=>{
 
 
   firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
-  this.setState({editRefresh:true})
+  
+
+  this.state.partyObjects.splice(i,1,reqObj)
+  // this.setState({partyObjects:updateObj})
+  
+  // this.setState({editRefresh:true})
 }
 
 
 
-editRefresh = ()=>{
-this.setState({editRefresh:false})
-}
+// editRefresh = ()=>{
+// this.setState({editRefresh:false})
+// }
 
 
 
@@ -106,10 +117,10 @@ this.setState({editRefresh:false})
     
     
     <div className='container'>
-    <div className={this.state.editRefresh === false ? '' : 'display'}>
-      
+    {/* <div className={this.state.editRefresh === false ? '' : 'display'}> */} 
+
       <br/>
-  <div style={{color:'green'}}><b> {this.state.userEmail}</b></div>
+  {/* <div style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}
    
     <br/><br/><br/>
    
@@ -126,16 +137,16 @@ this.setState({editRefresh:false})
 
 <div className={this.state.getListStatus === false ? 'display' : ''}>
     <table><thead><tr><th>Account Title</th><th>Address/Contact..etc</th></tr></thead><tbody>{this.state.partyObjects.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.partyName}</td><td>{item.address}</td><td><a href='#' className="material-icons" onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
+{/* </div> */}
 </div>
-</div>
 
 
 
-<div className={this.state.editRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
+{/* <div className={this.state.editRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
   <br/><br/><br/><br/>
   <h4 style={{color:'red'}}>Account Edited successfully</h4>
   <Link to='/Content' onClick={this.editRefresh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
-</div>
+</div> */}
 
 
 

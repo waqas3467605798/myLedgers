@@ -22,7 +22,7 @@ class RecordBook extends Component{
       return(
         <div className='container'>
   
-        <br/><br/>
+        
         <MainBar/>
         <Route exact path='/RecordBook' component={AddSegment} />
          <Route path='/RecordBook/SaveData' component={SaveData}/>
@@ -54,7 +54,7 @@ class MainBar extends Component{
   
       render(){
         return(
-          <div className='container'>
+          <div className='container' style={{border:'1px solid lemonchiffon', textAlign:'center', backgroundColor:'lemonchiffon'}}>
     
     <Link to='/RecordBook' style={{textDecoration:'none', marginRight:'22px'}}> Add Segment</Link>
      <Link to='/RecordBook/SaveData' style={{textDecoration:'none', marginRight:'22px'}}> Save Data </Link>
@@ -76,12 +76,24 @@ class AddSegment extends Component{
     constructor(){
       super();
       this.state = {
+        objects:[],
         firstName:'',
         address:'',
+        getListStatus:false,
         user:'',
         userEmail:''
       }
     }
+
+
+
+    componentDidMount(){
+      firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+        this.state.objects.push(data.val())
+
+      }  ) 
+    }
+
   
   
     componentWillMount(){
@@ -107,6 +119,9 @@ class AddSegment extends Component{
 
 
         save = ()=> {
+          if(this.state.firstName === '' || this.state.address === ''){alert('you must fill all the fields')}else{
+
+
             let obj = {};
             obj.firstName = this.state.firstName;
             obj.address = this.state.address;
@@ -117,20 +132,68 @@ class AddSegment extends Component{
            this.setState({firstName:'', address:''}) 
            
           }
+          }
+
+
+
+
+          getList = () =>{
+            this.setState({getListStatus:true})
+            }
+
+
+            editAccount =(i)=>{
+              var reqObj = this.state.objects[i]
+              var key = this.state.objects[i].key
+              var editAccount = prompt('Please edit Account Title',reqObj.firstName)
+              var editAddress = prompt('Please edit Address/Contact..etc',reqObj.address)
+            
+              reqObj.firstName = editAccount
+              reqObj.address = editAddress
+            
+            
+              firebase.database().ref('RecordBook'+this.state.user).child(reqObj.key).set(reqObj)
+              
+            
+              this.state.objects.splice(i,1,reqObj)
+              // this.setState({partyObjects:updateObj})
+              
+              // this.setState({editRefresh:true})
+            }
+            
+
+
 
 
       render(){
         return(
-          <div className='container'>
+          <div>
     
            {/* Add new Account */}
-    <br/><br/><br/>
-    <h2 className='headings'>Segment Name</h2>
+    
+    <h2 className='headings'>Create Segment</h2>
     <input type='text'  value={this.state.firstName} name='firstName' onChange={this.changeHandler} placeholder='Please Add your Segment Name' />  <br/>
-    <input type='text'  value={this.state.address} name='address' onChange={this.changeHandler} placeholder='Address/Contact..etc' />  <br/>
+    <input type='text'  value={this.state.address} name='address' onChange={this.changeHandler} placeholder='Remarks' />  <br/>
     <button className="waves-effect waves-dark btn" onClick={this.save}>Save</button>
           
-          </div>
+
+
+
+
+<br/><br/>
+
+    <h2 className='headings'>List of All Segments</h2>
+    <button className="waves-effect waves-dark btn" onClick={this.getList}>Get List</button>
+
+<div className={this.state.getListStatus === false ? 'display' : ''}>
+    <table><thead><tr><th>Account Title</th><th>Remarks</th></tr></thead><tbody>{this.state.objects.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.firstName}</td><td>{item.address}</td><td><a href='#' className="material-icons" onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
+{/* </div> */}
+</div>
+
+
+
+
+ </div>
   
         );
       }
@@ -149,7 +212,8 @@ class AddSegment extends Component{
       this.state = {
        user:'',
        userEmail:'',
-       objects:[]
+       objects:[],
+       message:''
       }
     }
   
@@ -189,6 +253,8 @@ class AddSegment extends Component{
 
         saveValue = ()=>{
           if(document.getElementById('selected_save1').value){
+            if(this.state.message === ''){alert('you must fill all the fields')}else{
+
            var objIndex = document.getElementById('selected_save1').selectedIndex
            var reqOjb = this.state.objects[objIndex]
            var message = this.state.message;
@@ -214,7 +280,7 @@ class AddSegment extends Component{
              this.setState({message:''})
            }
          
-         
+          }
          }else{alert('please Select the Account First')}
          }
 
@@ -223,13 +289,13 @@ class AddSegment extends Component{
   
       render(){
         return(
-          <div className='container'>
+      <div>
     
-           {/* Save messages */}
-      <br/><br/><br/>
-    <h2 className='headings' style={{textAlign:'center'}}>Save your message here;</h2>
-    <div style={{textAlign:'center'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Select Account</button> </div><br/>
-    <div className='selectWidth'> <select className='browser-default' id='selected_save1'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
+    
+    
+    <h2 className='headings'>Save your data here;</h2>
+    <div><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Select Account</button> </div><br/>
+    <div style={{width:'30%',minWidth:'200px'}}> <select className='browser-default' id='selected_save1'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
     <input type='text' value={this.state.message} name='message' onChange={this.changeHandler} placeholder='Write your Message here'/> <br/>
 
     <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
@@ -419,16 +485,16 @@ class AddSegment extends Component{
   
       render(){
         return(
-          <div className='container'>
+          <div>
     
     
       <div className={this.state.segDelete === false ? '' : 'display'}>
     {/* Get Messages */}
-    <br/><br/><br/> 
-    <div style={{textAlign:'center'}}>
+    
+    <div>
     <h2 className='headings'>Get Your Record </h2>
     <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Select Account</button>  <br/>
-    <div className='selectWidth'><select className='browser-default' id='selectMsg'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} value={item.firstName} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
+    <div style={{width:'30%',minWidth:'200px'}}><select className='browser-default' id='selectMsg'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} value={item.firstName} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
     <button className="waves-effect waves-dark btn" onClick={this.getMessages}>Get Messages</button></div>
 
 

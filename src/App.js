@@ -6,6 +6,7 @@ import Ledger from './components/Ledger'
 import Trial from './components/Trial'
 import Logout from './components/Logout'
 import RecordBook from './components/RecordBook'
+import MyDocs from './components/MyDocs'
 import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom'
 
@@ -26,6 +27,7 @@ import {BrowserRouter, Route} from 'react-router-dom'
       <Route path='/Trial' component={Trial}/>
       <Route path='/RecordBook' component={RecordBook}/>
       <Route path='/Logout' component={Logout}/>
+      <Route path='/MyDocs' component={MyDocs}/>
       
 
 <br/><br/>

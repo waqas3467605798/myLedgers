@@ -294,7 +294,7 @@ return (
 
 <div id='up'>
 <br/>
-  <div className='container' style={{color:'green'}}><b> {this.state.userEmail}</b></div>
+  {/* <div className='container' style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}
 {/* <div className={this.state.deleteRefresh === false ? '' : 'display'}> */}
 {/* <div className={this.state.editRefresh === false ? '' : 'display'}> */}
 <div className={this.state.accountDeleteRefresh === false ? '' : 'display'}>
