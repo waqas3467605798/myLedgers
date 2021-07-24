@@ -199,13 +199,17 @@ class AddSegment extends Component{
          
              firebase.database().ref('RecordBook'+this.state.user).child(reqOjb.key).set(reqOjb)
          
+            //for updation in state
+            this.state.objects.splice(objIndex,1,reqOjb)
              alert('Your message successfully saved..!')
              this.setState({message:''})
-         
+         console.log(this.state.objects)
            }else {
              reqOjb.msg = []
            reqOjb.msg.push(message)
            firebase.database().ref('RecordBook'+this.state.user).child(reqOjb.key).set(reqOjb)
+           //for updation in state
+           this.state.objects.splice(objIndex,1,reqOjb)
            alert('Your message successfully saved..!')
              this.setState({message:''})
            }
@@ -253,8 +257,8 @@ class AddSegment extends Component{
       renderMsg:[],
       renderMstStatus:false,
       noData:null,
-      update: false,
-      edit:false,
+      // update: false,
+      // edit:false,
       segDelete:false
       }
     }
@@ -290,8 +294,6 @@ class AddSegment extends Component{
       if(document.getElementById('selectMsg').value){
       
     
-    
-    
       var objIndex = document.getElementById('selectMsg').selectedIndex
       var reqOjb = this.state.objects[objIndex]
     
@@ -321,16 +323,14 @@ class AddSegment extends Component{
       var delKey = prompt("write 'Y' and Press OK")
     if(delKey === 'Y'){
     
-    
+      var objIndx = document.getElementById('selectMsg').selectedIndex
     var segName = document.getElementById('selectMsg').value
     var reqObj = this.state.objects.find(  (obj)=>{return obj.firstName === segName}  )
     reqObj.msg.splice(index,1)
     firebase.database().ref('RecordBook'+this.state.user).child(reqObj.key).set(reqObj)
-    // document.getElementById(`toDelete${index}`).style.color = 'red'
-    // alert('Deleted successfully')
     
-    this.setState({update:true})
-    
+    var updateObj = this.state.objects.splice(objIndx,1,reqObj)
+    this.setState({objects:updateObj}) 
     
     }else{alert('you have entered wrong key')}
     
@@ -339,9 +339,7 @@ class AddSegment extends Component{
     }
     
     
-    
-    
-    
+  
     
     editReminder =(index)=>{
       var segName = document.getElementById('selectMsg').value
@@ -354,9 +352,10 @@ class AddSegment extends Component{
     
       firebase.database().ref('RecordBook'+this.state.user).child(reqObj.key).set(reqObj)
     
-      this.setState({edit:true})
-    
-      
+    var updateObj = this.state.objects.splice(segindx,1,reqObj)
+    this.setState({objects:updateObj}) 
+      // this.setState({edit:true})
+
     }
     
     
@@ -389,19 +388,19 @@ class AddSegment extends Component{
     
     
     
-    refresh = ()=>{
-      this.setState({update:false})
-    }
+    // refresh = ()=>{
+    //   this.setState({update:false})
+    // }
     
     
-    editrefresh =()=>{
-      this.setState({edit:false,update:false})
+    // editrefresh =()=>{
+    //   this.setState({edit:false,update:false})
     
-    }
+    // }
     
     
     segDelRefresh=()=>{
-    this.setState({edit:false,update:false, segDelete:false})
+    this.setState({segDelete:false})
     
     
     
@@ -422,8 +421,7 @@ class AddSegment extends Component{
         return(
           <div className='container'>
     
-    <div className={this.state.update === false ? '' : 'display'}>
-      <div className={this.state.edit === false ? '' : 'display'}>
+    
       <div className={this.state.segDelete === false ? '' : 'display'}>
     {/* Get Messages */}
     <br/><br/><br/> 
@@ -431,7 +429,6 @@ class AddSegment extends Component{
     <h2 className='headings'>Get Your Record </h2>
     <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Select Account</button>  <br/>
     <div className='selectWidth'><select className='browser-default' id='selectMsg'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} value={item.firstName} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
-    {/* <button onClick={this.getMessages}>Get Messages</button> */}
     <button className="waves-effect waves-dark btn" onClick={this.getMessages}>Get Messages</button></div>
 
 
@@ -441,7 +438,6 @@ class AddSegment extends Component{
      <button className="waves-effect waves-dark btn red" onClick={this.segmentDelete}>Delete this segment</button>
     <p className="red-text">It will delete the Segment as well as all its stored messages/data</p>
     </div>
-
 
       <div className={this.state.noData === null ? 'display' : ''}>
      <h4>
@@ -453,42 +449,20 @@ class AddSegment extends Component{
 
 
 </div>
-     </div>
-</div>
+    
 
 
-
-
-
-<div className={this.state.update === false ? 'display' : ''} style={{textAlign:'center'}}>
-  <br/><br/><br/><br/>
-  <h4 style={{color:'red'}}>Delete successfully</h4>
-  <Link to='/GetData' onClick={this.refresh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
-</div>
-
-
-
-<div className={this.state.edit === false ? 'display' : ''} style={{textAlign:'center'}}>
-  <br/><br/><br/><br/>
-  <h4 style={{color:'green'}}>Edited successfully</h4>
-  <Link to='/GetData' onClick={this.editrefresh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
-</div>
 
 
 
 <div className={this.state.segDelete === false ? 'display' : ''} style={{textAlign:'center'}}>
   <br/><br/><br/><br/>
   <h4 style={{color:'red'}}>Segment Deleted successfully</h4>
-  <Link to='/ShowAll' onClick={this.segDelRefresh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
+  <Link to='/RecordBook/SaveData' onClick={this.segDelRefresh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
 </div>
 
 
-
-
-
-
-
-          </div>
+</div>
   
         );
       }
