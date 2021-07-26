@@ -97,6 +97,8 @@ backToTrial = ()=>{
 
     render(){
       return(
+        <div>
+          <span style={{fontSize:'12px'}}><b style={{color:'green',marginLeft:'30px'}}>{this.state.userEmail}</b> / {navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span>
         <div className='container'>
           <br/>
   {/* <div style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}
@@ -130,6 +132,7 @@ backToTrial = ()=>{
         
         
         
+        </div>
         </div>
 
       );

@@ -11,8 +11,17 @@ class RecordBook extends Component{
   constructor(){
     super();
     this.state = {
+      userEmail:null
      
     }
+  }
+
+
+  componentWillMount(){
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
+    
+    this.setState({user:userId,userEmail:userEmail})
   }
 
 
@@ -20,6 +29,8 @@ class RecordBook extends Component{
 
     render(){
       return(
+        <div>
+          <span style={{fontSize:'12px'}}><b style={{color:'green',marginLeft:'30px'}}>{this.state.userEmail}</b> / {navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span>
         <div className='container'>
   
         
@@ -29,7 +40,7 @@ class RecordBook extends Component{
          <Route path='/RecordBook/GetData' component={GetData}/>
         
         </div>
-
+</div>
       );
     }
   
