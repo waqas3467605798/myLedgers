@@ -234,6 +234,7 @@ class GetDocs extends Component{
       fileObjects:[],
       url:'',
       loadWait:false,
+      delRefresh:false
     
      
     }
@@ -247,6 +248,14 @@ class GetDocs extends Component{
     firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
       this.state.fileObjects.push(data.val())
     }  )
+
+
+
+// firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
+//       this.state.dataObjects.push(data.val())
+//     }  )
+
+
 
 
   }
@@ -287,7 +296,32 @@ class GetDocs extends Component{
 
 
 deleteFile =()=>{
+var delKey = 'Y'
+var clintKey = prompt("Write 'Y' and Press OK")
+if(delKey === clintKey){
 
+
+var objIndex = document.getElementById('selected_file').selectedIndex
+var reqObject = this.state.fileObjects[objIndex]
+var key = reqObject.key;
+var imageName = reqObject.imageName
+firebase.database().ref('myImages'+this.state.user).child(key).remove();
+
+firebase.storage().ref(`myImages${this.state.user}`).child(imageName).delete();
+
+this.state.fileObjects.splice(objIndex,1)
+
+this.setState({delRefresh:true})
+
+}else{
+  alert('You have entered Wrong key')
+}
+
+}
+
+
+delRfsh = () => {
+  this.setState({delRefresh:false})
 }
 
 
@@ -295,18 +329,36 @@ deleteFile =()=>{
     render(){
       return(
         <div>
-  
+  <div className={this.state.delRefresh === false ? '' : 'display'}>
+
   <br/><br/>
 <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%',minWidth:'200px'}}>Select File</button> <br/>
 <div style={{width:'30%',minWidth:'200px'}}> <select className='browser-default' id='selected_file'>  {this.state.fileObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.imageTitle}</option>}  )}   </select> </div> <br/>
 <button className="waves-effect waves-dark btn" onClick={this.getFile} style={{width:'30%',minWidth:'200px'}}>Get File</button> <br/>
 
+
   <div className={this.state.url === '' ? 'display' : ''}>
    <p> <a href={this.state.url} target='_blank'> {this.state.url} </a></p>
-   <img src={this.state.url} alt='image not available' width='100%' height='90%'/>
-
-  <button onClick={this.deleteFile}> Delete </button>      
+   <div style={{border:'1px solid black'}}>
+   <img src={this.state.url} alt='image not available' width='95%' height='90%'/>
+   </div>
+<br/>
+  <button onClick={this.deleteFile} className="waves-effect waves-dark btn"> Delete </button>      
   </div>
+
+
+</div>
+
+
+
+
+
+
+<div className={this.state.delRefresh === true ? '' : 'display'} style={{textAlign:'center'}}>
+<br/><br/><br/><br/>
+<b style={{color:'red',fontSize:'22px'}}>File Deleted Successfully</b> <br/>
+<Link to='/MyDocs' >  <button onClick={this.delRfsh} className="waves-effect waves-dark btn">  OK </button>  </Link>
+</div>
 
 
 
