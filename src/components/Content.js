@@ -72,6 +72,19 @@ saveParty = ()=> {
 
 
 
+
+//For voucher test
+// if(this.state.partyObjects.vouchNum){
+
+// }else{
+// var vouchNum = Number(0)
+// firebase.database().ref('partyList'+this.state.user).child('voucherNum').set(vouchNum)
+// }
+
+
+
+
+
   }
 }
 

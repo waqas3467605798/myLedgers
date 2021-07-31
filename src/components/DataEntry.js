@@ -17,7 +17,7 @@ import M from "materialize-css";
             renderMstStatus:false,
             noData:null,
             user:null,
-            netDisconnect:true
+            // vouNum:[]
             
           }
       }
@@ -42,24 +42,7 @@ import M from "materialize-css";
         this.setState({user:userId,userEmail:userEmail})
       }
 
-      // setUser = ()=>{
-      //   firebase.auth().onAuthStateChanged( (user)=>{
-      //       if(user){
-      //           this.setState({user:user.uid})
-      //           // console.log(user.email)
-        
-        
-      //       } else {
-      //           this.setState({user:null})
-      //       }
-      //   })
-      //   }
-
-
-
-
-
-
+     
 
 
 
@@ -84,7 +67,7 @@ this.setState({status:true})        //As status true, the render function will r
 
 
 saveValue = ()=>{
- if(navigator.onLine){    //it is only to check either your connected to the internet or not 
+//  if(navigator.onLine){    //it is only to check either your connected to the internet or not 
 
 if(this.state.date === '' || this.state.narration === '' || this.state.debit === ''){alert('you must fill all the fields')}else{
 
@@ -124,6 +107,19 @@ if('sum' in reqPartyObj){
 }
 
 
+
+
+
+
+// var vouNum = this.state.partyObjects.voucherNum;
+// vouNum++
+// firebase.database().ref('partyList'+this.state.user).child('voucherNumber').set(vouNum)
+
+
+
+
+
+
 alert('Entry successfully saved..!')
 this.setState({debit:'',date:'',narration:''})
 
@@ -132,9 +128,12 @@ this.setState({debit:'',date:'',narration:''})
 }
 
 
- }else{this.setState({netDisconnect:false})}
+//  }else{this.setState({netDisconnect:false})}
 
 }
+
+
+
 
 
 
@@ -148,16 +147,16 @@ this.setState({debit:'',date:'',narration:''})
       <div>
         <span style={{fontSize:'12px'}}><b style={{color:'green',marginLeft:'30px'}}>{this.state.userEmail}</b> / {navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span>
     
-    <div className='container' style={{textAlign:'center'}}>
+    <div className='container'>
     <br/>
   {/* <div style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}
 {/* <div className={this.state.netDisconnect === true ? '' : 'display'} */}
-<div className={this.state.netDisconnect === true ? '' : 'display'}>
+{/* <div className={this.state.netDisconnect === true ? '' : 'display'} > */}
 
-    <h2 className='headings'>Data Entry</h2>
-    <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%',minWidth:'200px'}}>Select Account</button> <br/>
-    <div className='selectWidth'> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
-    
+    <h2 style={{textAlign:'center'}} className='headings'>Data Entry</h2>
+    <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
+    <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
+    </div>
     <input type='date' value={this.state.date} name='date' onChange={this.changeHandler} placeholder='Date (01-Jan-2021)' /> <br/>
     <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
     <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
@@ -165,14 +164,14 @@ this.setState({debit:'',date:'',narration:''})
 
 
 
-    </div>
+    {/* </div> */}
 
 
-    <div className={this.state.netDisconnect === true ? 'display' : ''}>
+    {/* <div className={this.state.netDisconnect === true ? 'display' : ''}>
       <br/><br/><br/>
       <h4 className='container red-text'>Something Went Wrong, <br/> Plz check you internet connectione</h4>
      
-      </div>
+      </div> */}
 
 
 

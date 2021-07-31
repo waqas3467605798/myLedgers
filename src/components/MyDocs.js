@@ -332,8 +332,8 @@ delRfsh = () => {
   <div className={this.state.delRefresh === false ? '' : 'display'}>
 
   <br/><br/>
-<button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%',minWidth:'200px'}}>Select File</button> <br/>
-<div style={{width:'30%',minWidth:'200px'}}> <select className='browser-default' id='selected_file'>  {this.state.fileObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.imageTitle}</option>}  )}   </select> </div> <br/>
+<button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select File</button> <br/>
+<div  style={{width:'80%'}}> <select className='browser-default' id='selected_file'>  {this.state.fileObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.imageTitle}</option>}  )}   </select> </div> <br/>
 <button className="waves-effect waves-dark btn" onClick={this.getFile} style={{width:'30%',minWidth:'200px'}}>Get File</button> <br/>
 
 

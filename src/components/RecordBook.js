@@ -305,8 +305,8 @@ class AddSegment extends Component{
     
     
     <h2 className='headings'>Save your data here;</h2>
-    <div><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Select Account</button> </div><br/>
-    <div style={{width:'30%',minWidth:'200px'}}> <select className='browser-default' id='selected_save1'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
+    <div><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> </div>
+    <div style={{width:'80%',textAlign:'center'}}> <select className='browser-default' id='selected_save1'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
     <input type='text' value={this.state.message} name='message' onChange={this.changeHandler} placeholder='Write your Message here'/> <br/>
 
     <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
@@ -465,15 +465,7 @@ class AddSegment extends Component{
     
     
     
-    // refresh = ()=>{
-    //   this.setState({update:false})
-    // }
     
-    
-    // editrefresh =()=>{
-    //   this.setState({edit:false,update:false})
-    
-    // }
     
     
     segDelRefresh=()=>{
@@ -504,8 +496,8 @@ class AddSegment extends Component{
     
     <div>
     <h2 className='headings'>Get Your Record </h2>
-    <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Select Account</button>  <br/>
-    <div style={{width:'30%',minWidth:'200px'}}><select className='browser-default' id='selectMsg'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} value={item.firstName} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
+    <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button>  <br/>
+    <div style={{width:'80%',textAlign:'center'}}><select className='browser-default' id='selectMsg'>  {this.state.objects.map(  (item,i)=>{ return <option key={i} value={item.firstName} className='browser-default'>{item.firstName}</option>}  )}   </select> </div> <br/>
     <button className="waves-effect waves-dark btn" onClick={this.getMessages}>Get Messages</button></div>
 
 
