@@ -27,7 +27,8 @@ class Ledger extends Component{
         ledgerBalance:[],
         debitTotal:0,
         creditTotal:0,
-        user:null
+        user:null,
+        test:[]
         
         
       }
@@ -263,25 +264,7 @@ cancelDelRfrsh = ()=>{
 
 
 
-// for promise function practice
-// prom =()=>{
-//   var myPromise = new Promise(  (resolve,reject)=>{
 
-// var x = 'abc'
-// if (x == 'ab') {
-//     resolve("resovled");
-//   } else {
-//     reject("Error");
-//   }
-// resolve('ok');
-// reject('not ok')
-
-//   }  )
-
-
-// myPromise.then(  (abc)=>{alert(abc)}   ,   (error)=>{alert(error)}   )
-
-// }
 
 
 
@@ -315,17 +298,12 @@ return (
 {/* className="waves-effect waves-dark btn" */}
 </div>
 
-{/* {this.setState({debitTotal:this.state.partyObjects.sum.map( (nm,indx)=>{return <span key={indx}>{nm>0}</span>} ).reduce( (total,num)=>{return total+num},0)})} */}
+
 
 
 {/* in case of data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
 <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td style={{maxWidth:'135px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
-
-{/* sum of amounts in ledger */}
-{/* {this.state.ledger.map(  (itm,indx)=>{ return <span key={indx} style={{color:'white'}}>{this.state.sum.push(itm.debit)}</span>}  )} <br/>
-<b style={{fontSize:'18px'}}>Closing Balance = </b>
-<b className={this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? 'closingBalPostiv' : 'closingBalNegatve'}>  {this.state.sum.reduce( (total,num)=>{return total+num},0)  }      {this.state.sum.reduce( (total,num)=>{return total+num},0) >=0 ? ' Receivable' : ' Payable'} </b> */}
 
 
 <br/><hr/><br/><br/><button className="waves-effect waves-dark btn red" onClick={this.accountDelete}>Delete Account Ledger</button>
@@ -353,25 +331,6 @@ return (
 
 
 
-{/* <div className={this.state.deleteRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
-  <br/><br/><br/><br/>
-  <h4 style={{color:'red'}}>Entry Deleted successfully</h4>
-  <Link to='/Ledger' onClick={this.deleteRfsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
-</div> */}
-
-
-
-
-
-{/* <div className={this.state.editRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
-  <br/><br/><br/><br/>
-  <h4 style={{color:'red'}}>Entry Edited successfully</h4>
-  <Link to='/Ledger' onClick={this.editRfsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
-</div> */}
-
-
-
-
 <div className={this.state.accountDeleteRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
   <br/><br/><br/><br/>
   <h4 style={{color:'red'}}>Account Ledger Deleted successfully</h4>
@@ -389,9 +348,6 @@ return (
 
 
 <span id='down'></span>
-
-
-
 
 
 

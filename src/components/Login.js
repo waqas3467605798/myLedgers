@@ -59,6 +59,16 @@ export default Login;
 //THis Component is made to login by the user (it is login form)
 class LoginForm extends Component{
    
+    constructor(){
+        super();
+        this.state ={
+                forgetStatus:false,
+                forgetEmial:''
+        }
+
+    }
+
+
 
 
     signin = ()=>{
@@ -83,6 +93,36 @@ class LoginForm extends Component{
     } 
  
  
+
+
+
+    showForgetField = ()=>{
+        this.setState({forgetStatus:true})
+    }
+
+
+    changeHandler = (e)=>{
+        this.setState({forgetEmial: e.target.value})
+
+        console.log(this.state.forgetEmial)
+    }
+
+
+    ressetPassword = ()=>{
+
+        firebase.auth().sendPasswordResetEmail(this.state.forgetEmial)
+        .then(()=>{
+            alert('Please check email and reset your password')
+        }).catch((error)=>{
+            alert(error)
+        })
+
+    }
+
+
+
+
+
      render(){
          return (
              <div>
@@ -111,6 +151,19 @@ class LoginForm extends Component{
                </div>
  
                <button className="waves-effect btn-large" onClick={this.signin}>Login</button>
+
+                <a href='#' onClick={this.showForgetField}>Forget Password ?</a>
+<br/><br/><br/>
+
+                
+                <div className={this.state.forgetStatus === false ? 'display' : ''}>
+                <p><b style={{color:'green'}}>Pleae enter your email address in below field on which you want to reset your Password</b></p>
+                <input type='text' value={this.state.forgetEmial} name='forgetEmail' onChange={this.changeHandler} placeholder='Write Email here' />
+                <button onClick={this.ressetPassword} className="waves-effect btn-large">Resset</button>
+                
+                </div>
+
+
               </div>
               </div>
  

@@ -134,7 +134,7 @@ class AddSegment extends Component{
 
 
             let obj = {};
-            obj.firstName = this.state.firstName;
+            obj.firstName = this.state.firstName.replace(/  +/g, ' ').trim();
             obj.address = this.state.address;
             var key = firebase.database().ref('RecordBook'+this.state.user).push().key
             obj.key = key

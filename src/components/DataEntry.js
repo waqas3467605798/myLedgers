@@ -73,11 +73,26 @@ if(this.state.date === '' || this.state.narration === '' || this.state.debit ===
 
 if(document.getElementById('selected_save2').value){
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 var partyObjIndex = document.getElementById('selected_save2').selectedIndex
 var reqPartyObj = this.state.partyObjects[partyObjIndex]
 var partyLedgerObj = {}
 partyLedgerObj.debit = Number(this.state.debit);
 partyLedgerObj.date = this.state.date;
+// partyLedgerObj.voucherNum = vouchNum;  //for voucher Test
+
 var nrr = this.state.narration
 partyLedgerObj.narration = nrr
 
@@ -110,16 +125,6 @@ if('sum' in reqPartyObj){
 
 
 
-
-// var vouNum = this.state.partyObjects.voucherNum;
-// vouNum++
-// firebase.database().ref('partyList'+this.state.user).child('voucherNumber').set(vouNum)
-
-
-
-
-
-
 alert('Entry successfully saved..!')
 this.setState({debit:'',date:'',narration:''})
 
@@ -131,7 +136,6 @@ this.setState({debit:'',date:'',narration:''})
 //  }else{this.setState({netDisconnect:false})}
 
 }
-
 
 
 
@@ -172,6 +176,7 @@ this.setState({debit:'',date:'',narration:''})
       <h4 className='container red-text'>Something Went Wrong, <br/> Plz check you internet connectione</h4>
      
       </div> */}
+
 
 
 

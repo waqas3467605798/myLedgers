@@ -55,9 +55,10 @@ this.setState({
 saveParty = ()=> {
   if(this.state.partyName === '' || this.state.address === ''){alert('you must fill all the fields')}else{
 
+    
 
   let partyObj = {};
-  partyObj.partyName = this.state.partyName;
+  partyObj.partyName = this.state.partyName.replace(/  +/g, ' ').trim();    // replace() method is used to remove more than onve space in string & trim() method is used to remove space between first and last.
   partyObj.address = this.state.address;
   partyObj.sum = [0]
   
@@ -67,20 +68,6 @@ saveParty = ()=> {
   firebase.database().ref('partyList'+this.state.user).child(key).set(partyObj)
   alert('saved successfully')
  this.setState({partyName:'', address:''}) 
-
-//  console.log(this.state.partyObjects)
-
-
-
-
-//For voucher test
-// if(this.state.partyObjects.vouchNum){
-
-// }else{
-// var vouchNum = Number(0)
-// firebase.database().ref('partyList'+this.state.user).child('voucherNum').set(vouchNum)
-// }
-
 
 
 
