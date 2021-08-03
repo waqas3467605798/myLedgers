@@ -135,7 +135,7 @@ class AddSegment extends Component{
 
             let obj = {};
             obj.firstName = this.state.firstName.replace(/  +/g, ' ').trim();
-            obj.address = this.state.address;
+            obj.address = this.state.address.replace(/  +/g, ' ').trim();;
             var key = firebase.database().ref('RecordBook'+this.state.user).push().key
             obj.key = key
             firebase.database().ref('RecordBook'+this.state.user).child(key).set(obj)
@@ -159,8 +159,8 @@ class AddSegment extends Component{
               var editAccount = prompt('Please edit Account Title',reqObj.firstName)
               var editAddress = prompt('Please edit Address/Contact..etc',reqObj.address)
             
-              reqObj.firstName = editAccount
-              reqObj.address = editAddress
+              reqObj.firstName = editAccount.replace(/  +/g, ' ').trim();
+              reqObj.address = editAddress.replace(/  +/g, ' ').trim();
             
             
               firebase.database().ref('RecordBook'+this.state.user).child(reqObj.key).set(reqObj)

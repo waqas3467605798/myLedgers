@@ -163,7 +163,7 @@ upLoadTask.on('state_changed' ,
         
       console.log(url)
       var obj ={}
-      obj.imageTitle = this.state.imageTitle;
+      obj.imageTitle = this.state.imageTitle.replace(/  +/g, ' ').trim();
       obj.imgUrl = url;
       obj.imageName = this.state.image.name
       var key = firebase.database().ref('myImages'+this.state.user).push().key

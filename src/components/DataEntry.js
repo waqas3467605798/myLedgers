@@ -17,7 +17,7 @@ import M from "materialize-css";
             renderMstStatus:false,
             noData:null,
             user:null,
-            // vouNum:[]
+            testObj:[]
             
           }
       }
@@ -72,19 +72,6 @@ saveValue = ()=>{
 if(this.state.date === '' || this.state.narration === '' || this.state.debit === ''){alert('you must fill all the fields')}else{
 
 if(document.getElementById('selected_save2').value){
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var partyObjIndex = document.getElementById('selected_save2').selectedIndex
 var reqPartyObj = this.state.partyObjects[partyObjIndex]
@@ -145,6 +132,43 @@ this.setState({debit:'',date:'',narration:''})
 
 
 
+
+
+
+
+//Promise Test
+// testPromise = ()=>{
+//   var x= 1;
+  
+//   var getPromise = new Promise((res,rej)=>{
+    
+//     var dataObj = []
+//     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+//       dataObj.push(data.val())
+//     }  )
+
+//     res(dataObj)
+    
+//     rej('operation faild')  
+//   })
+
+
+// getPromise.then((dat)=>{
+//   console.log(dat)
+// }, (err)=>{
+//   console.log(err)
+// })
+
+// }
+
+
+
+
+
+
+
+
+
   render(){
   
     return (
@@ -181,6 +205,8 @@ this.setState({debit:'',date:'',narration:''})
 
 
   </div>
+
+  {/* <button onClick={this.testPromise}>Test Promise</button> */}
   </div>
   );
 }

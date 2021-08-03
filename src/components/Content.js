@@ -90,8 +90,8 @@ editAccount =(i)=>{
   var editAccount = prompt('Please edit Account Title',reqObj.partyName)
   var editAddress = prompt('Please edit Address/Contact..etc',reqObj.address)
 
-  reqObj.partyName = editAccount
-  reqObj.address = editAddress
+  reqObj.partyName = editAccount.replace(/  +/g, ' ').trim();
+  reqObj.address = editAddress.replace(/  +/g, ' ').trim()
 
 
   firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)

@@ -128,9 +128,12 @@ backToTrial = ()=>{
         <span style={{color:'red',fontSize:'20px'}}>Last 50-Transactions</span></p>
         <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td style={{maxWidth:'150px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
         <button className="waves-effect waves-dark btn" onClick={this.backToTrial}>Back to summary</button>
+      
         </div>
-        
-        
+      <br/>
+        <div className={this.state.status === true ? '' : 'display'}>
+        <button className="waves-effect waves-dark btn blue" onClick={()=>{window.print()}}>Print this page</button>
+        </div>
         
         </div>
         </div>
