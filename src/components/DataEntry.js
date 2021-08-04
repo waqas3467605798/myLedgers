@@ -17,30 +17,80 @@ import M from "materialize-css";
             renderMstStatus:false,
             noData:null,
             user:null,
-            testObj:[]
+            voucherNumber:null
             
           }
       }
 
 
-
       componentDidMount(){
+        var dataPushPromise = new Promise( (res,rej)=>{
+        var userId = firebase.auth().currentUser.uid;
+        var userEmail = firebase.auth().currentUser.email
 
-          firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+        this.setState({user:userId,userEmail:userEmail})
+        
+        res()
+        rej('Operation Failed: Data From Firebase does not push in state successfully')
+      } )
+      dataPushPromise.then(()=>{
+        firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
           this.state.partyObjects.push(data.val())
         }  )
 
 
 
-      }
+        firebase.database().ref('VoucherNumber'+this.state.user).on('child_added' , (data)=> {
+          this.setState({voucherNumber:data.val()})
+        }  )
+
+
+
+      },(err)=>{
+        alert(err)
+      })
+
+
+
+      //   firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+      //   this.state.partyObjects.push(data.val())
+      // }  )
+
+//Voucher Test
+// var voucherPromise = new Promise((res,rej)=>{
+  
+
+// })
+// voucherPromise.then(()=>{
+//   var updatedVoucher = this.state.voucherNumber
+//   firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').set(updatedVoucher)
+
+// },(f)=>{console.log(f)})
+
+
+    }
+
+
+
+
+
+      // componentDidMount(){
+
+      //     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+      //     this.state.partyObjects.push(data.val())
+      //   }  )
+
+
+
+      // }
       
 
-      componentWillMount(){
-        var userId = firebase.auth().currentUser.uid;
-        var userEmail = firebase.auth().currentUser.email
+      // componentWillMount(){
+      //   var userId = firebase.auth().currentUser.uid;
+      //   var userEmail = firebase.auth().currentUser.email
         
-        this.setState({user:userId,userEmail:userEmail})
-      }
+      //   this.setState({user:userId,userEmail:userEmail})
+      // }
 
      
 
@@ -73,6 +123,21 @@ if(this.state.date === '' || this.state.narration === '' || this.state.debit ===
 
 if(document.getElementById('selected_save2').value){
 
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
 var partyObjIndex = document.getElementById('selected_save2').selectedIndex
 var reqPartyObj = this.state.partyObjects[partyObjIndex]
 var partyLedgerObj = {}
@@ -82,7 +147,8 @@ partyLedgerObj.date = this.state.date;
 
 var nrr = this.state.narration
 partyLedgerObj.narration = nrr
-
+var vouNum = this.state.voucherNumber+1;
+partyLedgerObj.voucherNumber = vouNum;
 
 //This code is for creation of Party Ledger in partyList
 if('ledger' in reqPartyObj){
@@ -113,8 +179,8 @@ if('sum' in reqPartyObj){
 
 
 alert('Entry successfully saved..!')
-this.setState({debit:'',date:'',narration:''})
-
+this.setState({debit:'',date:'',narration:'',voucherNumber:vouNum})
+firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').set(vouNum)
 }else{alert('Please select the Account First')}
 
 }

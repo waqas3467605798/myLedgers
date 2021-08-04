@@ -17,7 +17,8 @@ class RecordBook extends Component{
   }
 
 
-  componentWillMount(){
+  
+  componentDidMount(){
     var userId = firebase.auth().currentUser.uid;
     var userEmail = firebase.auth().currentUser.email
     
@@ -99,20 +100,48 @@ class AddSegment extends Component{
 
 
     componentDidMount(){
+      var dataPushPromise = new Promise( (res,rej)=>{
+      var userId = firebase.auth().currentUser.uid;
+      var userEmail = firebase.auth().currentUser.email
+  
+      this.setState({user:userId,userEmail:userEmail})
+      
+      res()
+      rej('Operation Failed: Data From Firebase does not push in state successfully')
+    } )
+    dataPushPromise.then(()=>{
       firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
         this.state.objects.push(data.val())
 
-      }  ) 
-    }
+      }  )
+    },(err)=>{
+      alert(err)
+    })
+  
+  }
 
-  
-  
-    componentWillMount(){
-        var userId = firebase.auth().currentUser.uid;
-        var userEmail = firebase.auth().currentUser.email
+
+
+
+
+
+
+
+
+    // componentDidMount(){
+    //   firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+    //     this.state.objects.push(data.val())
+
+    //   }  ) 
+    // }
+
+
+    // componentWillMount(){
+    //     var userId = firebase.auth().currentUser.uid;
+    //     var userEmail = firebase.auth().currentUser.email
         
-        this.setState({user:userId,userEmail:userEmail})
-      }
+    //     this.setState({user:userId,userEmail:userEmail})
+    //   }
 
 
 
@@ -228,22 +257,46 @@ class AddSegment extends Component{
       }
     }
   
-  
-    componentWillMount(){
-      var userId = firebase.auth().currentUser.uid;
-      var userEmail = firebase.auth().currentUser.email
-      
-      this.setState({user:userId,userEmail:userEmail})
-    }
-
-
 
     componentDidMount(){
+      var dataPushPromise = new Promise( (res,rej)=>{
+      var userId = firebase.auth().currentUser.uid;
+      var userEmail = firebase.auth().currentUser.email
+  
+      this.setState({user:userId,userEmail:userEmail})
+      
+      res()
+      rej('Operation Failed: Data From Firebase does not push in state successfully')
+    } )
+    dataPushPromise.then(()=>{
       firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
         this.state.objects.push(data.val())
 
-      }  ) 
-    }
+      }  )
+    },(err)=>{
+      alert(err)
+    })
+  
+  }
+
+
+
+
+  
+    // componentWillMount(){
+    //   var userId = firebase.auth().currentUser.uid;
+    //   var userEmail = firebase.auth().currentUser.email
+      
+    //   this.setState({user:userId,userEmail:userEmail})
+    // }
+
+
+    // componentDidMount(){
+    //   firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+    //     this.state.objects.push(data.val())
+
+    //   }  ) 
+    // }
 
 
 
@@ -341,21 +394,49 @@ class AddSegment extends Component{
     }
   
   
-    componentWillMount(){
-      var userId = firebase.auth().currentUser.uid;
-      var userEmail = firebase.auth().currentUser.email
-      
-      this.setState({user:userId,userEmail:userEmail})
-    }
-
-
 
     componentDidMount(){
+      var dataPushPromise = new Promise( (res,rej)=>{
+      var userId = firebase.auth().currentUser.uid;
+      var userEmail = firebase.auth().currentUser.email
+  
+      this.setState({user:userId,userEmail:userEmail})
+      
+      res()
+      rej('Operation Failed: Data From Firebase does not push in state successfully')
+    } )
+    dataPushPromise.then(()=>{
       firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
         this.state.objects.push(data.val())
 
-      }  ) 
-    }
+      }  )
+    },(err)=>{
+      alert(err)
+    })
+  
+  }
+
+
+
+
+
+
+
+    // componentWillMount(){
+    //   var userId = firebase.auth().currentUser.uid;
+    //   var userEmail = firebase.auth().currentUser.email
+      
+    //   this.setState({user:userId,userEmail:userEmail})
+    // }
+
+
+
+    // componentDidMount(){
+    //   firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+    //     this.state.objects.push(data.val())
+
+    //   }  ) 
+    // }
 
 
 

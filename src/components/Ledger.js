@@ -28,7 +28,8 @@ class Ledger extends Component{
         debitTotal:0,
         creditTotal:0,
         user:null,
-        test:[]
+        test:[],
+        accountTitle:''
         
         
       }
@@ -36,24 +37,51 @@ class Ledger extends Component{
 
 
   componentDidMount(){
+    var dataPushPromise = new Promise( (res,rej)=>{
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
 
+    this.setState({user:userId,userEmail:userEmail})
+    
+    res()
+    rej('Operation Failed: Data From Firebase does not push in state successfully')
+  } )
+  dataPushPromise.then(()=>{
     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
       this.state.partyObjects.push(data.val())
     }  )
+  },(err)=>{
+    alert(err)
+  })
+
+  //   firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //   this.state.partyObjects.push(data.val())
+  // }  )
+
+}
 
 
-  }
+
+
+
+
+
+
+  // componentDidMount(){
+
+  //   firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //     this.state.partyObjects.push(data.val())
+  //   }  )
+
+  // }
   
 
-
-  
-
-  componentWillMount(){
-    var userId = firebase.auth().currentUser.uid;
-    var userEmail = firebase.auth().currentUser.email
+  // componentWillMount(){
+  //   var userId = firebase.auth().currentUser.uid;
+  //   var userEmail = firebase.auth().currentUser.email
     
-    this.setState({user:userId,userEmail:userEmail})
-  }
+  //   this.setState({user:userId,userEmail:userEmail})
+  // }
 
 
   
@@ -72,6 +100,8 @@ getData = ()=>{
       this.setState({ledgerFor30Days:0}) // because we want to see all transaction in the ledger
 
 if(document.getElementById('selected_save4').value){
+
+this.setState({accountTitle:document.getElementById('selected_save4').value})
 
 var objIndex = document.getElementById('selected_save4').selectedIndex
 var reqObj = this.state.partyObjects[objIndex]
@@ -266,19 +296,24 @@ cancelDelRfrsh = ()=>{
 
 
 
-// printStm = ()=>{
-  // var accountStm = document.getElementById('up').innerHTML
-  // window.print()
+// printStm = (stmDiv)=>{
+//   // //Method-1 to print the specific Div
+//   // var wholeBody = document.body.innerHTML;
+//   // var printContent = document.getElementById(stmDiv).innerHTML;
+//   // document.body.innerHTML = printContent;
+//   // window.print()
+//   // document.body.innerHTML = wholeBody
 
 
-  // var divContents = document.getElementById("antStm").innerHTML;
-  // var a = window.open('', '', 'height=500, width=500');
-  // a.document.write('<html>');
-  // a.document.write('<body > <h1>Div contents are <br>');
-  // a.document.write(divContents);
-  // a.document.write('</body></html>');
-  // a.document.close();
-  // a.print();
+//   // Method-1 to print the specific Div
+//   var content = document.getElementById(stmDiv);
+//   var pri = document.getElementById("ifmcontentstoprint").contentWindow;
+//   pri.document.open();
+//   pri.document.write(content.innerHTML);
+//   pri.document.close();
+//   pri.focus();
+//   pri.print();
+
 
 
 
@@ -320,8 +355,12 @@ return (
 
 {/* in case of data found */}
 <div className={this.state.renderLedgerData === true ? '' : 'display'}>
-<table id='antStm' style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td style={{maxWidth:'135px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
-<button className="waves-effect waves-dark btn blue" onClick={()=>{window.print()}}>Print Statement</button>
+  
+  <div id='printldgr'>
+<span>Account Title: <b>{this.state.accountTitle} </b></span>
+<table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td style={{maxWidth:'135px'}}>{item.voucherNumber+item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
+  </div>
+{/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('printldgr')}}>Print Statement</button> */}
 
 <br/><hr/><br/><br/><button className="waves-effect waves-dark btn red" onClick={this.accountDelete}>Delete Account Ledger</button>
   <p className="red-text">It will delete the whole Ledger as well as all its stored Entries</p>
@@ -368,7 +407,7 @@ return (
 <span id='down'></span>
 
 
-
+{/* <iframe id="ifmcontentstoprint" style={{height:'0px', width: '0px', position: 'absolute'}}></iframe> */}
 
 </div>
 );

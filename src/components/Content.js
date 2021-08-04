@@ -22,22 +22,41 @@ import {Link, Route,BrowserRouter} from 'react-router-dom'
 
 
       componentDidMount(){
+          var dataPushPromise = new Promise( (res,rej)=>{
+          var userId = firebase.auth().currentUser.uid;
+          var userEmail = firebase.auth().currentUser.email
 
-firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-          this.state.partyObjects.push(data.val())
-        }  )
+          this.setState({user:userId,userEmail:userEmail})
+          
+          res()
+          rej('Operation Failed: Data From Firebase does not push in state successfully')
+        } )
+        dataPushPromise.then(()=>{
+          firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+            this.state.partyObjects.push(data.val())
+          }  )
+          
+        },(err)=>{
+          alert(err)
+        })
+
+
+
+        //   firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+        //   this.state.partyObjects.push(data.val())
+        // }  )
 
       }
 
 
 
 //to set the login user in the state
-componentWillMount(){
-  var userId = firebase.auth().currentUser.uid;
-  var userEmail = firebase.auth().currentUser.email
+// componentWillMount(){
+//   var userId = firebase.auth().currentUser.uid;
+//   var userEmail = firebase.auth().currentUser.email
 
-  this.setState({user:userId,userEmail:userEmail})
-}
+//   this.setState({user:userId,userEmail:userEmail})
+// }
 
      
 
@@ -71,6 +90,11 @@ saveParty = ()=> {
 
 
 
+
+
+//Voucher Test
+ var voucherNumber = Number(0)
+ firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').set(voucherNumber)
 
   }
 }

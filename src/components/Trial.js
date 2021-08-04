@@ -26,26 +26,52 @@ class Trial extends Component{
 
 
 
-
-
   componentDidMount(){
+    var dataPushPromise = new Promise( (res,rej)=>{
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
 
+    this.setState({user:userId,userEmail:userEmail})
+    
+    res()
+    rej('Operation Failed: Data From Firebase does not push in state successfully')
+  } )
+  dataPushPromise.then(()=>{
     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
       this.state.partyObjects.push(data.val())
     }  )
+  },(err)=>{
+    alert(err)
+  })
+
+  //   firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //   this.state.partyObjects.push(data.val())
+  // }  )
+
+}
 
 
-  }
 
 
 
+  // componentDidMount(){
 
-  componentWillMount(){
-    var userId = firebase.auth().currentUser.uid;
-    var userEmail = firebase.auth().currentUser.email
+  //   firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //     this.state.partyObjects.push(data.val())
+  //   }  )
+
+
+  // }
+
+
+  // componentWillMount(){
+  //   var userId = firebase.auth().currentUser.uid;
+  //   var userEmail = firebase.auth().currentUser.email
     
-    this.setState({user:userId,userEmail:userEmail})
-  }
+  //   this.setState({user:userId,userEmail:userEmail})
+  // }
+
+
 
 
 
@@ -94,6 +120,35 @@ backToTrial = ()=>{
 
 
 
+  // printStm = (stmDiv)=>{
+  //   // // Method-1 to print the specific div
+  //   // var wholeBody = document.body.innerHTML;
+  //   // var printContent = document.getElementById(stmDiv).innerHTML;
+  //   // document.body.innerHTML = printContent;
+  //   // window.print()
+  //   // document.body.innerHTML = wholeBody
+
+
+
+  //   // Method-2 to print the specific div
+  //   var content = document.getElementById(stmDiv);
+  //   var pri = document.getElementById("ifmcontentstoprint").contentWindow;
+  //   pri.document.open();
+  //   pri.document.write(content.innerHTML);
+  //   pri.document.close();
+  //   pri.focus();
+  //   pri.print();
+
+  
+  // }
+
+
+
+
+
+
+
+
 
     render(){
       return(
@@ -104,7 +159,7 @@ backToTrial = ()=>{
   {/* <div style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}
           {/* the below div is in case of trial display */}
           <br/><br/>
-          <div className={this.state.ledgerDisplay === false ? '' : 'display'}> 
+          <div id='trialPrint' className={this.state.ledgerDisplay === false ? '' : 'display'}> 
 
         <br/>
         
@@ -113,6 +168,8 @@ backToTrial = ()=>{
         <div className={this.state.status === true ? '' : 'display'}>
         
         <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Receivable</th><th>Payable</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)}>{(ind+1) + '- ' + name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td></tr>}  )}</tbody></table>
+        {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('trialPrint')}}>Print this page</button> */}
+        
         </div>
         
       
@@ -128,14 +185,16 @@ backToTrial = ()=>{
         <span style={{color:'red',fontSize:'20px'}}>Last 50-Transactions</span></p>
         <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Sr#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{index+1}</td><td>{item.date}</td><td style={{maxWidth:'150px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
         <button className="waves-effect waves-dark btn" onClick={this.backToTrial}>Back to summary</button>
-      
+        
         </div>
       <br/>
         <div className={this.state.status === true ? '' : 'display'}>
-        <button className="waves-effect waves-dark btn blue" onClick={()=>{window.print()}}>Print this page</button>
+        
         </div>
         
         </div>
+
+        {/* <iframe id="ifmcontentstoprint" style={{height:'0px', width: '0px', position: 'absolute'}}></iframe> */}
         </div>
 
       );

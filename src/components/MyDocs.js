@@ -16,7 +16,7 @@ class MyDocs extends Component{
   }
 
 
-  componentWillMount(){
+  componentDidMount(){
     var userId = firebase.auth().currentUser.uid;
     var userEmail = firebase.auth().currentUser.email
     
@@ -97,22 +97,46 @@ class DocumentsToBeUpload extends Component{
       }
   }
 
-  componentWillMount(){
-    var userId = firebase.auth().currentUser.uid;
-    var userEmail = firebase.auth().currentUser.email
-    
-    this.setState({user:userId,userEmail:userEmail})
-  }
-  
 
   componentDidMount(){
+    var dataPushPromise = new Promise( (res,rej)=>{
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
 
+    this.setState({user:userId,userEmail:userEmail})
+    
+    res()
+    rej('Operation Failed: Data From Firebase does not push in state successfully')
+  } )
+  dataPushPromise.then(()=>{
     firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
       this.state.savedImgObjects.push(data.val())
     }  )
+  },(err)=>{
+    alert(err)
+  })
+
+}
 
 
-  }
+
+
+  // componentWillMount(){
+  //   var userId = firebase.auth().currentUser.uid;
+  //   var userEmail = firebase.auth().currentUser.email
+    
+  //   this.setState({user:userId,userEmail:userEmail})
+  // }
+  
+
+  // componentDidMount(){
+
+  //   firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
+  //     this.state.savedImgObjects.push(data.val())
+  //   }  )
+
+
+  // }
 
 
 

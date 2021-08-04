@@ -16,7 +16,7 @@ import firebase from './Fire'
 
 
 
-  componentWillMount(){
+  componentDidMount(){
     var userId = firebase.auth().currentUser.uid;
     var userEmail = firebase.auth().currentUser.email
     

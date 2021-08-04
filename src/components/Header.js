@@ -14,7 +14,7 @@ import {Link} from 'react-router-dom'
       }
 
 
-      componentWillMount(){
+      componentDidMount(){
         var userId = firebase.auth().currentUser.uid;
         var userEmail = firebase.auth().currentUser.email
         
