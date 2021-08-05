@@ -185,7 +185,7 @@ upLoadTask.on('state_changed' ,
       (url) =>{
 
         
-      console.log(url)
+      // console.log(url)
       var obj ={}
       obj.imageTitle = this.state.imageTitle.replace(/  +/g, ' ').trim();
       obj.imgUrl = url;
@@ -266,32 +266,46 @@ class GetDocs extends Component{
 
 
 
-
   componentDidMount(){
+    var dataPushPromise = new Promise( (res,rej)=>{
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
 
+    this.setState({user:userId,userEmail:userEmail})
+    
+    res()
+    rej('Operation Failed: Data From Firebase does not push in state successfully')
+  } )
+  dataPushPromise.then(()=>{
     firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
       this.state.fileObjects.push(data.val())
     }  )
+  },(err)=>{
+    alert(err)
+  })
+
+}
 
 
 
-// firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
-//       this.state.dataObjects.push(data.val())
-//     }  )
+  // componentDidMount(){
+
+  //   firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
+  //     this.state.fileObjects.push(data.val())
+  //   }  )
 
 
 
-
-  }
+  // }
   
 
 
-  componentWillMount(){
-    var userId = firebase.auth().currentUser.uid;
-    var userEmail = firebase.auth().currentUser.email
+  // componentDidMount(){
+  //   var userId = firebase.auth().currentUser.uid;
+  //   var userEmail = firebase.auth().currentUser.email
     
-    this.setState({user:userId,userEmail:userEmail})
-  }
+  //   this.setState({user:userId,userEmail:userEmail})
+  // }
 
 
 

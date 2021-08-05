@@ -35,13 +35,15 @@ import {Link} from 'react-router-dom'
       </div>
 
       <div id='div2'>
-     <Link to='/Content' style={{textDecoration:'none', marginRight:'22px'}}> Create Account</Link>
-     <Link to='/' style={{textDecoration:'none', marginRight:'22px'}}> Data Entry </Link>
-     <Link to='/Ledger' style={{textDecoration:'none', marginRight:'22px'}} > Account Statement </Link>
-     <Link to='/Trial' style={{textDecoration:'none', marginRight:'22px'}} > Summary </Link>
-     <Link to='/RecordBook' style={{textDecoration:'none', marginRight:'22px'}} > Record Book </Link>
-     <Link to='/MyDocs' style={{textDecoration:'none', marginRight:'22px'}} > My Documents </Link>
-     <Link to='/Logout' style={{textDecoration:'none', marginRight:'22px'}} > Logout </Link>
+     {/* <Link to='/Content' style={{textDecoration:'none', marginRight:'22px'}}> Create Account</Link> */}
+     {/* <Link to='/' style={{textDecoration:'none', marginRight:'22px'}}> Data Entry </Link> */}
+     {/* <Link to='/Ledger' style={{textDecoration:'none', marginRight:'22px'}} > Account Statement </Link> */}
+     {/* <Link to='/Trial' style={{textDecoration:'none', marginRight:'22px'}} > Summary </Link> */}
+     <Link to='/' style={{textDecoration:'none', marginRight:'22px'}} > Intro </Link>
+     <Link to='/AccountsRecord' style={{textDecoration:'none', marginRight:'22px'}} > Accounts-Record </Link>
+     <Link to='/RecordBook' style={{textDecoration:'none', marginRight:'22px'}} > Text-Record </Link>
+     <Link to='/MyDocs' style={{textDecoration:'none', marginRight:'22px'}} > My-Docs </Link>
+     
      
       </div>
       {/* <span style={{fontSize:'12px'}}><b style={{color:'green',marginLeft:'30px'}}>{this.state.userEmail}</b> / {navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span> */}
