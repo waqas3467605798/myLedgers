@@ -98,7 +98,7 @@ class DocumentsToBeUpload extends Component{
   }
 
 
-  componentDidMount(){
+ async componentDidMount(){
     var dataPushPromise = new Promise( (res,rej)=>{
     var userId = firebase.auth().currentUser.uid;
     var userEmail = firebase.auth().currentUser.email
@@ -109,14 +109,49 @@ class DocumentsToBeUpload extends Component{
     rej('Operation Failed: Data From Firebase does not push in state successfully')
   } )
   dataPushPromise.then(()=>{
-    firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
-      this.state.savedImgObjects.push(data.val())
-    }  )
+    var pushPromise = new Promise((res,rej)=>{
+      var obj = [];
+      firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
+        obj.push(data.val())
+      }  )
+      res(obj);
+      rej('Operation Failed');
+    })
+    pushPromise.then((ob)=>{
+      this.setState({savedImgObjects:ob})
+    },(er)=>{
+      alert(er)
+    })
+
+
   },(err)=>{
     alert(err)
   })
 
 }
+
+
+
+// componentDidMount(){
+//   var dataPushPromise = new Promise( (res,rej)=>{
+//   var userId = firebase.auth().currentUser.uid;
+//   var userEmail = firebase.auth().currentUser.email
+
+//   this.setState({user:userId,userEmail:userEmail})
+  
+//   res()
+//   rej('Operation Failed: Data From Firebase does not push in state successfully')
+// } )
+// dataPushPromise.then(()=>{
+//   firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
+//     this.state.savedImgObjects.push(data.val())
+//   }  )
+// },(err)=>{
+//   alert(err)
+// })
+
+// }
+
 
 
 
@@ -266,7 +301,7 @@ class GetDocs extends Component{
 
 
 
-  componentDidMount(){
+ async componentDidMount(){
     var dataPushPromise = new Promise( (res,rej)=>{
     var userId = firebase.auth().currentUser.uid;
     var userEmail = firebase.auth().currentUser.email
@@ -277,14 +312,50 @@ class GetDocs extends Component{
     rej('Operation Failed: Data From Firebase does not push in state successfully')
   } )
   dataPushPromise.then(()=>{
-    firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
-      this.state.fileObjects.push(data.val())
-    }  )
+    var pushPromise = new Promise((res,rej)=>{
+      var obj = [];
+      firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
+        obj.push(data.val())
+      }  )
+      res(obj);
+      rej('Operation Failed');
+    })
+    pushPromise.then((ob)=>{
+      this.setState({fileObjects:ob})
+    },(er)=>{
+      alert(er)
+    })
+
+
+
+
   },(err)=>{
     alert(err)
   })
 
 }
+
+
+
+// componentDidMount(){
+//   var dataPushPromise = new Promise( (res,rej)=>{
+//   var userId = firebase.auth().currentUser.uid;
+//   var userEmail = firebase.auth().currentUser.email
+
+//   this.setState({user:userId,userEmail:userEmail})
+  
+//   res()
+//   rej('Operation Failed: Data From Firebase does not push in state successfully')
+// } )
+// dataPushPromise.then(()=>{
+//   firebase.database().ref('myImages'+this.state.user).on('child_added' , (data)=> { 
+//     this.state.fileObjects.push(data.val())
+//   }  )
+// },(err)=>{
+//   alert(err)
+// })
+
+// }
 
 
 

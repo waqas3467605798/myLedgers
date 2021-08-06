@@ -99,7 +99,7 @@ class AddSegment extends Component{
 
 
 
-    componentDidMount(){
+   async componentDidMount(){
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
@@ -110,18 +110,26 @@ class AddSegment extends Component{
       rej('Operation Failed: Data From Firebase does not push in state successfully')
     } )
     dataPushPromise.then(()=>{
-      firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
-        this.state.objects.push(data.val())
+      var pushPromise = new Promise((res,rej)=>{
+        var obj = [];
+        firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+          obj.push(data.val())
+        }  )
+        res(obj);
+        rej('Operation Failed');
+      })
+      pushPromise.then((ob)=>{
+        this.setState({objects:ob})
+      },(er)=>{
+        alert(er)
+      })
 
-      }  )
+
     },(err)=>{
       alert(err)
     })
   
   }
-
-
-
 
 
 
@@ -258,7 +266,7 @@ class AddSegment extends Component{
     }
   
 
-    componentDidMount(){
+   async componentDidMount(){
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
@@ -269,10 +277,20 @@ class AddSegment extends Component{
       rej('Operation Failed: Data From Firebase does not push in state successfully')
     } )
     dataPushPromise.then(()=>{
-      firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
-        this.state.objects.push(data.val())
+      var pushPromise = new Promise((res,rej)=>{
+        var obj = [];
+        firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+          obj.push(data.val())
+        }  )
+        res(obj);
+        rej('Operation Failed');
+      })
+      pushPromise.then((ob)=>{
+        this.setState({objects:ob})
+      },(er)=>{
+        alert(er)
+      })
 
-      }  )
     },(err)=>{
       alert(err)
     })
@@ -280,6 +298,28 @@ class AddSegment extends Component{
   }
 
 
+
+
+//   componentDidMount(){
+//     var dataPushPromise = new Promise( (res,rej)=>{
+//     var userId = firebase.auth().currentUser.uid;
+//     var userEmail = firebase.auth().currentUser.email
+
+//     this.setState({user:userId,userEmail:userEmail})
+    
+//     res()
+//     rej('Operation Failed: Data From Firebase does not push in state successfully')
+//   } )
+//   dataPushPromise.then(()=>{
+//     firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+//       this.state.objects.push(data.val())
+
+//     }  )
+//   },(err)=>{
+//     alert(err)
+//   })
+
+// }
 
 
   
@@ -333,7 +373,7 @@ class AddSegment extends Component{
             this.state.objects.splice(objIndex,1,reqOjb)
              alert('Your message successfully saved..!')
              this.setState({message:''})
-         console.log(this.state.objects)
+        //  console.log(this.state.objects)
            }else {
              reqOjb.msg = []
            reqOjb.msg.push(message)
@@ -395,7 +435,7 @@ class AddSegment extends Component{
   
   
 
-    componentDidMount(){
+   async componentDidMount(){
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
@@ -406,10 +446,22 @@ class AddSegment extends Component{
       rej('Operation Failed: Data From Firebase does not push in state successfully')
     } )
     dataPushPromise.then(()=>{
-      firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
-        this.state.objects.push(data.val())
+      var pushPromise = new Promise((res,rej)=>{
+        var obj = [];
+        firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+          obj.push(data.val())
+        }  )
+        res(obj);
+        rej('Operation Failed');
+      })
+      pushPromise.then((ob)=>{
+        this.setState({objects:ob})
+      },(er)=>{
+        alert(er)
+      })
 
-      }  )
+
+
     },(err)=>{
       alert(err)
     })
@@ -417,12 +469,33 @@ class AddSegment extends Component{
   }
 
 
+//   componentDidMount(){
+//     var dataPushPromise = new Promise( (res,rej)=>{
+//     var userId = firebase.auth().currentUser.uid;
+//     var userEmail = firebase.auth().currentUser.email
+
+//     this.setState({user:userId,userEmail:userEmail})
+    
+//     res()
+//     rej('Operation Failed: Data From Firebase does not push in state successfully')
+//   } )
+//   dataPushPromise.then(()=>{
+//     firebase.database().ref('RecordBook'+this.state.user).on('child_added' , (data)=> { 
+//       this.state.objects.push(data.val())
+
+//     }  )
+//   },(err)=>{
+//     alert(err)
+//   })
+
+// }
 
 
 
 
 
-    // componentWillMount(){
+    
+  // componentWillMount(){
     //   var userId = firebase.auth().currentUser.uid;
     //   var userEmail = firebase.auth().currentUser.email
       
@@ -465,7 +538,7 @@ class AddSegment extends Component{
         
         var noDataFound = 'No data found'
         this.setState({noData: noDataFound, renderMstStatus:false})
-        console.log(noDataFound)
+        // console.log(noDataFound)
         
       }
     
@@ -534,7 +607,7 @@ class AddSegment extends Component{
     
     
       this.setState({segDelete:true, objects:[]})
-    console.log(key)
+    // console.log(key)
     
     
     }else{alert('you have entered wrong key')}

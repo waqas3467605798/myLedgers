@@ -17,7 +17,7 @@ import {Link, Route, BrowserRouter} from 'react-router-dom'
   }
 
 
-  componentDidMount(){
+ async componentDidMount(){
     var userId = firebase.auth().currentUser.uid;
     var userEmail = firebase.auth().currentUser.email
     
@@ -39,6 +39,7 @@ import {Link, Route, BrowserRouter} from 'react-router-dom'
           <Route path='/AccountsRecord/Content' component={Content}/>
           <Route path='/AccountsRecord/Ledger' component={Ledger}/>
           <Route path='/AccountsRecord/Trial' component={Trial}/>
+          <Route path='/AccountsRecord/Vouchers' component={Vouchers}/>
           </div>
 
           </div>
@@ -70,6 +71,7 @@ class MainBar extends Component{
     
           <Link to='/AccountsRecord/Content' style={{textDecoration:'none', marginRight:'22px'}}> Create Account</Link>
           <Link to='/AccountsRecord' style={{textDecoration:'none', marginRight:'22px'}}> Data Entry </Link>
+          <Link to='/AccountsRecord/Vouchers' style={{textDecoration:'none', marginRight:'22px'}} > Vouchers </Link>
           <Link to='/AccountsRecord/Ledger' style={{textDecoration:'none', marginRight:'22px'}} > Account Statement </Link>
           <Link to='/AccountsRecord/Trial' style={{textDecoration:'none', marginRight:'22px'}} > Summary </Link>
           
@@ -101,32 +103,83 @@ class MainBar extends Component{
     }
 
 
+    async componentDidMount(){
+      var dataPushPromise = new Promise( (res,rej)=>{
+      var userId = firebase.auth().currentUser.uid;
+      var userEmail = firebase.auth().currentUser.email
 
+      this.setState({user:userId,userEmail:userEmail})
+      
+      res()
+      rej('Operation Failed: Data From Firebase does not push in the state successfully')
+    } )
+    dataPushPromise.then(()=>{
 
-    componentDidMount(){
-        var dataPushPromise = new Promise( (res,rej)=>{
-        var userId = firebase.auth().currentUser.uid;
-        var userEmail = firebase.auth().currentUser.email
-
-        this.setState({user:userId,userEmail:userEmail})
-        
-        res()
-        rej('Operation Failed: Data From Firebase does not push in the state successfully')
-      } )
-      dataPushPromise.then(()=>{
+      var pushPromise = new Promise((res,rej)=>{
+        var obj = [];
         firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-          this.state.partyObjects.push(data.val())
+          obj.push(data.val())
         }  )
-        
-      },(err)=>{
-        alert(err)
+        res(obj);
+        rej('Operation Failed');
+      })
+      pushPromise.then((ob)=>{
+        this.setState({partyObjects:ob})
+      },(er)=>{
+        alert(er)
       })
 
 
-    }
+
+    },(err)=>{
+      alert(err)
+    })
+
+  }
+
+
+
+
+
+
+  //  async componentDidMount(){
+  //       var dataPushPromise = new Promise( (res,rej)=>{
+  //       var userId = firebase.auth().currentUser.uid;
+  //       var userEmail = firebase.auth().currentUser.email
+
+  //       this.setState({user:userId,userEmail:userEmail})
+        
+  //       res()
+  //       rej('Operation Failed: Data From Firebase does not push in the state successfully')
+  //     } )
+  //     dataPushPromise.then(()=>{
+  //       firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //         this.state.partyObjects.push(data.val())
+  //       }  )
+        
+  //     },(err)=>{
+  //       alert(err)
+  //     })
+
+  //   }
 
 
    
+
+
+  // var pushPromise = new Promise((res,rej)=>{
+
+  //   res();
+  //   rej('Operation Failed');
+  // })
+  // pushPromise.then((ob)=>{},(er)=>{})
+
+
+
+
+
+
+
 
 changeHandler = (e) => {
 this.setState({ 
@@ -245,7 +298,9 @@ class DataEntry extends Component{
     }
 
 
-    componentDidMount(){
+
+
+    async componentDidMount(){
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
@@ -256,15 +311,23 @@ class DataEntry extends Component{
       rej('Operation Failed: Data From Firebase does not push in state successfully')
     } )
     dataPushPromise.then(()=>{
-      firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-        this.state.partyObjects.push(data.val())
-      }  )
-
-
-
-      firebase.database().ref('VoucherNumber'+this.state.user).on('child_added' , (data)=> {
-        this.setState({voucherNumber:data.val()})
-      }  )
+      var pushPromise = new Promise((res,rej)=>{
+        var obj = [];
+        firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+          obj.push(data.val())
+        }  )
+  
+        firebase.database().ref('VoucherNumber'+this.state.user).on('child_added' , (data)=> {
+          this.setState({voucherNumber:data.val()})
+        }  )
+        res(obj);
+        rej('Operation Failed');
+      })
+      pushPromise.then((ob)=>{
+        this.setState({partyObjects:ob})
+      },(er)=>{
+        alert(er)
+      })
 
 
 
@@ -272,9 +335,40 @@ class DataEntry extends Component{
       alert(err)
     })
 
-
-
   }
+
+
+
+
+
+  // async componentDidMount(){
+  //     var dataPushPromise = new Promise( (res,rej)=>{
+  //     var userId = firebase.auth().currentUser.uid;
+  //     var userEmail = firebase.auth().currentUser.email
+
+  //     this.setState({user:userId,userEmail:userEmail})
+      
+  //     res()
+  //     rej('Operation Failed: Data From Firebase does not push in state successfully')
+  //   } )
+  //   dataPushPromise.then(()=>{
+  //     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //       this.state.partyObjects.push(data.val())
+  //     }  )
+
+
+  //     firebase.database().ref('VoucherNumber'+this.state.user).on('child_added' , (data)=> {
+  //       this.setState({voucherNumber:data.val()})
+  //     }  )
+
+
+  //   },(err)=>{
+  //     alert(err)
+  //   })
+
+  // }
+
+
 
 
 
@@ -356,32 +450,6 @@ firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').
 
 
 
-//Promise Test
-// testPromise = ()=>{
-//   var x= 1;
-
-//   var getPromise = new Promise((res,rej)=>{
-  
-//     var dataObj = []
-//     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-//       dataObj.push(data.val())
-//     }  )
-
-//     res(dataObj)
-  
-//     rej('operation faild')  
-//   })
-
-
-// getPromise.then((dat)=>{
-//   console.log(dat)
-// }, (err)=>{
-//   console.log(err)
-// })
-
-// }
-
-
 
 
 render(){
@@ -442,27 +510,61 @@ class Ledger extends Component{
         }
     }
   
-  
-    componentDidMount(){
+
+      async componentDidMount(){
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
-  
       this.setState({user:userId,userEmail:userEmail})
-      
       res()
       rej('Operation Failed: Data From Firebase does not push in state successfully')
     } )
     dataPushPromise.then(()=>{
-      firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-        this.state.partyObjects.push(data.val())
-      }  )
+
+      var pushPromise = new Promise((resolve,reject)=>{
+        var obj = [];
+        firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+          obj.push(data.val())
+        }  )
+        resolve(obj)
+        reject('Operation failed')
+      })
+      pushPromise.then((ob)=>{
+        this.setState({partyObjects:ob})
+      },(er)=>{
+        alert(er)
+      })
+
+
     },(err)=>{
       alert(err)
     })
   
       
-  } 
+  }
+
+
+
+
+
+  //   async componentWillMount(){
+  //     var dataPushPromise = new Promise( (res,rej)=>{
+  //     var userId = firebase.auth().currentUser.uid;
+  //     var userEmail = firebase.auth().currentUser.email
+  //     this.setState({user:userId,userEmail:userEmail})
+  //     res()
+  //     rej('Operation Failed: Data From Firebase does not push in state successfully')
+  //   } )
+  //   dataPushPromise.then(()=>{
+  //     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //       this.state.partyObjects.push(data.val())
+  //     }  )
+  //   },(err)=>{
+  //     alert(err)
+  //   })
+  
+      
+  // } 
     
   
   
@@ -784,8 +886,10 @@ class Ledger extends Component{
     }
   
   
-  
-    componentDidMount(){
+
+
+    async componentDidMount(){
+      //first promise function starting
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
@@ -796,15 +900,51 @@ class Ledger extends Component{
       rej('Operation Failed: Data From Firebase does not push in state successfully')
     } )
     dataPushPromise.then(()=>{
-      firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-        this.state.partyObjects.push(data.val())
-      }  )
+      //second promise function is starting
+      var pushPromise = new Promise((res,rej)=>{
+        var obj = [];
+        firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+          obj.push(data.val())
+        }  )
+        res(obj);
+        rej('Operation Failed');
+      })
+      pushPromise.then((ob)=>{
+        this.setState({partyObjects:ob})
+      },(er)=>{
+        alert(er)
+      })
+
+
     },(err)=>{
       alert(err)
     })
   
     
   }
+
+
+  
+  // async componentDidMount(){
+  //     var dataPushPromise = new Promise( (res,rej)=>{
+  //     var userId = firebase.auth().currentUser.uid;
+  //     var userEmail = firebase.auth().currentUser.email
+  
+  //     this.setState({user:userId,userEmail:userEmail})
+      
+  //     res()
+  //     rej('Operation Failed: Data From Firebase does not push in state successfully')
+  //   } )
+  //   dataPushPromise.then(()=>{
+  //     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+  //       this.state.partyObjects.push(data.val())
+  //     }  )
+  //   },(err)=>{
+  //     alert(err)
+  //   })
+  
+    
+  // }
   
   
     displayLedger = (i)=> {
@@ -922,3 +1062,73 @@ class Ledger extends Component{
 
 
 
+
+
+
+
+
+  
+  class Vouchers extends Component{
+    constructor(){
+      super();
+      this.state ={
+              user:null,
+              userEmail:null,
+              partyObjects:[]
+      }
+
+  }
+
+
+  async componentDidMount(){
+    var dataPushPromise = new Promise( (res,rej)=>{
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
+    this.setState({user:userId,userEmail:userEmail})
+    res()
+    rej('Operation Failed: Data From Firebase does not push in state successfully')
+  } )
+  dataPushPromise.then(()=>{
+
+    var pushPromise = new Promise((resolve,reject)=>{
+      var obj = [];
+      firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+        obj.push(data.val())
+      }  )
+      resolve(obj)
+      reject('Operation failed')
+    })
+    pushPromise.then((ob)=>{
+      this.setState({partyObjects:ob})
+    },(er)=>{
+      alert(er)
+    })
+
+
+  },(err)=>{
+    alert(err)
+  })
+
+    
+}
+
+
+
+show = ()=>{
+  console.log(this.state.partyObjects.map((itm)=>{ return itm.ledger}))
+}
+
+  
+
+    render(){
+        return(
+          <div>
+       
+          <button onClick={this.show}>Show</button>
+          
+          </div>
+        )
+    }
+
+
+  }
