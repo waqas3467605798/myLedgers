@@ -191,9 +191,15 @@ this.setState({
 
 
 saveParty = ()=> {
-if(this.state.partyName === '' || this.state.address === ''){alert('you must fill all the fields')}else{
+  var alreadyAccountExist = this.state.partyObjects.find(  (obj)=>{return obj.partyName === this.state.partyName}  )
+if(alreadyAccountExist){
+alert('This Account is Already opened')
+}else{
 
-  
+
+
+
+if(this.state.partyName === '' || this.state.address === ''){alert('you must fill all the fields')}else{
 
 let partyObj = {};
 partyObj.partyName = this.state.partyName.replace(/  +/g, ' ').trim();    // replace() method is used to remove more than onve space in string & trim() method is used to remove space between first and last.
@@ -208,6 +214,7 @@ alert('saved successfully')
 this.setState({partyName:'', address:''}) 
 
 
+}
 }
 }
 
@@ -981,8 +988,8 @@ class Ledger extends Component{
 
   
     getData = ()=>{
-      this.setState({status:true})        //As status true, the render function will run again - because of change in state
-      // this.setState({sum:[]}) 
+      this.setState({status:!this.state.status})        //As status true, the render function will run again - because of change in state
+      console.log(this.state.status)
     }
   
 
@@ -1022,14 +1029,14 @@ class Ledger extends Component{
   
           <br/>
           
-          <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'30%'}}>Get Summary</button> <br/>
+          <button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'100%'}}>Summary</button> <br/>
           
-          <div className={this.state.status === true ? '' : 'display'}>
+          {/* <div className={this.state.status === true ? '' : 'display'}> */}
           
           <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Receivable</th><th>Payable</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)}>{(ind+1) + '- ' + name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td></tr>}  )}</tbody></table>
           {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('trialPrint')}}>Print this page</button> */}
           
-          </div>
+          {/* </div> */}
           
         
           </div>
@@ -1115,7 +1122,30 @@ class Ledger extends Component{
 
 
 show = ()=>{
-  console.log(this.state.partyObjects.map((itm)=>{ return itm.ledger}))
+var getLedgersPromise = new Promise((res,rej)=>{
+  var allPartiesLedgers = []
+  this.state.partyObjects.map((itm)=>{ return itm.ledger.map((entry)=>{return allPartiesLedgers.push(entry)})})
+  res(allPartiesLedgers)
+  rej('operation failed')
+})
+
+getLedgersPromise.then((allLedger)=>{
+  var entriesArray =[];
+
+
+console.log(allLedger)
+},(err)=>{
+  console.log(err)
+})
+
+
+// allLedger.map((ledgerArray)=>{return ledgerArray.map((entries)=>{return entries.map((entry)=>{return entriesArray.push(entry)})})})
+  
+
+
+
+
+
 }
 
   
