@@ -416,6 +416,7 @@ var nrr = this.state.narration
 partyLedgerObj.narration = nrr
 var vouNum = this.state.voucherNumber+1;
 partyLedgerObj.voucherNumber = vouNum;
+partyLedgerObj.partyName = document.getElementById('selected_save2').value
 
 //This code is for creation of Party Ledger in partyList
 if('ledger' in reqPartyObj){
