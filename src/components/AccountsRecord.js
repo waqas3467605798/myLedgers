@@ -1082,7 +1082,8 @@ class Ledger extends Component{
       this.state ={
               user:null,
               userEmail:null,
-              partyObjects:[]
+              partyObjects:[],
+              allEntries:[]
       }
 
   }
@@ -1108,6 +1109,44 @@ class Ledger extends Component{
     })
     pushPromise.then((ob)=>{
       this.setState({partyObjects:ob})
+
+
+
+
+// write code here
+var getLedgersPromise = new Promise((res,rej)=>{
+  var allEntries = []
+  this.state.partyObjects.map((itm)=>{ 
+    if('ledger' in itm){
+      return itm.ledger.map((entry)=>{ return allEntries.push(entry)})
+    }
+  
+  })
+  res(allEntries)
+  rej('operation failed')
+})
+
+getLedgersPromise.then((all_entries)=>{
+  
+  this.setState({allEntries:all_entries})
+
+
+console.log(this.state.allEntries)
+},(err)=>{
+  console.log(err)
+})
+// Voucher code ended
+
+
+
+
+
+
+
+
+
+
+
     },(er)=>{
       alert(er)
     })
@@ -1123,26 +1162,6 @@ class Ledger extends Component{
 
 
 show = ()=>{
-var getLedgersPromise = new Promise((res,rej)=>{
-  var allPartiesLedgers = []
-  this.state.partyObjects.map((itm)=>{ return itm.ledger.map((entry)=>{return allPartiesLedgers.push(entry)})})
-  res(allPartiesLedgers)
-  rej('operation failed')
-})
-
-getLedgersPromise.then((allLedger)=>{
-  var entriesArray =[];
-
-
-console.log(allLedger)
-},(err)=>{
-  console.log(err)
-})
-
-
-// allLedger.map((ledgerArray)=>{return ledgerArray.map((entries)=>{return entries.map((entry)=>{return entriesArray.push(entry)})})})
-  
-
 
 
 
@@ -1150,16 +1169,121 @@ console.log(allLedger)
 }
 
   
+//Better Code
+// var getLedgersPromise = new Promise((res,rej)=>{
+//   var allEntries = []
+//   this.state.partyObjects.map((itm)=>{ 
+//     if('ledger' in itm){
+//       return itm.ledger.map((entry)=>{ return allEntries.push(entry)})
+//     }
+  
+//   })
+//   res(allEntries)
+//   rej('operation failed')
+// })
+
+// getLedgersPromise.then((all_entries)=>{
+  
+//   this.setState({allEntries:all_entries})
+
+
+// console.log(this.state.allEntries)
+// },(err)=>{
+//   console.log(err)
+// })
+
+
+
+
+
+
+
+
+
+
+
+// var getLedgersPromise = new Promise((res,rej)=>{
+//   var allEntries = []
+//   this.state.partyObjects.map((itm)=>{ return  itm.ledger.map((entry)=>{return allEntries.push(entry)})})
+//   res(allEntries)
+//   rej('operation failed')
+// })
+
+// getLedgersPromise.then((all_entries)=>{
+  
+//   this.setState({allEntries:all_entries})
+
+
+// console.log(this.state.allEntries)
+// },(err)=>{
+//   console.log(err)
+// })
+
+
+
+
+
+
+
+
 
     render(){
         return(
           <div>
        
+
+
           <button onClick={this.show}>Show</button>
           
+          <div> {this.state.allEntries.map( (voucher,index)=>{return <div key={index}>        
+          
+
+
+          
+          <div className="row container" style={{margin:'auto', border:'1px solid blue', marginBottom:'18px'}}>
+           <div className="card white darken-1">
+             <div className="card-content white-text">
+              <span style={{color:'black'}}>
+
+
+             <b> Voucher No. {voucher.voucherNumber}</b>            
+                <table>
+                <tbody>
+                <tr><td>Date:</td><td>{voucher.date}</td></tr>
+                <tr><td>Account Title:</td><td>{voucher.partyName}</td></tr>
+                <tr><td>Transaction Amount:</td><td>Rs. {voucher.debit}</td></tr>
+                <tr><td>Remarks:</td><td>{voucher.narration}</td></tr>
+                <tr style={{color:'red', textDecoration:'overLine'}}><td> <br/><br/>Entered By:</td><td><br/><br/>Approved By:</td></tr>
+                </tbody>
+              </table>
+
+              </span>
+
+            </div>
+          </div>
+         </div>
+
+
+
+
+          
+          
+          
+          </div>} ).slice(-3)     } </div>
+          
+
+
+
           </div>
         )
     }
 
 
   }
+
+
+
+
+
+
+  
