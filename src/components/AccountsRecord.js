@@ -674,6 +674,9 @@ class Ledger extends Component{
     reqObj.sum.splice(i+1,1)
   
   
+
+
+
     //for delete in firebase
     firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
     //code ended
@@ -705,7 +708,7 @@ class Ledger extends Component{
     var editDate = prompt('Please edit Entry Date',ledger[i].date)
     var editNarration = prompt('Please edit Narration',ledger[i].narration)
     var editAmount = prompt('Please edit Amount',ledger[i].debit)
-    var editedObj = {date:editDate,narration:editNarration,debit:Number(editAmount)} 
+    var editedObj = {date:editDate,narration:editNarration,debit:Number(editAmount),voucherNumber:ledger[i].voucherNumber,partyName:ledger[i].partyName} 
     reqObj.ledger.splice(i,1,editedObj)
     reqObj.sum.splice(i+1,1,Number(editAmount))
   
@@ -851,7 +854,7 @@ class Ledger extends Component{
   <div className={this.state.accountDeleteRefresh === false ? 'display' : ''} style={{textAlign:'center'}}>
     <br/><br/><br/><br/>
     <h4 style={{color:'red'}}>Account Ledger Deleted successfully</h4>
-    <Link to='/Trial' onClick={this.accountDelRfrsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
+    <Link to='/AccountsRecord/Trial' onClick={this.accountDelRfrsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
   </div>
   
 
@@ -859,7 +862,7 @@ class Ledger extends Component{
   <div className={this.state.cancelDelete === false ? 'display' : ''} style={{textAlign:'center'}}>
     <br/><br/><br/><br/>
     <h4 style={{color:'green'}}>Not Deleted</h4>
-    <Link to='/Ledger' onClick={this.cancelDelRfrsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
+    <Link to='/AccountsRecord/Ledger' onClick={this.cancelDelRfrsh}> <button className="waves-effect waves-dark btn"> OK </button></Link>
   </div>
   
   
@@ -1128,6 +1131,15 @@ var getLedgersPromise = new Promise((res,rej)=>{
 
 getLedgersPromise.then((all_entries)=>{
   
+
+  all_entries.sort((a, b) => (a.voucherNumber > b.voucherNumber) ? 1 : -1)
+// var entriesWithOrder = [];
+// for (var i = 1; i <= all_entries.length; i++) {
+//   entriesWithOrder.push(    all_entries.find((ob)=>{return ob.voucherNumber === i})                 )
+//   }
+
+
+
   this.setState({allEntries:all_entries})
 
 
@@ -1161,12 +1173,7 @@ console.log(this.state.allEntries)
 
 
 
-show = ()=>{
 
-
-
-
-}
 
   
 //Better Code
@@ -1233,7 +1240,7 @@ show = ()=>{
        
 
 
-          <button onClick={this.show}>Show</button>
+          
           
           <div> {this.state.allEntries.map( (voucher,index)=>{return <div key={index}>        
           
@@ -1269,9 +1276,9 @@ show = ()=>{
           
           
           
-          </div>} ).slice(-3)     } </div>
+          </div>} ).slice(-10)         } </div>
           
-
+          
 
 
           </div>
