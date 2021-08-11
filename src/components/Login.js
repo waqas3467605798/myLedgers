@@ -128,7 +128,7 @@ class LoginForm extends Component{
              <div>
  
  <div id='div1'> 
-      Khata Book
+      Accounting Record
       </div>
       <span style={{fontSize:'12px'}}>{navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span>
 <br/><br/>

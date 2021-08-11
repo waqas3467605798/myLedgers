@@ -299,7 +299,8 @@ class DataEntry extends Component{
           renderMstStatus:false,
           noData:null,
           user:null,
-          voucherNumber:null
+          voucherNumber:null,
+          viewVoucher:{voucherNumber:0, partyName:null, narration:null,debit:null,date:null}
           
         }
     }
@@ -453,7 +454,7 @@ firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').
 
 
 //  }else{this.setState({netDisconnect:false})}
-
+this.setState({viewVoucher:partyLedgerObj})
 }
 
 
@@ -480,7 +481,8 @@ render(){
 
 </div>
 
-{/* <button onClick={this.testPromise}>Test Promise</button> */}
+
+
 </div>
 );
 }
@@ -1086,7 +1088,9 @@ class Ledger extends Component{
               user:null,
               userEmail:null,
               partyObjects:[],
-              allEntries:[]
+              allEntries:[],
+              viewVoucher:{},
+              vouchViewStatus:false
       }
 
   }
@@ -1132,7 +1136,7 @@ var getLedgersPromise = new Promise((res,rej)=>{
 getLedgersPromise.then((all_entries)=>{
   
 
-  all_entries.sort((a, b) => (a.voucherNumber > b.voucherNumber) ? 1 : -1)
+  all_entries.sort((a, b) => (a.voucherNumber < b.voucherNumber) ? 1 : -1)
 // var entriesWithOrder = [];
 // for (var i = 1; i <= all_entries.length; i++) {
 //   entriesWithOrder.push(    all_entries.find((ob)=>{return ob.voucherNumber === i})                 )
@@ -1143,7 +1147,7 @@ getLedgersPromise.then((all_entries)=>{
   this.setState({allEntries:all_entries})
 
 
-console.log(this.state.allEntries)
+
 },(err)=>{
   console.log(err)
 })
@@ -1228,7 +1232,31 @@ console.log(this.state.allEntries)
 
 
 
+viewVoucher = ()=>{
+  var vouchNum = document.getElementById('vouchNum').value
 
+  var findVoucherObj = new Promise((res,rej)=>{
+    
+    var obj = this.state.allEntries.find((ob)=>{return ob.voucherNumber === Number(vouchNum)})
+    
+    if(obj){
+      this.setState({vouchViewStatus:true})
+    res(obj)
+    }
+    else{
+    rej('Voucher Number Not Found in Record')
+    }
+  })
+
+  findVoucherObj.then((objct)=>{
+    this.setState({viewVoucher:objct})
+    
+  },(err)=>{
+    alert(err)
+  })
+
+
+}
 
 
 
@@ -1237,15 +1265,44 @@ console.log(this.state.allEntries)
     render(){
         return(
           <div>
-       
+            <br/><br/>
+       {/* To view the voucher only for Print */}
+       <h5 className='container' style={{color:'blue'}}>View Voucher</h5>
+       <div className='container'>
+            <input type='Number' id='vouchNum' placeholder='Enter Voucher Number'/>
+            <button onClick={this.viewVoucher}>View Voucher</button>
+
+            <div className={this.state.vouchViewStatus === false ? 'display' : ''}>
+            <div className="card white darken-1 ">
+             <div className="card-content white-text">
+              <span style={{color:'black'}}>
 
 
-          
-          
+             <b> Voucher No. {this.state.viewVoucher.voucherNumber}</b>            
+                <table>
+                <tbody>
+                <tr><td>Date:</td><td>{this.state.viewVoucher.date}</td></tr>
+                <tr><td>Account Title:</td><td>{this.state.viewVoucher.partyName}</td></tr>
+                <tr><td>Transaction Amount:</td><td>Rs. {this.state.viewVoucher.debit}</td></tr>
+                <tr><td>Remarks:</td><td>{this.state.viewVoucher.narration}</td></tr>
+                <tr style={{color:'red', textDecoration:'overLine'}}><td> <br/><br/>Entered By:</td><td><br/><br/>Approved By:</td></tr>
+                </tbody>
+              </table>
+
+              </span>
+
+            </div>
+          </div>
+          </div>
+          </div>
+
+
+
+
+          {/* display of Last 10 Vouchers */}
+          <br/>
+          <div className='container'><h5 style={{color:'green'}}>Last 10 Vouchers are as under;</h5></div>
           <div> {this.state.allEntries.map( (voucher,index)=>{return <div key={index}>        
-          
-
-
           
           <div className="row container" style={{margin:'auto', border:'1px solid blue', marginBottom:'18px'}}>
            <div className="card white darken-1">
@@ -1270,15 +1327,10 @@ console.log(this.state.allEntries)
           </div>
          </div>
 
-
-
-
-          
-          
-          
           </div>} ).slice(-10)         } </div>
           
           
+
 
 
           </div>
