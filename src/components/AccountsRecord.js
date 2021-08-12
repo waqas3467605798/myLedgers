@@ -299,8 +299,8 @@ class DataEntry extends Component{
           renderMstStatus:false,
           noData:null,
           user:null,
-          voucherNumber:null,
-          viewVoucher:{voucherNumber:0, partyName:null, narration:null,debit:null,date:null}
+          voucherNumber:null
+          // viewVoucher:{voucherNumber:0, partyName:null, narration:null,debit:null,date:null}
           
         }
     }
@@ -343,7 +343,9 @@ class DataEntry extends Component{
       alert(err)
     })
 
-  }
+
+
+}
 
 
 
@@ -474,7 +476,7 @@ render(){
   <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
   <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
   </div>
-  <input type='date' value={this.state.date} name='date' onChange={this.changeHandler} placeholder='Date (01-Jan-2021)' /> <br/>
+  <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  placeholder='Date Formate (dd-mm-yyyy)' /> <br/>
   <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
   <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
   <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
@@ -632,6 +634,9 @@ class Ledger extends Component{
   this.setState({ledgerFor30Days:-30})  // because we want to see only last 30-transaction in the ledger
     if(document.getElementById('selected_save4').value){
     
+
+      this.setState({accountTitle:document.getElementById('selected_save4').value})
+
     var objIndex = document.getElementById('selected_save4').selectedIndex
     var reqObj = this.state.partyObjects[objIndex]
     
@@ -826,7 +831,7 @@ class Ledger extends Component{
   <div className={this.state.renderLedgerData === true ? '' : 'display'}>
     
     <div id='printldgr'>
-  <span>Account Title: <b>{this.state.accountTitle} </b></span>
+  <div className='container'>Account Title: <b>{this.state.accountTitle} </b></div>
   <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th>Vouch#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'135px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
     </div>
   {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('printldgr')}}>Print Statement</button> */}
@@ -1270,9 +1275,9 @@ viewVoucher = ()=>{
        <h5 className='container' style={{color:'blue'}}>View Voucher</h5>
        <div className='container'>
             <input type='Number' id='vouchNum' placeholder='Enter Voucher Number'/>
-            <button onClick={this.viewVoucher}>View Voucher</button>
-
-            <div className={this.state.vouchViewStatus === false ? 'display' : ''}>
+            <button className="waves-effect waves-dark btn" onClick={this.viewVoucher}>View Voucher</button>
+<br/><br/>
+            <div className={this.state.vouchViewStatus === false ? 'display' : ''} style={{border:'3px solid blue'}}>
             <div className="card white darken-1 ">
              <div className="card-content white-text">
               <span style={{color:'black'}}>
@@ -1327,7 +1332,7 @@ viewVoucher = ()=>{
           </div>
          </div>
 
-          </div>} ).slice(-10)         } </div>
+          </div>} ).slice(0,10)         } </div>
           
           
 
