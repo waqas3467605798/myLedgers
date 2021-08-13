@@ -1306,7 +1306,7 @@ viewVoucher = ()=>{
 
           {/* display of Last 10 Vouchers */}
           <br/>
-          <div className='container'><h5 style={{color:'green'}}>Last 10 Vouchers are as under;</h5></div>
+          <div className='container'><h5 style={{color:'blue', backgroundColor:'lightgreen', textAlign:'center'}}>Last 10 Vouchers are as under;</h5></div>
           <div> {this.state.allEntries.map( (voucher,index)=>{return <div key={index}>        
           
           <div className="row container" style={{margin:'auto', border:'1px solid blue', marginBottom:'18px'}}>
