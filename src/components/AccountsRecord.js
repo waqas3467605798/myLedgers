@@ -204,6 +204,8 @@ if(this.state.partyName === '' || this.state.address === ''){alert('you must fil
 let partyObj = {};
 partyObj.partyName = this.state.partyName.replace(/  +/g, ' ').trim();    // replace() method is used to remove more than onve space in string & trim() method is used to remove space between first and last.
 partyObj.address = this.state.address;
+var accountCategory = document.getElementById('accountCategory').value;
+partyObj.accountCategory = accountCategory
 partyObj.sum = [0]
 
 
@@ -263,6 +265,7 @@ render(){
   <h2 className='headings'>Create Account</h2>
   <input type='text'  value={this.state.partyName} name='partyName' onChange={this.changeHandler} placeholder='Account Title' />  <br/>
   <input type='text' value={this.state.address} name='address' onChange={this.changeHandler} placeholder='Address, Contact, ..etc' /> <br/>
+  <select className='browser-default' id='accountCategory'><option>A. Debtors/Creditors</option> <option>B. Expenses</option> <option>C. Income/Revenue</option>  <option>D. Assets </option> <option>E. Liabilities</option> <option>F. Others</option><option>G. Capital</option></select>
   <button className="waves-effect waves-dark btn" onClick={this.saveParty}>Save</button>
   <br/><br/><br/><br/>
 
@@ -474,7 +477,7 @@ render(){
 
   <h2 style={{textAlign:'center'}} className='headings'>Data Entry</h2>
   <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
-  <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )}   </select> </div> <br/>
+  <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )       }   </select> </div> <br/>
   </div>
   <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  placeholder='Date Formate (dd-mm-yyyy)' /> <br/>
   <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
@@ -928,7 +931,7 @@ class Ledger extends Component{
         rej('Operation Failed');
       })
       pushPromise.then((ob)=>{
-        this.setState({partyObjects:ob})
+        this.setState({partyObjects:ob.sort((a, b) => (a.accountCategory > b.accountCategory) ? 1 : -1)      })
       },(er)=>{
         alert(er)
       })
@@ -1044,7 +1047,7 @@ class Ledger extends Component{
           
           {/* <div className={this.state.status === true ? '' : 'display'}> */}
           
-          <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Receivable</th><th>Payable</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)}>{(ind+1) + '- ' + name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td></tr>}  )}</tbody></table>
+          <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)}>{(ind+1) + '- ' + name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td></tr>})}</tbody></table>
           {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('trialPrint')}}>Print this page</button> */}
           
           {/* </div> */}
@@ -1319,8 +1322,8 @@ viewVoucher = ()=>{
                 <table>
                 <tbody>
                 <tr><td>Date:</td><td>{voucher.date}</td></tr>
-                <tr><td>Account Title:</td><td>{voucher.partyName}</td></tr>
-                <tr><td>Transaction Amount:</td><td>Rs. {voucher.debit}</td></tr>
+                <tr><td>Account Title:</td><td><b>{voucher.partyName}</b></td></tr>
+                <tr><td>Transaction Amount:</td><td><b>Rs. {voucher.debit}</b> {voucher.debit > 0 ? 'Debit' : 'Credit'} </td></tr>
                 <tr><td>Remarks:</td><td>{voucher.narration}</td></tr>
                 <tr style={{color:'red', textDecoration:'overLine'}}><td> <br/><br/>Entered By:</td><td><br/><br/>Approved By:</td></tr>
                 </tbody>
