@@ -128,7 +128,7 @@ class LoginForm extends Component{
              <div>
  
  <div id='div1'> 
-      Accounting Record
+      Easy Accounts
       </div>
       <span style={{fontSize:'12px'}}>{navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span>
 <br/><br/>
@@ -172,7 +172,7 @@ class LoginForm extends Component{
               <br/><br/>
 <div className='bottomLine'> 
 Prepared By: Waqas Saleem <br/>
-Accounts Payable/Receivable Management System<br/>
+Easy Accounts Management System<br/>
 Contact: 0346-7605798 Email: waqas_mba86@yahoo.com
 </div>
 

@@ -67,8 +67,8 @@ class MainBarDocs extends Component{
       return(
         <div style={{border:'1px solid lemonchiffon', textAlign:'center', backgroundColor:'lemonchiffon'}}>
   
-  <Link to='/MyDocs' style={{textDecoration:'none', marginRight:'22px'}}> Up-Load Documents</Link>
-  <Link to='/MyDocs/GetDocs' style={{textDecoration:'none', marginRight:'22px'}}> Get Documents </Link>
+  <Link to='/MyDocs' style={{textDecoration:'none', marginRight:'22px', color:'red'}}> Up-Load Documents</Link>
+  <Link to='/MyDocs/GetDocs' style={{textDecoration:'none', marginRight:'22px', color:'red'}}> Get Documents </Link>
    
         </div>
 

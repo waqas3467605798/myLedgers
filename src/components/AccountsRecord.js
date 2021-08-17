@@ -69,11 +69,11 @@ class MainBar extends Component{
         return(
           <div className='container' style={{border:'1px solid lemonchiffon', textAlign:'center', backgroundColor:'lemonchiffon'}}>
     
-          <Link to='/AccountsRecord/Content' style={{textDecoration:'none', marginRight:'22px'}}> Create Account</Link>
-          <Link to='/AccountsRecord' style={{textDecoration:'none', marginRight:'22px'}}> Data Entry </Link>
-          <Link to='/AccountsRecord/Vouchers' style={{textDecoration:'none', marginRight:'22px'}} > Vouchers </Link>
-          <Link to='/AccountsRecord/Ledger' style={{textDecoration:'none', marginRight:'22px'}} > Account Statement </Link>
-          <Link to='/AccountsRecord/Trial' style={{textDecoration:'none', marginRight:'22px'}} > Summary </Link>
+          <Link to='/AccountsRecord/Content' style={{textDecoration:'none', marginRight:'22px', color:'red'}}> Create Account</Link>
+          <Link to='/AccountsRecord' style={{textDecoration:'none', marginRight:'22px', color:'red'}}> Data Entry </Link>
+          <Link to='/AccountsRecord/Vouchers' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Vouchers </Link>
+          <Link to='/AccountsRecord/Ledger' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Account Statement </Link>
+          <Link to='/AccountsRecord/Trial' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Summary </Link>
           
           </div>
   
@@ -201,6 +201,9 @@ alert('This Account is Already opened')
 
 if(this.state.partyName === '' || this.state.address === ''){alert('you must fill all the fields')}else{
 
+
+if(document.getElementById('accountCategory').value === 'Select Account Category'){alert('You Must Select the Account Category')}else{
+
 let partyObj = {};
 partyObj.partyName = this.state.partyName.replace(/  +/g, ' ').trim();    // replace() method is used to remove more than onve space in string & trim() method is used to remove space between first and last.
 partyObj.address = this.state.address;
@@ -212,14 +215,14 @@ partyObj.sum = [0]
 var key = firebase.database().ref('partyList'+this.state.user).push().key
 partyObj.key = key
 firebase.database().ref('partyList'+this.state.user).child(key).set(partyObj)
-alert('saved successfully')
+alert('Account Opened successfully')
 this.setState({partyName:'', address:''}) 
 
 
 }
 }
 }
-
+}
 
 
 
@@ -265,7 +268,7 @@ render(){
   <h2 className='headings'>Create Account</h2>
   <input type='text'  value={this.state.partyName} name='partyName' onChange={this.changeHandler} placeholder='Account Title' />  <br/>
   <input type='text' value={this.state.address} name='address' onChange={this.changeHandler} placeholder='Address, Contact, ..etc' /> <br/>
-  <select className='browser-default' id='accountCategory'><option>A. Debtors/Creditors</option> <option>B. Expenses</option> <option>C. Income/Revenue</option>  <option>D. Assets </option> <option>E. Liabilities</option> <option>F. Others</option><option>G. Capital</option></select>
+  <select className='browser-default' id='accountCategory'><option>Select Account Category</option><option>A. Debtors/Creditors</option> <option>B. Expenses</option> <option>C. Income/Revenue</option>  <option>D. Assets </option> <option>E. Liabilities</option> <option>F. Others</option><option>G. Capital</option></select>
   <button className="waves-effect waves-dark btn" onClick={this.saveParty}>Save</button>
   <br/><br/><br/><br/>
 
@@ -479,7 +482,7 @@ render(){
   <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
   <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )       }   </select> </div> <br/>
   </div>
-  <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  placeholder='Date Formate (dd-mm-yyyy)' /> <br/>
+  <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  maxLength='12' placeholder='Date Formate (dd-mm-yyyy)' /> <br/>
   <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
   <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
   <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
@@ -1047,7 +1050,7 @@ class Ledger extends Component{
           
           {/* <div className={this.state.status === true ? '' : 'display'}> */}
           
-          <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)}>{(ind+1) + '- ' + name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td></tr>})}</tbody></table>
+          <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)} style={{color:'blue'}}>{name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td></tr>})}</tbody></table>
           {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('trialPrint')}}>Print this page</button> */}
           
           {/* </div> */}
