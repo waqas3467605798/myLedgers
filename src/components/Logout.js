@@ -75,9 +75,9 @@ import firebase from './Fire'
 
 
 <div className='container'>
-  <h2 style={{textAlign:'left'}} className='headings'>Guidance to Run this Software</h2>
+  <h2 style={{textAlign:'left'}} className='headings'>Guidance to Run this Application</h2>
   <h2 style={{textAlign:'left'}} className='headings'>Accounts-Record</h2>
-  <p style={{textAlign:'left'}}>Go to the top of the screen and click on <b>Accounts-Record</b> you will see further menue of five features of accounts;
+  <p style={{textAlign:'justify'}}>Go to the top of the screen and click on <b>Accounts-Record</b> you will see further menue of five features of accounts;
   <br/> 1-Create Account
   <br/> 2-Data entry
   <br/> 3-Vouchers
@@ -90,7 +90,7 @@ import firebase from './Fire'
   <br/>Go to the section of Data Entry. you will have a list of all opened Accounts. First of all select the account to whom you want to record the transaction. There are three input fields, First is for date. Type here date in you own formate. Secord input field is for Remarks/Narration relating to the nature of entry. Third input field is for amount of the transaction.
   <br/><b style={{color:'red'}}>Guidance about 'Amount' input field</b>
   <br/><span style={{color:'red'}}>If you are given any thing (either it is cash or material) to your client/debtor/creditor, you have to write the amount in positive.</span>
-  <br/><span style={{color:'red'}}> But If you are receving any thing (either it is cash or material) from your client/debtor/creditor, you have to write the amount in negative.</span>
+  <br/><span style={{color:'red'}}> But If you are receiving any thing (either it is cash or material) from your client/debtor/creditor, you have to write the amount in negative.</span>
   <br/><b>3-Vouchers</b>
   <br/> Each and every entry will generate the voucher, go to the voucher section, you will see the generated voucher, get print out, sign it for record purpose. 
   <br/><b>4-Account Statement</b>
@@ -102,13 +102,13 @@ import firebase from './Fire'
 
 
   <h2 style={{textAlign:'left'}} className='headings'>My Documents</h2>
-  <p style={{textAlign:'left'}}> The next feature of this software is <b>My documents</b>.Go to the top of the screen and click on <b>My Documents</b> you will see further menue of two features;
+  <p style={{textAlign:'justify'}}> The next feature of this software is <b>My documents</b>.Go to the top of the screen and click on <b>My Documents</b> you will see further menue of two features;
   <br/> 1-Up-Load Document
   <br/> 2-Get Document
 
   <br/><b>1-Up-Load Document</b>
   <br/>Here you can up load document. First of all select the image/file from your device and write the description of the document in input field here.
-<br/><b>1-Get Document</b>
+<br/><b>2-Get Document</b>
 <br/> Go to get Document, select your description and click on <b>Get File </b> button. you will get URL of the image/file and view of the file. 
   </p>
 
