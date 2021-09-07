@@ -142,44 +142,6 @@ class MainBar extends Component{
 
 
 
-  //  async componentDidMount(){
-  //       var dataPushPromise = new Promise( (res,rej)=>{
-  //       var userId = firebase.auth().currentUser.uid;
-  //       var userEmail = firebase.auth().currentUser.email
-
-  //       this.setState({user:userId,userEmail:userEmail})
-        
-  //       res()
-  //       rej('Operation Failed: Data From Firebase does not push in the state successfully')
-  //     } )
-  //     dataPushPromise.then(()=>{
-  //       firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-  //         this.state.partyObjects.push(data.val())
-  //       }  )
-        
-  //     },(err)=>{
-  //       alert(err)
-  //     })
-
-  //   }
-
-
-   
-
-
-  // var pushPromise = new Promise((res,rej)=>{
-
-  //   res();
-  //   rej('Operation Failed');
-  // })
-  // pushPromise.then((ob)=>{},(er)=>{})
-
-
-
-
-
-
-
 
 changeHandler = (e) => {
 this.setState({ 
@@ -235,8 +197,16 @@ this.setState({getListStatus:true})
 editAccount =(i)=>{
 var reqObj = this.state.partyObjects[i]
 var key = this.state.partyObjects[i].key
+
 var editAccount = prompt('Please edit Account Title',reqObj.partyName)
+if(editAccount === null){
+  editAccount = reqObj.partyName
+}
+
 var editAddress = prompt('Please edit Address/Contact..etc',reqObj.address)
+if(editAddress === null){
+  editAddress = reqObj.address
+}
 
 reqObj.partyName = editAccount.replace(/  +/g, ' ').trim();
 reqObj.address = editAddress.replace(/  +/g, ' ').trim()
@@ -277,7 +247,7 @@ render(){
   <button className="waves-effect waves-dark btn" onClick={this.getList}>Get List</button>
 
 <div className={this.state.getListStatus === false ? 'display' : ''}>
-  <table><thead><tr><th>Account Title</th><th>Address/Contact..etc</th></tr></thead><tbody>{this.state.partyObjects.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.partyName}</td><td>{item.address}</td><td><a href='#' className="material-icons" onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
+  <table><thead><tr><th>Account Title</th><th>Address/Contact..etc</th></tr></thead><tbody>{this.state.partyObjects.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.partyName}</td><td>{item.address}</td><td><a href='#' className="material-icons" style={{color:'green',fontSize:'15px'}} onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
 {/* </div> */}
 </div>
 
@@ -352,38 +322,6 @@ class DataEntry extends Component{
 
 
 }
-
-
-
-
-
-  // async componentDidMount(){
-  //     var dataPushPromise = new Promise( (res,rej)=>{
-  //     var userId = firebase.auth().currentUser.uid;
-  //     var userEmail = firebase.auth().currentUser.email
-
-  //     this.setState({user:userId,userEmail:userEmail})
-      
-  //     res()
-  //     rej('Operation Failed: Data From Firebase does not push in state successfully')
-  //   } )
-  //   dataPushPromise.then(()=>{
-  //     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-  //       this.state.partyObjects.push(data.val())
-  //     }  )
-
-
-  //     firebase.database().ref('VoucherNumber'+this.state.user).on('child_added' , (data)=> {
-  //       this.setState({voucherNumber:data.val()})
-  //     }  )
-
-
-  //   },(err)=>{
-  //     alert(err)
-  //   })
-
-  // }
-
 
 
 
@@ -563,26 +501,6 @@ class Ledger extends Component{
 
 
 
-
-
-  //   async componentWillMount(){
-  //     var dataPushPromise = new Promise( (res,rej)=>{
-  //     var userId = firebase.auth().currentUser.uid;
-  //     var userEmail = firebase.auth().currentUser.email
-  //     this.setState({user:userId,userEmail:userEmail})
-  //     res()
-  //     rej('Operation Failed: Data From Firebase does not push in state successfully')
-  //   } )
-  //   dataPushPromise.then(()=>{
-  //     firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
-  //       this.state.partyObjects.push(data.val())
-  //     }  )
-  //   },(err)=>{
-  //     alert(err)
-  //   })
-  
-      
-  // } 
     
   
   
@@ -718,9 +636,22 @@ class Ledger extends Component{
     var objIndx = document.getElementById('selected_save4').selectedIndex
     var key = this.state.partyObjects[objIndx].key
     var ledger = this.state.partyObjects[objIndx].ledger
+
     var editDate = prompt('Please edit Entry Date',ledger[i].date)
+    if(editDate===null){
+      editDate = ledger[i].date
+    }
+
     var editNarration = prompt('Please edit Narration',ledger[i].narration)
+    if(editNarration===null){
+      editNarration = ledger[i].narration
+    }
+
     var editAmount = prompt('Please edit Amount',ledger[i].debit)
+    if(editAmount===null){
+      editAmount = ledger[i].debit
+    }
+
     var editedObj = {date:editDate,narration:editNarration,debit:Number(editAmount),voucherNumber:ledger[i].voucherNumber,partyName:ledger[i].partyName} 
     reqObj.ledger.splice(i,1,editedObj)
     reqObj.sum.splice(i+1,1,Number(editAmount))
@@ -838,7 +769,7 @@ class Ledger extends Component{
     
     <div id='printldgr'>
   <div className='container'>Account Title: <b>{this.state.accountTitle} </b></div>
-  <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th>Vouch#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td style={{color:'blue'}}>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'135px',color:'blue'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
+  <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th>Vouch#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td style={{color:'blue'}}>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'135px',color:'blue'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px', color:'red'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px', color:'green'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
     </div>
   {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('printldgr')}}>Print Statement</button> */}
   
