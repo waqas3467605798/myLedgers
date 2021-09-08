@@ -73,10 +73,12 @@ border-top-left-radius: 35px;
 
 .ldgrPostveAmt{
     color:green;
+    text-align:center;
 }
 
 .ldgrNegtveAmt{
     color:red;
+    text-align:center;
 }
 
 .closingBalPostiv{

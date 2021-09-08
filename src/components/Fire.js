@@ -24,6 +24,8 @@ export default firebase;
 
 
 
+//  className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}
+
 
 
     // apiKey: "AIzaSyCRKceXGhdhpKFQiAJ2Qgkb1wXgXbI36RQ",
