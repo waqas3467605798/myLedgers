@@ -284,7 +284,7 @@ class DataEntry extends Component{
 
 
 
-    async componentDidMount(){
+    componentDidMount(){
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
@@ -345,6 +345,7 @@ this.setState({status:true})        //As status true, the render function will r
 
 
 saveValue = ()=>{
+  
 //  if(navigator.onLine){    //it is only to check either your connected to the internet or not 
 
 if(this.state.date === '' || this.state.narration === '' || this.state.debit === ''){alert('you must fill all the fields')}else{
@@ -352,8 +353,14 @@ if(this.state.date === '' || this.state.narration === '' || this.state.debit ===
 if(document.getElementById('selected_save2').value){
 
 
-var partyObjIndex = document.getElementById('selected_save2').selectedIndex
-var reqPartyObj = this.state.partyObjects[partyObjIndex]
+  var accountTitle = document.getElementById('selected_save2').value
+  var reqPartyObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitle}  )
+
+  // the below two lines code was used before above two lines
+// var partyObjIndex = document.getElementById('selected_save2').selectedIndex
+// var reqPartyObj = this.state.partyObjects[partyObjIndex]
+
+
 var partyLedgerObj = {}
 partyLedgerObj.debit = Number(this.state.debit);
 partyLedgerObj.date = this.state.date;
@@ -401,6 +408,8 @@ firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').
 
 //  }else{this.setState({netDisconnect:false})}
 this.setState({viewVoucher:partyLedgerObj})
+
+  
 }
 
 
@@ -467,7 +476,7 @@ class Ledger extends Component{
     }
   
 
-      async componentDidMount(){
+      componentDidMount(){
       var dataPushPromise = new Promise( (res,rej)=>{
       var userId = firebase.auth().currentUser.uid;
       var userEmail = firebase.auth().currentUser.email
@@ -519,9 +528,19 @@ class Ledger extends Component{
   
   this.setState({accountTitle:document.getElementById('selected_save4').value})
   
-  var objIndex = document.getElementById('selected_save4').selectedIndex
-  var reqObj = this.state.partyObjects[objIndex]
   
+  
+  var accountTitle = document.getElementById('selected_save4').value
+  var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitle}  )
+
+
+
+
+  // var objIndex = document.getElementById('selected_save4').selectedIndex
+  // var reqObj = this.state.partyObjects[objIndex]
+  
+
+
   
   //to get total sum of debit side and credit side
   this.setState({debitTotal:reqObj.sum.filter((nm,indx)=>{return nm>0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
@@ -561,8 +580,15 @@ class Ledger extends Component{
 
       this.setState({accountTitle:document.getElementById('selected_save4').value})
 
-    var objIndex = document.getElementById('selected_save4').selectedIndex
-    var reqObj = this.state.partyObjects[objIndex]
+
+      var accountTitle = document.getElementById('selected_save4').value
+      var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitle}  )
+
+
+
+
+    // var objIndex = document.getElementById('selected_save4').selectedIndex
+    // var reqObj = this.state.partyObjects[objIndex]
     
   
     //to get total sum of debit side and credit side
@@ -985,7 +1011,7 @@ class Ledger extends Component{
           
           {/* <div className={this.state.status === true ? '' : 'display'}> */}
           
-          <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)} style={{color:'blue'}}>{name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td></tr>})}</tbody></table>
+          <table style={{maxWidth:'850px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Debit</th><th>Credit</th><th>Account Type</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)} style={{color:'blue'}}>{name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td style={{fontSize:'12px'}}>{name.accountCategory}</td></tr>})}</tbody></table>
           {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('trialPrint')}}>Print this page</button> */}
           
           {/* </div> */}
