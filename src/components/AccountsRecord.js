@@ -184,6 +184,9 @@ this.setState({partyName:'', address:''})
 }
 }
 }
+
+
+
 }
 
 
@@ -346,6 +349,7 @@ this.setState({status:true})        //As status true, the render function will r
 
 saveValue = ()=>{
   
+  
 //  if(navigator.onLine){    //it is only to check either your connected to the internet or not 
 
 if(this.state.date === '' || this.state.narration === '' || this.state.debit === ''){alert('you must fill all the fields')}else{
@@ -405,12 +409,13 @@ firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').
 
 }
 
-
 //  }else{this.setState({netDisconnect:false})}
 this.setState({viewVoucher:partyLedgerObj})
 
-  
+
+
 }
+
 
 
 
@@ -420,7 +425,8 @@ render(){
 
   return (
     <div>
-      
+
+     
   
   <div className='container'>
   <br/>

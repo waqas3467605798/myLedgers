@@ -61,12 +61,10 @@ import firebase from './Fire'
       <div className="card pink lighten-4">
         <div className="card-content">
           <span className="card-title"> <b>Introduction</b></span>
-          <p style={{textAlign:'left', color:'blue'}}>This online web based saftware is Prepared for small businesses. This mini software have three features; 
-            <span><b><br/>1-Can Easily Manage Accounts Payables and Receivables and get one page summary on one click. 
-            {/* <br/>2-Text Record other than Financial Transactions  */}
-            <br/>2-UpLoad Your important Business Documents and get on demand.</b> </span>
-            <br/>You can recored your business transactions relating to vendors and sellers and can get their account statements at any time, any where in all over the world.
-            <br/>You can Save your important business or personal documents (images,PDF etc) and can veiw/download on need at any where in all over the world. </p>
+          <p style={{textAlign:'left', color:'blue'}}>This online web based saftware is Prepared for small businesses. This mini software is best to maintain Account Statements/Ledgers of your customers. You can recored your business transactions relating to vendors and sellers and can get their account statements at any time, any where in all over the world.
+             <br/>
+             You will also get a one page summary having closing balances of you vendors/sellers and all the accounts you have. 
+             </p>
         </div>
       </div>
     {/* </div> */}
@@ -101,7 +99,7 @@ import firebase from './Fire'
 
 
 
-  <h2 style={{textAlign:'left'}} className='headings'>My Documents</h2>
+  {/* <h2 style={{textAlign:'left'}} className='headings'>My Documents</h2>
   <p style={{textAlign:'justify'}}> The next feature of this software is <b>My documents</b>.Go to the top of the screen and click on <b>My Documents</b> you will see further menue of two features;
   <br/> 1-Up-Load Document
   <br/> 2-Get Document
@@ -110,7 +108,7 @@ import firebase from './Fire'
   <br/>Here you can up load document. First of all select the image/file from your device and write the description of the document in input field here.
 <br/><b>2-Get Document</b>
 <br/> Go to get Document, select your description and click on <b>Get File </b> button. you will get URL of the image/file and view of the file. 
-  </p>
+  </p> */}
 
 
 </div>
