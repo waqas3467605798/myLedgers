@@ -1,7 +1,7 @@
 import react, {Component} from 'react'
 import Header from './components/Header'
 import Logout from './components/Logout'
-// import MyDocs from './components/MyDocs'
+import DoubleEntrySys from './components/DoubleEntrySys'
 import AccountsRecord from './components/AccountsRecord'
 import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom'
@@ -20,7 +20,7 @@ import {BrowserRouter, Route} from 'react-router-dom'
       
       <Route exact path='/' component={Logout}/>
       <Route path='/AccountsRecord' component={AccountsRecord}/>
-      {/* <Route path='/MyDocs' component={MyDocs}/> */}
+      <Route path='/DoubleEntrySys' component={DoubleEntrySys}/>
       
 
 <br/><br/>
