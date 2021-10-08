@@ -349,6 +349,22 @@ this.setState({status:true})        //As status true, the render function will r
 
 
 
+
+addEntry = ()=>{
+  alert('Hi')
+}
+
+
+
+
+
+
+
+
+
+
+
+
 saveValue = ()=>{
   
   
@@ -433,6 +449,8 @@ render(){
   <div className='container'>
   <br/>
 
+  <div>  Here we will show our voucher div</div>
+
   <h2 style={{textAlign:'center'}} className='headings'>Data Entry</h2>
   <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
   <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )       }   </select> </div> <br/>
@@ -440,7 +458,8 @@ render(){
   <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  maxLength='12' placeholder='Date Formate (dd-mm-yyyy)' /> <br/>
   <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
   <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
-  <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
+  <button className="waves-effect waves-dark btn" onClick={this.addEntry}>Add Entry</button>
+  <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save Whole Entry</button>
 
 </div>
 
