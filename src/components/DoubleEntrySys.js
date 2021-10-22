@@ -386,7 +386,7 @@ if(document.getElementById('selected_save2').value){
 var partyLedgerObj = {}
 partyLedgerObj.debit = Number(this.state.debit);
 partyLedgerObj.date = this.state.date;
-// partyLedgerObj.voucherNum = vouchNum;  //for voucher Test
+
 
 var nrr = this.state.narration
 partyLedgerObj.narration = nrr
@@ -407,18 +407,15 @@ firebase.database().ref('partyList_DoubEntry'+this.state.user).child(reqPartyObj
 
 
 // For searching of array of sum in party object
-if('sum' in reqPartyObj){
-reqPartyObj.sum.push(Number(this.state.debit))
-
-firebase.database().ref('partyList_DoubEntry'+this.state.user).child(reqPartyObj.key).set(reqPartyObj)
-
-}else{
-reqPartyObj.sum = []
+// if('sum' in reqPartyObj){
 reqPartyObj.sum.push(Number(this.state.debit))
 firebase.database().ref('partyList_DoubEntry'+this.state.user).child(reqPartyObj.key).set(reqPartyObj)
-}
 
-
+// }else{
+// reqPartyObj.sum = []
+// reqPartyObj.sum.push(Number(this.state.debit))
+// firebase.database().ref('partyList_DoubEntry'+this.state.user).child(reqPartyObj.key).set(reqPartyObj)
+// }
 
 alert('Entry successfully saved..!')
 this.setState({debit:'',date:'',narration:'',voucherNumber:vouNum})
@@ -428,7 +425,7 @@ firebase.database().ref('VoucherNumber_DoubleEntry'+this.state.user).child('Vouc
 }
 
 //  }else{this.setState({netDisconnect:false})}
-this.setState({viewVoucher:partyLedgerObj})
+// this.setState({viewVoucher:partyLedgerObj})
 
 
 

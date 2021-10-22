@@ -624,6 +624,60 @@ class Ledger extends Component{
   
   
 
+
+
+    partyLedgerThree = ()=> {
+  
+      this.setState({ledgerFor30Days:-100})  // because we want to see only last 30-transaction in the ledger
+        if(document.getElementById('selected_save4').value){
+        
+    
+          this.setState({accountTitle:document.getElementById('selected_save4').value})
+    
+    
+          var accountTitle = document.getElementById('selected_save4').value
+          var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.partyName === accountTitle}  )
+    
+    
+    
+    
+        // var objIndex = document.getElementById('selected_save4').selectedIndex
+        // var reqObj = this.state.partyObjects[objIndex]
+        
+      
+        //to get total sum of debit side and credit side
+        this.setState({debitTotal:reqObj.sum.filter((nm,indx)=>{return nm>0}).reduce( (total,num)=>{return total+num},0)})   //for test base only
+        this.setState({creditTotal:reqObj.sum.filter((nm,indx)=>{return nm<0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
+      //sum of debit and credit side is ended
+      
+        if('ledger' in reqObj){
+          var ledgerData = reqObj.ledger;
+          var ledgerBalance = reqObj.sum 
+          this.setState({ledger: ledgerData, renderLedgerData:true, noData:null, ledgerBalance:ledgerBalance})
+         
+         }
+         else{
+           
+           var noDataFound = 'No data found'
+           this.setState({noData: noDataFound, renderLedgerData:false})
+          //  console.log(noDataFound)
+           
+         }
+        
+        this.setState({sum:[]}) //As the render method will run again, so the array of sum in state should be zero
+            
+        }else{alert('Please select the Account First')}
+        
+        }  
+
+
+
+
+
+
+
+
+
   //The Process of Delete functionality is starting from here...
   deleteLedgerEntry = (i)=>{
   
@@ -791,6 +845,7 @@ class Ledger extends Component{
   <button className="browser-default btnControl" onClick={this.partyLedger} style={{width:'30%'}}>All</button> 
   {/* this below button is for to get last 30-transactions */}
   <button className="browser-default btnControl" onClick={this.partyLedgerTwo} style={{width:'30%'}}>Last-30</button>
+  <button className="browser-default btnControl" onClick={this.partyLedgerThree} style={{width:'30%'}}>Last-100</button>
   
   {/* className="waves-effect waves-dark btn" */}
   </div>
@@ -801,7 +856,7 @@ class Ledger extends Component{
     
     <div id='printldgr'>
   <div className='container'>Account Title: <b>{this.state.accountTitle} </b></div>
-  <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th style={{textAlign:'center'}}>V#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td style={{color:'blue', textAlign:'center'}}>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'135px',color:'blue'}}>{item.narration}</td><td>{item.debit >=0 ? item.debit : ''}</td><td style={{color:'blue'}}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px', color:'red'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px', color:'green'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
+  <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th style={{textAlign:'center'}}>V#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td style={{color:'blue', textAlign:'center'}}>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'135px',color:'blue'}}>{item.narration}</td><td>{item.debit >=0 ? item.debit : ''}</td><td style={{color:'blue'}}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px', color:'red'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px', color:'green'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 or 100 transactions as on your need*/ }
     </div>
   {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('printldgr')}}>Print Statement</button> */}
   
