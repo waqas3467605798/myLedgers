@@ -2,52 +2,35 @@ import react, {Component} from 'react'
 import '../App.css';
 import {Link, Route,BrowserRouter} from 'react-router-dom'
 import firebase from './Fire'
-import CustomerAccess from './CustomerAccess'
 import App from '../App'
 
 
 
 //This Component is made to show the all App you made
-class Login extends Component{
+class CustomerAccess extends Component{
     constructor(){
         super();
         this.state ={
-                user:null
+                
         }
 
     }
 
 
-    componentDidMount(){
-        this.authListener();
-        
-        }
-        
-        authListener = ()=>{
-        firebase.auth().onAuthStateChanged( (user)=>{
-            if(user){
-                this.setState({user})
-                // console.log(user.email)
-        
-        
-            } else {
-                this.setState({user:null})
-            }
-        })
-        }
+    
 
     render(){
         return(
         <div>
 
-{this.state.user ? (<App/>) : <LoginForm/>}
+CustomerAccess
 
         </div>
         )
     }
 }
 
-export default Login;
+export default CustomerAccess;
 
 
 
@@ -154,24 +137,9 @@ class LoginForm extends Component{
                <button className="waves-effect btn-large" onClick={this.signin}>Login</button>
 
                 <a href='#' onClick={this.showForgetField}>Forget Password ?</a>
-
-
-
-
-
-
-<br/><br/><br/><br/><br/>
-<BrowserRouter>
-<Link to='/CustomerAccess' style={{textDecoration:'none', marginRight:'22px'}} > <b>Customer Access</b> </Link>
-<Route path='/CustomerAccess' component={CustomerAccess}/>
-</BrowserRouter>
-
 <br/><br/><br/>
-
-
-
-
-
+<Link to='/CustomerAccess' style={{textDecoration:'none', marginRight:'22px'}} > <b>Customer Access</b> </Link>
+<br/><br/><br/>
 
                 
                 <div className={this.state.forgetStatus === false ? 'display' : ''}>

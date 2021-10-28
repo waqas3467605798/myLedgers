@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+// import {BrowserRouter} from 'react-router-dom'
 // import App from './App';
 import Login from './components/Login'
 import reportWebVitals from './reportWebVitals';
@@ -9,10 +10,15 @@ import 'materialize-css/dist/js/materialize.min'
 
 
 ReactDOM.render(
+  
   <React.StrictMode>
+    
     <Login />
+    
   </React.StrictMode>,
+  
   document.getElementById('root')
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

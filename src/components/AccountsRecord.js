@@ -40,6 +40,7 @@ import {Link, Route, BrowserRouter} from 'react-router-dom'
           <Route path='/AccountsRecord/Ledger' component={Ledger}/>
           <Route path='/AccountsRecord/Trial' component={Trial}/>
           <Route path='/AccountsRecord/Vouchers' component={Vouchers}/>
+          <Route path='/AccountsRecord/OnlineAccess' component={OnlineAccess}/>
           </div>
 
           </div>
@@ -74,6 +75,7 @@ class MainBar extends Component{
           <Link to='/AccountsRecord/Vouchers' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Vouchers </Link>
           <Link to='/AccountsRecord/Ledger' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Account Statement </Link>
           <Link to='/AccountsRecord/Trial' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Summary </Link>
+          <Link to='/AccountsRecord/OnlineAccess' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Access </Link>
           
           </div>
   
@@ -1372,6 +1374,99 @@ viewVoucher = ()=>{
 
 
   }
+
+
+
+
+
+
+
+
+
+  class OnlineAccess extends Component{
+    constructor(){
+      super();
+      this.state ={
+              user:null,
+              userEmail:null,
+              partyObjects:[],
+              status:false,
+              keyWords:null
+      }
+
+  }
+
+
+  componentDidMount(){
+    var dataPushPromise = new Promise( (res,rej)=>{
+    var userId = firebase.auth().currentUser.uid;
+    var userEmail = firebase.auth().currentUser.email
+    this.setState({user:userId,userEmail:userEmail})
+    res()
+    rej('Operation Failed: Data From Firebase does not push in state successfully')
+  } )
+  dataPushPromise.then(()=>{
+
+    var pushPromise = new Promise((resolve,reject)=>{
+      var obj = [];
+      firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
+        obj.push(data.val())
+      }  )
+      resolve(obj)
+      reject('Operation failed')
+    })
+    pushPromise.then((ob)=>{
+      this.setState({partyObjects:ob})
+    },(er)=>{
+      alert(er)
+    })
+
+
+  },(err)=>{
+    alert(err)
+  })
+
+    
+}
+
+
+
+getData =()=>{
+  this.setState({status: ! this.state.status})
+}
+
+
+
+changeHandler=(e)=>{
+this.setState({[e.target.name]: e.target.value  })
+
+console.log(this.state.keyWords)
+}
+  
+
+    render(){
+        return(
+         
+          <div>
+           Access Given
+
+           <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
+  <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )       }   </select> </div> <br/></div>
+  
+  <input type='text' onChange={this.changeHandler} name='keyWords' value={this.state.keyWords} placeholder='Create Key works' />
+          
+  <button className="waves-effect waves-dark btn" >Allow Access</button>
+          
+          
+          </div>
+          
+        )
+    }
+
+
+  }
+
+
 
 
 
