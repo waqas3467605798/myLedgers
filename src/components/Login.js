@@ -71,11 +71,13 @@ class LoginForm extends Component{
 
 
 
+    
+
+
 
     signin = ()=>{
      const email = document.querySelector('#email').value;
      const password = document.querySelector('#password').value;
-     
  
  
  
@@ -167,6 +169,11 @@ class LoginForm extends Component{
 </BrowserRouter>
 
 <br/><br/><br/>
+
+
+
+
+
 
 
 

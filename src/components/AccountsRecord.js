@@ -1391,7 +1391,8 @@ viewVoucher = ()=>{
               userEmail:null,
               partyObjects:[],
               status:false,
-              keyWords:null
+              keyWords:'',
+              customerAccessList:[]
       }
 
   }
@@ -1426,8 +1427,27 @@ viewVoucher = ()=>{
     alert(err)
   })
 
-    
+
+
+
+  firebase.database().ref('customerAccess').on('child_added' , (data)=> { 
+    this.state.customerAccessList.push(data.val())
+  }  )
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1440,9 +1460,60 @@ getData =()=>{
 changeHandler=(e)=>{
 this.setState({[e.target.name]: e.target.value  })
 
-console.log(this.state.keyWords)
+
 }
   
+
+allowAccess = ()=>{
+
+  var alreadyKeyExist = this.state.customerAccessList.find(  (o)=>{return o.keyWords === this.state.keyWords+this.state.user}  )
+  if(alreadyKeyExist){
+    alert('this is already exist')
+  }else{
+
+
+var obj = []
+obj.keyWords = this.state.keyWords+this.state.user
+obj.partyName = document.getElementById('selected_save2').value
+obj.uid = this.state.user
+
+
+
+var accountTitle = document.getElementById('selected_save2').value
+var reqObj = this.state.partyObjects.find(  (ob)=>{return ob.partyName === accountTitle}  )
+
+
+if('ledger' in reqObj){
+obj.ledger = reqObj.ledger
+obj.sum = reqObj.sum
+}else{
+  obj.sum = reqObj.sum
+}
+
+
+
+
+var key = firebase.database().ref('customerAccess').push().key
+
+obj.key = key
+
+firebase.database().ref('customerAccess').child(key).set(obj)
+alert('Customer Access successfully Granted')
+// this.setState({keyWords:''}) 
+
+
+
+
+
+  }
+}
+
+
+
+
+
+
+
 
     render(){
         return(
@@ -1455,7 +1526,7 @@ console.log(this.state.keyWords)
   
   <input type='text' onChange={this.changeHandler} name='keyWords' value={this.state.keyWords} placeholder='Create Key works' />
           
-  <button className="waves-effect waves-dark btn" >Allow Access</button>
+  <button className="waves-effect waves-dark btn" onClick={this.allowAccess} >Allow Access</button>
           
           
           </div>
