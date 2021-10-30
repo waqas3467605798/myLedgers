@@ -48,7 +48,7 @@ class CustomerAccess extends Component{
 
     showStmnt=()=>{
 
-
+alert('No Statement Available')
 
     }
     

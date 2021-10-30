@@ -1466,14 +1466,14 @@ this.setState({[e.target.name]: e.target.value  })
 
 allowAccess = ()=>{
 
-  var alreadyKeyExist = this.state.customerAccessList.find(  (o)=>{return o.keyWords === this.state.keyWords+this.state.user}  )
+  var alreadyKeyExist = this.state.customerAccessList.find(  (o)=>{return o.keyWords === this.state.keyWords}  )
   if(alreadyKeyExist){
-    alert('this is already exist')
+    alert('Please Change Your Keywords and Try again')
   }else{
 
 
 var obj = []
-obj.keyWords = this.state.keyWords+this.state.user
+obj.keyWords = this.state.keyWords
 obj.partyName = document.getElementById('selected_save2').value
 obj.uid = this.state.user
 
@@ -1481,23 +1481,25 @@ obj.uid = this.state.user
 
 var accountTitle = document.getElementById('selected_save2').value
 var reqObj = this.state.partyObjects.find(  (ob)=>{return ob.partyName === accountTitle}  )
+reqObj.keyWords = this.state.keyWords
 
-
-if('ledger' in reqObj){
-obj.ledger = reqObj.ledger
-obj.sum = reqObj.sum
-}else{
-  obj.sum = reqObj.sum
-}
-
-
-
+// if('ledger' in reqObj){
+// obj.ledger = reqObj.ledger
+// obj.sum = reqObj.sum
+// }else{
+//   obj.sum = reqObj.sum
+// }
 
 var key = firebase.database().ref('customerAccess').push().key
 
 obj.key = key
 
 firebase.database().ref('customerAccess').child(key).set(obj)
+
+firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
+
+
+// this.state.customerAccessList.push(obj)
 alert('Customer Access successfully Granted')
 // this.setState({keyWords:''}) 
 
