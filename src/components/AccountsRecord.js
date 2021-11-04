@@ -1428,8 +1428,6 @@ viewVoucher = ()=>{
   })
 
 
-
-
   firebase.database().ref('customerAccess').on('child_added' , (data)=> { 
     this.state.customerAccessList.push(data.val())
   }  )
@@ -1437,17 +1435,6 @@ viewVoucher = ()=>{
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1468,7 +1455,7 @@ allowAccess = ()=>{
 
   var alreadyKeyExist = this.state.customerAccessList.find(  (o)=>{return o.keyWords === this.state.keyWords}  )
   if(alreadyKeyExist){
-    alert('Please Change Your Keywords and Try again')
+    alert('Key words already exist OR Access already allowed')
   }else{
 
 
@@ -1477,44 +1464,26 @@ obj.keyWords = this.state.keyWords
 obj.partyName = document.getElementById('selected_save2').value
 obj.uid = this.state.user
 
-
-
 var accountTitle = document.getElementById('selected_save2').value
 var reqObj = this.state.partyObjects.find(  (ob)=>{return ob.partyName === accountTitle}  )
 reqObj.keyWords = this.state.keyWords
-
 // if('ledger' in reqObj){
 // obj.ledger = reqObj.ledger
 // obj.sum = reqObj.sum
 // }else{
 //   obj.sum = reqObj.sum
 // }
-
 var key = firebase.database().ref('customerAccess').push().key
-
 obj.key = key
-
 firebase.database().ref('customerAccess').child(key).set(obj)
-
 firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
-
-
 // this.state.customerAccessList.push(obj)
 alert('Customer Access successfully Granted')
 // this.setState({keyWords:''}) 
 
 
-
-
-
   }
 }
-
-
-
-
-
-
 
 
     render(){
@@ -1538,12 +1507,3 @@ alert('Customer Access successfully Granted')
 
 
   }
-
-
-
-
-
-
-
-
-  
