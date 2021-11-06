@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Logout from './components/Logout'
 import DoubleEntrySys from './components/DoubleEntrySys'
 import AccountsRecord from './components/AccountsRecord'
+// import CustomerAccess from './components/CustomerAccess'
 
 import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom'
@@ -17,6 +18,7 @@ import {BrowserRouter, Route} from 'react-router-dom'
   return (
     <BrowserRouter>
     <div>
+    {/* <Route path='/CustomerAccess' component={CustomerAccess}/> */}
       <Header/>
       
       <Route exact path='/' component={Logout}/>

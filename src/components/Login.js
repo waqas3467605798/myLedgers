@@ -65,6 +65,7 @@ class LoginForm extends Component{
         this.state ={
                 forgetStatus:false,
                 forgetEmial:''
+                
         }
 
     }
@@ -136,10 +137,14 @@ class LoginForm extends Component{
       <span style={{fontSize:'12px'}}>{navigator.onLine===true ? <span style={{color:'green'}}>You are online</span> : <span style={{color:'red'}}>You are OffLine</span>}</span>
 <br/><br/>
 
-<h2 className='headings' style={{textAlign:'center',fontSize:'30px'}}>Login Here</h2>
 
+            
              <div className="row container">
              <div className="col s12">
+
+<h2 className='headings' style={{textAlign:'center',fontSize:'30px'}}>Login Here</h2>
+
+             
               
               
               
@@ -158,25 +163,7 @@ class LoginForm extends Component{
                 <a href='#' onClick={this.showForgetField}>Forget Password ?</a>
 
 
-
-
-
-
 <br/><br/><br/><br/><br/>
-<BrowserRouter>
-<Link to='/CustomerAccess' style={{textDecoration:'none', marginRight:'22px'}} > <b>Customer Access</b> </Link>
-<Route path='/CustomerAccess' component={CustomerAccess}/>
-</BrowserRouter>
-
-<br/><br/><br/>
-
-
-
-
-
-
-
-
 
 
 
@@ -191,10 +178,18 @@ class LoginForm extends Component{
 
               </div>
               </div>
- 
+              
 
 
-              <br/><br/>
+<div className='container'>
+<BrowserRouter>
+<Link to='/CustomerAccess' style={{textDecoration:'none', marginRight:'22px'}} > <b>Customer Access</b> </Link>
+<Route path='/CustomerAccess' component={CustomerAccess}/>
+</BrowserRouter>
+</div>
+
+
+<br/><br/>
 <div className='bottomLine'> 
 Prepared By: Waqas Saleem <br/>
 Easy Accounts Management System<br/>
