@@ -64,7 +64,9 @@ class LoginForm extends Component{
         super();
         this.state ={
                 forgetStatus:false,
-                forgetEmial:''
+                forgetEmial:'',
+
+
                 
         }
 
@@ -122,6 +124,24 @@ class LoginForm extends Component{
         })
 
     }
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -187,6 +207,33 @@ class LoginForm extends Component{
 <Route path='/CustomerAccess' component={CustomerAccess}/>
 </BrowserRouter>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <br/><br/>

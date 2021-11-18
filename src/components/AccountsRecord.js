@@ -1474,7 +1474,7 @@ reqObj.keyWords = this.state.keyWords
 //   obj.sum = reqObj.sum
 // }
 var key = firebase.database().ref('customerAccess').push().key
-obj.key = key
+obj.key = reqObj.key
 firebase.database().ref('customerAccess').child(key).set(obj)
 firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
 // this.state.customerAccessList.push(obj)
