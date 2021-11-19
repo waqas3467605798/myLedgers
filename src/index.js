@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import {BrowserRouter} from 'react-router-dom'
+import {Route,BrowserRouter} from 'react-router-dom'
 // import App from './App';
 import Login from './components/Login'
+import CustomerAccess from './components/CustomerAccess'
 import reportWebVitals from './reportWebVitals';
 import 'materialize-css/dist/css/materialize.min.css'
 import 'materialize-css/dist/js/materialize.min'
@@ -12,9 +13,11 @@ import 'materialize-css/dist/js/materialize.min'
 ReactDOM.render(
   
   <React.StrictMode>
-    
-    <Login />
-    
+    <BrowserRouter>
+    {/* <Login /> */}
+    <Route exact path='/' component={Login}/>
+    <Route path='/CustomerAccess' component={CustomerAccess}/>
+    </BrowserRouter>
   </React.StrictMode>,
   
   document.getElementById('root')

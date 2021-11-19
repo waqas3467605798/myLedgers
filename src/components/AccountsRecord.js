@@ -1392,13 +1392,14 @@ viewVoucher = ()=>{
               partyObjects:[],
               status:false,
               keyWords:'',
-              customerAccessList:[]
+              customerAccessList:[],
+              listStatus:false
       }
 
   }
 
 
-  componentDidMount(){
+  async componentDidMount(){
     var dataPushPromise = new Promise( (res,rej)=>{
     var userId = firebase.auth().currentUser.uid;
     var userEmail = firebase.auth().currentUser.email
@@ -1453,9 +1454,18 @@ this.setState({[e.target.name]: e.target.value  })
 
 allowAccess = ()=>{
 
-  var alreadyKeyExist = this.state.customerAccessList.find(  (o)=>{return o.keyWords === this.state.keyWords}  )
+
+ var alreadyPartyExist = this.state.customerAccessList.find(  (o)=>{return o.partyName === document.getElementById('selected_save2').value}  )
+ var alreadyKeyExist = this.state.customerAccessList.find(  (o)=>{return o.keyWords === this.state.keyWords}  )
+ 
+ 
+if(alreadyPartyExist){
+  alert('Alread Access alowed to the selected Account')
+}else{
+
+ 
   if(alreadyKeyExist){
-    alert('Key words already exist OR Access already allowed')
+    alert('Password already exist, Plz change your Password')
   }else{
 
 
@@ -1474,7 +1484,8 @@ reqObj.keyWords = this.state.keyWords
 //   obj.sum = reqObj.sum
 // }
 var key = firebase.database().ref('customerAccess').push().key
-obj.key = reqObj.key
+obj.key = key
+obj.realObjectKey = reqObj.key
 firebase.database().ref('customerAccess').child(key).set(obj)
 firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
 // this.state.customerAccessList.push(obj)
@@ -1483,22 +1494,122 @@ alert('Customer Access successfully Granted')
 
 
   }
+
 }
+}
+
+
+
+
+
+getList=()=>{
+this.setState({listStatus:true})
+}
+
+
+ editAccess=(i)=>{
+
+
+var editPromise = new Promise((res,rej)=>{
+
+
+  var reqObj = this.state.customerAccessList[i]
+  var key = this.state.customerAccessList[i].key
+  
+  
+  
+  var editPassword = prompt('Please edit Passwordetc',reqObj.keyWords)
+  if(editPassword === null){
+    editPassword = reqObj.keyWords
+  }
+  
+  
+  reqObj.keyWords = editPassword.replace(/  +/g, ' ').trim()
+  
+  
+  firebase.database().ref('customerAccess').child(reqObj.key).set(reqObj)
+  
+  
+  this.state.customerAccessList.splice(i,1,reqObj)
+
+
+  res('edited successfully')
+
+})
+
+  
+editPromise.then((msg)=>{
+
+  var reqObj = this.state.customerAccessList[i]
+  // var key = this.state.customerAccessList[i].key
+  
+  
+  
+  // var editPassword = prompt('Please Re-enter Passwordetc',reqObj.keyWords)
+  // if(editPassword === null){
+  //   editPassword = reqObj.keyWords
+  // }
+  
+  
+  // reqObj.keyWords = editPassword.replace(/  +/g, ' ').trim()
+
+
+
+
+
+
+
+  var ourObject = this.state.partyObjects.find((obj)=>{return obj.partyName === reqObj.partyName})
+  ourObject.keyWords= reqObj.keyWords
+  
+  firebase.database().ref('partyList'+this.state.user).child(ourObject.key).set(ourObject)
+alert(msg)
+
+})
+
+
+
+
+
+
+}
+
+
+
 
 
     render(){
         return(
          
           <div>
-           Access Given
-
+          
+<br/><br/><br/>
            <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
   <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )       }   </select> </div> <br/></div>
   
-  <input type='text' onChange={this.changeHandler} name='keyWords' value={this.state.keyWords} placeholder='Create Key works' />
-          
+  <br/>
+  <div className='container'>
+  <span style={{fontSize:'22px', color:'blue'}}> Create Password to allow access to the selected Account </span>
+  <input type='text' onChange={this.changeHandler} name='keyWords' value={this.state.keyWords} placeholder='Create Key works' />   
   <button className="waves-effect waves-dark btn" onClick={this.allowAccess} >Allow Access</button>
-          
+  
+<br/><br/><br/><br/><br/>
+<span style={{fontSize:'22px', color:'blue'}}> Get List of all customers to whome you have Granted Access </span> <br/>
+  <button className="waves-effect waves-dark btn" onClick={this.getList} >Get List</button>
+  
+  
+
+  <div className={this.state.listStatus === false ? 'display' : ''}>
+  <table><thead><tr><th>Account Title</th><th>Password</th><th>Edit</th></tr></thead><tbody>{this.state.customerAccessList.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.partyName}</td><td>{item.keyWords}</td><td><a href='#' className="material-icons" style={{color:'green',fontSize:'15px'}} onClick={()=> this.editAccess(index)}>edit</a></td></tr>})    }</tbody></table> 
+{/* </div> */}
+</div>
+
+
+
+
+
+  
+  </div>   
           
           </div>
           

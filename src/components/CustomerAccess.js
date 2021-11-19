@@ -177,6 +177,7 @@ this.setState({showstm:true})
 
 
 
+  
 
 
 
@@ -185,19 +186,25 @@ this.setState({showstm:true})
     render(){
         return(
         <div id='up'>
-<div className={this.state.showBtn === false ? '' : 'display'}>
+
+<div style={{textAlign:'center', backgroundColor:'blue',fontSize:'26px',color:'white',padding:'15px', borderBottomLeftRadius:'35px', borderBottomRightRadius:'35px'}}>Customer Access Portal</div>
+
+<br/><br/><br/>
+
+<div className={this.state.showBtn === false ? 'container' : 'display'}>
+    <span style={{fontSize:'22px', color:'blue'}}>Please write Password here; </span>
 <input type='text' name='keyWords' onChange={this.changeHandler} placeholder='write key words here' />
-<button className="waves-effect waves-dark btn" onClick={this.clickMe} >Click me</button> <br/>
+<button className="waves-effect waves-dark btn" onClick={this.clickMe} >Login</button> <br/>
 </div>
 
 
-<div className={this.state.showBtn === false ? 'display' : ''}>
-<span>Welcome...{this.state.accountTitle}</span> <br/>
-<span>Please Click on Following Button to view your statement</span> <br/>
+<div className={this.state.showBtn === false ? 'display' : 'container'}>
+<span style={{fontSize:'22px', color:'blue'}}>Welcome... <span style={{color:'red'}}> {this.state.accountTitle}</span> <br/>
+       Please Click on Button to view your statement</span> <br/>
 <button className="waves-effect waves-dark btn" onClick={this.showFullStm} >Show Statement</button>
 </div>
 
-<div className={this.state.showstm===false ? 'display' : ''}>
+<div className={this.state.showstm===false ? 'display' : 'container'}>
 <p style={{color:'red'}}>
    Account Title: <span style={{color:'green'}}> {this.state.accountTitle} </span> <br/>
    Last 500-Transactions 

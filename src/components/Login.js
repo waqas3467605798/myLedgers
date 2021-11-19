@@ -202,10 +202,10 @@ class LoginForm extends Component{
 
 
 <div className='container'>
-<BrowserRouter>
+{/* <BrowserRouter> */}
 <Link to='/CustomerAccess' style={{textDecoration:'none', marginRight:'22px'}} > <b>Customer Access</b> </Link>
-<Route path='/CustomerAccess' component={CustomerAccess}/>
-</BrowserRouter>
+{/* <Route path='/CustomerAccess' component={CustomerAccess}/> */}
+{/* </BrowserRouter> */}
 </div>
 
 
