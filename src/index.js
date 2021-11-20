@@ -13,11 +13,11 @@ import 'materialize-css/dist/js/materialize.min'
 ReactDOM.render(
   
   <React.StrictMode>
-    <BrowserRouter>
-    {/* <Login /> */}
-    <Route exact path='/' component={Login}/>
-    <Route path='/CustomerAccess' component={CustomerAccess}/>
-    </BrowserRouter>
+    {/* <BrowserRouter> */}
+    <Login />
+    {/* <Route exact path='/' component={Login}/> */}
+    {/* <Route path='/CustomerAccess' component={CustomerAccess}/>
+    </BrowserRouter> */}
   </React.StrictMode>,
   
   document.getElementById('root')

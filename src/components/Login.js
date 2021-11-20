@@ -64,7 +64,8 @@ class LoginForm extends Component{
         super();
         this.state ={
                 forgetStatus:false,
-                forgetEmial:'',
+                forgetEmial:''
+                // customerPortal:false
 
 
                 
@@ -129,21 +130,10 @@ class LoginForm extends Component{
 
 
 
-
+    // customer=()=>{
+    //     this.setState({customerPortal:true})
+    // }
     
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -151,6 +141,12 @@ class LoginForm extends Component{
          return (
              <div>
  
+
+{/* <div className={this.state.customerPortal === false ? '' : 'display'}> */}
+
+
+
+
  <div id='div1'> 
       Easy Accounts
       </div>
@@ -183,6 +179,7 @@ class LoginForm extends Component{
                 <a href='#' onClick={this.showForgetField}>Forget Password ?</a>
 
 
+
 <br/><br/><br/><br/><br/>
 
 
@@ -201,11 +198,18 @@ class LoginForm extends Component{
               
 
 
+{/* </div> */}
+
+
+
+
+
+
 <div className='container'>
-{/* <BrowserRouter> */}
-<Link to='/CustomerAccess' style={{textDecoration:'none', marginRight:'22px'}} > <b>Customer Access</b> </Link>
-{/* <Route path='/CustomerAccess' component={CustomerAccess}/> */}
-{/* </BrowserRouter> */}
+<BrowserRouter>
+<Link to='/CustomerAccess' style={{textDecoration:'none',color:'green',textAlign:'center'}} > <b>Customer Portal</b> </Link>
+<Route path='/CustomerAccess' component={CustomerAccess}/> 
+ </BrowserRouter>
 </div>
 
 
@@ -216,24 +220,7 @@ class LoginForm extends Component{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{/* <div className={this.state.customerPortal === false ? '' : 'display'}> */}
 
 
 <br/><br/>
@@ -242,6 +229,10 @@ Prepared By: Waqas Saleem <br/>
 Easy Accounts Management System<br/>
 Contact: 0346-7605798 Email: waqas_mba86@yahoo.com
 </div>
+
+{/* </div> */}
+
+
 
 
              </div>

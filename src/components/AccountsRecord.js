@@ -1509,55 +1509,35 @@ this.setState({listStatus:true})
 
  editAccess=(i)=>{
 
-
 var editPromise = new Promise((res,rej)=>{
-
 
   var reqObj = this.state.customerAccessList[i]
   var key = this.state.customerAccessList[i].key
-  
-  
   
   var editPassword = prompt('Please edit Passwordetc',reqObj.keyWords)
   if(editPassword === null){
     editPassword = reqObj.keyWords
   }
   
-  
   reqObj.keyWords = editPassword.replace(/  +/g, ' ').trim()
-  
   
   firebase.database().ref('customerAccess').child(reqObj.key).set(reqObj)
   
-  
   this.state.customerAccessList.splice(i,1,reqObj)
-
 
   res('edited successfully')
 
 })
 
-  
 editPromise.then((msg)=>{
 
   var reqObj = this.state.customerAccessList[i]
   // var key = this.state.customerAccessList[i].key
-  
-  
-  
   // var editPassword = prompt('Please Re-enter Passwordetc',reqObj.keyWords)
   // if(editPassword === null){
   //   editPassword = reqObj.keyWords
   // }
-  
-  
   // reqObj.keyWords = editPassword.replace(/  +/g, ' ').trim()
-
-
-
-
-
-
 
   var ourObject = this.state.partyObjects.find((obj)=>{return obj.partyName === reqObj.partyName})
   ourObject.keyWords= reqObj.keyWords
@@ -1566,8 +1546,6 @@ editPromise.then((msg)=>{
 alert(msg)
 
 })
-
-
 
 
 
@@ -1606,9 +1584,6 @@ alert(msg)
 
 
 
-
-
-  
   </div>   
           
           </div>
