@@ -24,7 +24,9 @@ class CustomerAccess extends Component{
             accountTitle:'',
             renderLedgerData:false,
             noData:'',
-            stmBtn:false
+            stmBtn:false,
+            debitTotal:'',
+            creditTotal:''
             
         }
 
@@ -82,6 +84,7 @@ clickMe=()=>{
     })
     .then(()=>{
         this.setState({showBtn:true})
+        
     })
      
 
@@ -111,26 +114,14 @@ clickMe=()=>{
     showFullStm=()=>{
 
         this.setState({showstm:true})
-
-
-        
-// this.setState({ledgerFor30Days:0}) // because we want to see all transaction in the ledger
-  
-        // if(document.getElementById('selected_save4').value){
-        
-        // this.setState({accountTitle:document.getElementById('selected_save4').value})
-        
-        // var accountTitle = document.getElementById('selected_save4').value
         var reqObj = this.state.partyObjects.find(  (obj)=>{return obj.keyWords === this.state.keyWords}  )
       
-        //to get total sum of debit side and credit side
-        // this.setState({debitTotal:reqObj.sum.filter((nm,indx)=>{return nm>0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
-        // this.setState({creditTotal:reqObj.sum.filter((nm,indx)=>{return nm<0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
+        // to get total sum of debit side and credit side
+        this.setState({debitTotal:reqObj.sum.filter((nm,indx)=>{return nm>0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
+        this.setState({creditTotal:reqObj.sum.filter((nm,indx)=>{return nm<0}).reduce( (total,num)=>{return total+num},0)}) // for test base only
         //sum of debit and credit side is ended
     
-    
-        
-        
+
             if('ledger' in reqObj){
                 var ledgerData = reqObj.ledger;
                 var ledgerBalance = reqObj.sum
@@ -175,10 +166,10 @@ clickMe=()=>{
 {/* <div className={this.state.customerAccessList.length === 0 ? 'display' : ''}> */}
 {/* <div style={{textAlign:'center', backgroundColor:'blue',fontSize:'26px',color:'white',padding:'15px', borderBottomLeftRadius:'35px', borderBottomRightRadius:'35px'}}>Customer Access Portal</div> */}
 
-<br/><br/><br/>
+<br/>
 
 <div className={this.state.showBtn === false ? '' : 'display'}>
-    <span style={{fontSize:'22px', color:'blue'}}>Please write Password here; </span>
+    <span style={{fontSize:'15px', color:'blue'}}>Please write Password here; </span>
 <input type='password' name='keyWords' onChange={this.changeHandler} placeholder='write password here' />
 <button className="waves-effect waves-dark btn" onClick={this.clickMe} >Login</button> <br/>
 </div>
@@ -187,8 +178,7 @@ clickMe=()=>{
 
 
 <div className={this.state.showBtn === false ? 'display' : ''}>
-<span style={{fontSize:'22px', color:'blue'}}>Welcome... <span style={{color:'red'}}> {this.state.accountTitle}</span> <br/>
-       Please Click on below button to view your statement</span> <br/>
+<span style={{fontSize:'22px', color:'blue'}}>Welcome... <span style={{color:'red'}}> {this.state.accountTitle}</span> <br/></span> <br/>
 
 <div className={this.state.stmBtn === false ? 'display' : ''}>
 <button className="waves-effect waves-dark btn" onClick={this.showFullStm} >Show Statement</button>
@@ -212,6 +202,7 @@ clickMe=()=>{
    Last 500-Transactions 
    </p>
 <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th style={{textAlign:'center'}}>V#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledgers.map(  (item,index)=>{return <tr key={index}><td style={{color:'blue', textAlign:'center'}}>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'135px',color:'blue'}}>{item.narration}</td><td>{item.debit >=0 ? item.debit : ''}</td><td style={{color:'blue'}}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td></tr>}).slice(this.state.ledgerFor500trans)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>
+
 </div>
 
 

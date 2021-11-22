@@ -281,7 +281,7 @@ import firebase from './Fire'
   <br/>
   <div>
   <span style={{fontSize:'17px', color:'blue'}}> Create Password to allow access to the selected Account </span>
-  <input type='text' onChange={this.changeHandler} name='keyWords' value={this.state.keyWords} placeholder='Create Key works' />   
+  <input type='text' onChange={this.changeHandler} name='keyWords' value={this.state.keyWords} placeholder='Create Password' />   
   <button className="waves-effect waves-dark btn" onClick={this.allowAccess} >Allow Access</button>
   
 <br/><br/><br/><br/><br/>

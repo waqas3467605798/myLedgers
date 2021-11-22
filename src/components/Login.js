@@ -158,7 +158,7 @@ class LoginForm extends Component{
              <div className="row container">
              <div className="col s12">
 
-<h2 className='headings' style={{textAlign:'center',fontSize:'30px'}}>Login Here</h2>
+<h2 className='headings' style={{fontSize:'25px'}}>User Login</h2>
 
              
               
@@ -199,13 +199,14 @@ class LoginForm extends Component{
 
 
 
+<hr style={{height:'2px', backgroundColor:'red'}}/>
 
-
+<br/><br/>
 
 
 <div className='container'>
 <BrowserRouter>
-<Link to='/CustomerAccess' style={{textDecoration:'none',color:'green',textAlign:'center'}} > <b>Customer Portal</b> </Link>
+<Link to='/CustomerAccess' className='headings' style={{fontSize:'17px', backgroundColor:'lightgray', padding:'10px'}} > <b>Customer Login</b> </Link>
 <Route path='/CustomerAccess' component={CustomerAccess}/> 
  </BrowserRouter>
 </div>
