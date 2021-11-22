@@ -1,8 +1,8 @@
 import react, {Component} from 'react'
 import '../App.css';
-import {Link, Route,BrowserRouter} from 'react-router-dom'
+// import {Link, Route,BrowserRouter} from 'react-router-dom'
 import firebase from './Fire'
-import App from '../App'
+// import App from '../App'
 
 
 
@@ -57,43 +57,6 @@ class CustomerAccess extends Component{
 
 
 
-
-
-// showStmnt=()=>{
-
-// var newPromise = new Promise((res,rej)=>{
-
-// var objects =[]
-// var reqObjs = this.state.customerAccessList.find( (o)=>{return o.keyWords === this.state.keyWords}  )
-// firebase.database().ref('partyList'+reqObjs.uid).on('child_added' , (data)=> { 
-// objects.push(data.val())
-//          }  )
-         
-// res(objects)
-
-
-
-// })
-
-
-// newPromise.then((obs)=>{
-    
-
-//     var ourObs = obs.find( (oo)=>{return oo.keyWords === this.state.keyWords} )    
-    
-//     if(ourObs){
-//         return ourObs
-//     }else{
-//         alert('object not found')
-//     }
-// })
-// .then((mainObj)=>{
-// this.setState({ledgers:mainObj.ledger, ledgerBalance:mainObj.sum})
-// })
-
-// }
-
-
 clickMe=()=>{
 
     var keyExist = this.state.customerAccessList.find( (o)=>{return o.keyWords === this.state.keyWords}  )
@@ -123,6 +86,13 @@ clickMe=()=>{
      
 
 
+    setTimeout(() => {
+        this.setState({stmBtn:true})
+    }, 3000);
+
+
+
+
 
     }else{
         alert('Your Entered Password is incorrect')
@@ -130,9 +100,7 @@ clickMe=()=>{
 
 
 
-    setTimeout(() => {
-        this.setState({stmBtn:true})
-    }, 2000);
+    
 
 
 

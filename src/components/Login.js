@@ -180,7 +180,7 @@ class LoginForm extends Component{
 
 
 
-<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/>
 
 
 
@@ -191,14 +191,12 @@ class LoginForm extends Component{
                 <button onClick={this.ressetPassword} className="waves-effect btn-large">Resset</button>
                 
                 </div>
-
-
               </div>
               </div>
               
 
 
-{/* </div> */}
+
 
 
 
@@ -215,12 +213,6 @@ class LoginForm extends Component{
 
 
 
-
-
-
-
-
-{/* <div className={this.state.customerPortal === false ? '' : 'display'}> */}
 
 
 <br/><br/>

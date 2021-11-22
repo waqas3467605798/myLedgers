@@ -268,22 +268,24 @@ import firebase from './Fire'
 
 <br/>
 
+
 <div className='container'>
 <button onClick={this.access}> Allow Access to customer </button>
 </div>
-<div className={this.state.showAccessDiv===false ? 'display' : ''}>
+<div className={this.state.showAccessDiv===false ? 'display' : 'container'}>
   <br/><br/><br/>
+  <span style={{fontSize:'16px', color:'blue'}}> Please Select the Account and create password to allow access </span>
   <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
   <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )       }   </select> </div> <br/></div>
   
   <br/>
-  <div className='container'>
-  <span style={{fontSize:'22px', color:'blue'}}> Create Password to allow access to the selected Account </span>
+  <div>
+  <span style={{fontSize:'17px', color:'blue'}}> Create Password to allow access to the selected Account </span>
   <input type='text' onChange={this.changeHandler} name='keyWords' value={this.state.keyWords} placeholder='Create Key works' />   
   <button className="waves-effect waves-dark btn" onClick={this.allowAccess} >Allow Access</button>
   
 <br/><br/><br/><br/><br/>
-<span style={{fontSize:'22px', color:'blue'}}> Get List of all customers to whome you have Granted Access </span> <br/>
+<span style={{fontSize:'17px', color:'blue'}}> Get List of all customers to whome you have Granted Access </span> <br/>
   <button className="waves-effect waves-dark btn" onClick={this.getList} >Get List</button>
   
   
